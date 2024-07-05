@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-function config(colection) {
+function config(collection) {
     return {
-        baseUrl: 'https://93aa-112-200-206-19.ngrok-free.app/' + colection,
+        baseUrl: 'https://93aa-112-200-206-19.ngrok-free.app/' + collection,
         headers: {
             "ngrok-skip-browser-warning": true,
         }
