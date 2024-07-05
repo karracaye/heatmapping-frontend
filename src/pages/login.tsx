@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
-
-const axios = require('axios');
-const api = axios.create({ baseURL: 'http://localhost:8000/users' });
+import { useState } from "react";
+import { axiosInstance } from "@/utils/axios";
 
 export default function Login(props) {
-    api.post('/api/auth', {
-        // username, password
-    }).then(
-        (response) => {
-          console.log(response.data)
-        }
-    )
-    
+    axiosInstance.get('/').then((response) => {
+        console.log(response.data);
+    })
 
     const [ loginData, setLoginData ] = useState({
         username: '',
