@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { axiosInstance } from "@/utils/axios";
+const axiosInstance = require("@/utils/axios-instance");
 
 export default function Login(props) {
-    axiosInstance.get('/').then((response) => {
-        console.log(response.data);
-    })
-
     const [ loginData, setLoginData ] = useState({
         username: '',
         password: '',
@@ -19,6 +15,16 @@ export default function Login(props) {
             ...prevState,
             [ name ]: value
         }));
+    }
+
+    const submitLoginData = () => {
+        axiosInstance.login.get('/', {
+            email: loginData.username,
+            password: loginData.password,
+        })
+        .then((response) => {
+            console.log(response.data);
+        })
     }
 
     return (
@@ -62,7 +68,9 @@ export default function Login(props) {
                         </div>
                     </div>
 
-                    <button onClick={ props.config }
+                    <button 
+                        onClick={ submitLoginData }
+                        // onClick={ props.config }
                         className='h-9 w-3/4 bg-guardsman-red font-semibold text-md text-white rounded-[10px]'
                     >
                         Log in
