@@ -1,5 +1,5 @@
 import { useState } from "react";
-const axiosInstance = require("@/utils/axios-instance");
+import { axiosInstance, Url } from "@/utils/axios";
 
 export default function Login(props) {
     const [ loginData, setLoginData ] = useState({
@@ -18,12 +18,17 @@ export default function Login(props) {
     }
 
     const submitLoginData = () => {
-        axiosInstance.login.get('/', {
-            email: loginData.username,
-            password: loginData.password,
+        console.log(loginData.username);
+        console.log(loginData.password);
+
+        axiosInstance.post(Url('/login'), {     
+            data: {
+                username: loginData.username,
+                password: loginData.password,
+            }
         })
         .then((response) => {
-            console.log(response.data);
+            console.log(response.data[0]);
         })
     }
 
