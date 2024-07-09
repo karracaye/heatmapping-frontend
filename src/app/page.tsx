@@ -5,6 +5,7 @@ import Intro from "@/components/splashscreen/intro";
 import Loader from "@/components/splashscreen/loader";
 import Login from "@/pages/login";
 import Layout from "@/components/templates/layout";
+import { axiosInstance } from "@/utils/axios";
 
 export default function Home() {
     const [ transition, setTransition ] = useState('');
@@ -21,7 +22,20 @@ export default function Home() {
         }, 8000)
     }, [])
 
-    const [ login, setLogin ] = useState(false);
+    const [ user, setUser ] = useState(null);
+    const authUser = (data) => {
+        setUser(data.id);
+        
+        axiosInstance.interceptors.request.use((config) => {
+            config.headers["authorization"] = `bearer ${data.token}`;
+            return config;
+        }, (error) => {
+            Promise.reject(error);
+        });
+
+        console.log(data);
+    }
+    
     const [ content, setContent ] = useState('');
 
     return (
@@ -32,18 +46,18 @@ export default function Home() {
                 ): transition == 'loader' ? (
                     <Loader />
                 ): transition == 'login' ? (
-                    <Login config={ () => ( setTransition(''), setLogin(true) ) } />
+                    <Login config={ (data) => ( authUser(data), setTransition('') ) } />
                 ): ''
             }
             {
-                login ? (
-                    <Layout role='Superadmin' content={ (page) => ( setContent(page), setLogin(!login) ) }>
+                user && !content ? (
+                    <Layout role='Superadmin' content={ (page) => ( setContent(page) ) }>
                         { navigate('dashboard') }
                     </Layout>
                 ): ''
             }
             {
-                content ? (
+                user && content ? (
                     <Layout role='Superadmin' content={ (page) => setContent(page) }>
                         { navigate(content) }
                     </Layout>

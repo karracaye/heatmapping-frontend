@@ -1,26 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { axiosInstance, axiosBaseUrl } from "@/utils/axios";
 import PopUp from "@/components/modals/pop-up";
 import Verification from "@/components/modals/verification";
 
 export default function Role() {
-    const table = [
-        {
-            head: [
-                'Name',
-                'Role',
-                'Email Address',
-                'Action',
-            ],
-            body: [
-                {
-                    id: 1,
-                    name: 'Juan Dela Cruz',
-                    role: 'Superadmin',
-                    email: 'juandelacruz@gmail.com',
-                },
-            ],
-        }
+    const head = [
+        'Name',
+        'Role',
+        'Email Address',
+        'Action',
     ]
+
+    const [ body, setBody ] = useState([
+        {
+            name: '',
+            role: '',
+            email: '',
+        },
+    ]);
+
+    useEffect(() => {
+        axiosInstance.get(axiosBaseUrl('/users/roles'))
+        .then((response) => {
+            setBody(response.data);
+        })
+    }, [])
 
     const role = [
         'Superadmin',
@@ -100,7 +104,7 @@ export default function Role() {
                             <tr className="h-12 bg-[#F2F2F2] font-semibold text-left">
                                 <th></th>
                                 {
-                                    table[0].head.map((item) => (
+                                    head.map((item) => (
                                         <th>{ item }</th>
                                     ))
                                 }
@@ -108,13 +112,13 @@ export default function Role() {
                         </thead>
                         <tbody>
                             {
-                                table[0].body.map((item) => (
+                                body.map((item, index) => (
                                     <tr className="h-12 border-b border-[#F2F2F2]">
                                         <td className="w-12 p-3">
                                             <p 
                                                 className="bg-[#D9D9D9] text-white flex items-center justify-center rounded-full aspect-square"
                                             >
-                                                { item.id }
+                                                { index + 1 }
                                             </p>
                                         </td>
                                         <td>{ item.name }</td>

@@ -17,16 +17,15 @@ export default function Login(props) {
         }));
     }
 
-    const submitLoginData = () => {
-        console.log(loginData.username);
-        console.log(loginData.password);
+    const submitLoginData = async (event) => {
+        event.preventDefault();
 
-        axiosInstance.post(axiosBaseUrl('/login'), {     
+        await axiosInstance.post(axiosBaseUrl('/login'), {
             username: loginData.username,
             password: loginData.password,
         })
         .then((response) => {
-            console.log(response.data);
+            if (!response.data.error) props.config(response.data);
         })
     }
 
@@ -71,9 +70,7 @@ export default function Login(props) {
                         </div>
                     </div>
 
-                    <button 
-                        onClick={ submitLoginData }
-                        // onClick={ props.config }
+                    <button onClick={ submitLoginData }
                         className='h-9 w-3/4 bg-guardsman-red font-semibold text-md text-white rounded-[10px]'
                     >
                         Log in
