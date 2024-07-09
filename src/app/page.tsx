@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 import { useState, useEffect } from "react";
 import { navigate } from "@/utils/navigate";
@@ -65,4 +66,10 @@ export default function Home() {
             }
         </div>
     )
+=======
+import Image from "next/image";
+
+export default function Home() {
+  return <></>;
+>>>>>>> df8f308061005147672e555fddeccfe99fcedffe
 }
