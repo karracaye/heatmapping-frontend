@@ -7,7 +7,7 @@ const instance = axios.create({
 })
 
 const baseUrl = (api) => {
-  return `https://0ff9-112-200-206-19.ngrok-free.app${api}`;
+  return `https://41bd-112-200-206-19.ngrok-free.app${api}`;
 }
 
 export default {

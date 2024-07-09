@@ -73,7 +73,7 @@ const Sidebar = () => {
   ]
 
   return (
-    <div className="h-screen w-[6.5%] relative bg-white flex items-center justify-center shadow-[2px_0_2px_2px_rgba(0,0,0,0.05)]">
+    <div className="h-screen w-[6.5%] relative bg-white flex items-center justify-center shadow-[2px_0_2px_2px_rgba(0,0,0,0.05)] z-10">
       <img src="/logos/intelliseven-logo.svg" alt="" 
         className="w-[70%] absolute top-2"
       />
