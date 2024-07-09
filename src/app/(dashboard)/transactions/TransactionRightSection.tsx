@@ -93,7 +93,7 @@ const handleCheckboxChange = (rowIndex) => {//It will check if the that row is o
 
 return (
    <div className='w-[100%] h-[100%] pt-5 px-[3%]'>
-      <div className='flex flex-row justify-between mt-[-35px] h-[35px] w-[270px] ml-[76%]'>
+      <div className='flex flex-row justify-between mt-[-40px] h-[35px] w-[270px] ml-[76%]'>
          <button className='flex flex-row items-center justify-center font-medium text-[15px] rounded-[10px] px-[10px] border border-[#000000] opacity-25 py-[20px] cursor-pointer'>
             <img className='w-[15 px] h-[25px] opacity-50 mr-1' src="/icon/outline.svg" /> Filter
          </button>
@@ -104,7 +104,7 @@ return (
             <img className='w-[15px] h-[15px] mr-1' src="/icon/addWhite.svg" /> Add New
          </button>
       </div>
-      <div className='flex flex-col shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)] bg-white h-[500px] w-[100%] rounded-[10px] mt-5'>
+      <div className='flex flex-col shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)] bg-white h-[500px] w-[100%] rounded-[10px] mt-5 relative'>
          <div className='flex flex-row items-center justify-center w-[20%] mt-[35px] ml-2 mb-4'>
             <input className='bg-[#d9d9d9] w-[15px] h-[15px] opacity-70 rounded-[5px] mr-4' type="checkbox" />
             <h1 className='font-semibold text-[20px] text-black mr-2'>List of Data</h1>
@@ -170,7 +170,7 @@ return (
                </tbody>
             </table>
          </div>
-         <div className='w-[100px] flex justify-center items-center mt-1 absolute bottom-[15px] left-[50%] '>
+         <div className='w-[100px] flex justify-center items-center mt-1 absolute bottom-[10px] left-[45%] '>
             <div className='flex flex-row justify-center items-center'>
                <p className='font-normal text-[11px] text-black'>{firstIndex + 1}-{lastIndex} of {totalNumber}</p>
                <img onClick={previousPage} className='ml-1 w-3 h-3' src="/icon/lessthan.svg"/>

@@ -27,7 +27,7 @@ const DashBoardRIghtSection = () => {
       setReqType(type);
    };
    return (
-      <div className='w-[100%] h-[100%] flex flex-col pl px-[3%] pb-[1%] background'>
+      <div className='w-[100%] h-[100%] flex flex-col pl px-[3%] pb-[1%]'>
       <div className='grid grid-cols-custom grid-rows-customrow gap-4 mt-5'>
          <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] bg-white flex flex-row'>
             <div className='w-[73%] h-[100%]'>
@@ -59,14 +59,14 @@ const DashBoardRIghtSection = () => {
                   <button onClick={() => {setServices(''); handleTypeOfServices('city');}}  className='font-normal text-[20px] pb-[20px]'>Lipa Barangays </button>
                   <p className='text-[15px] absolute bottom-0'>{services}</p>
                </div>
-               <button onClick={() => setOpenFilter(!openFilter)} className='flex flex-row justify-center items-center w-[76px] h-[30px] rounded-[10px] border border-black opacity-25 font-medium text-[13px]'><img className='w-[13px] h-5 mr-2' src="/icon/filter.svg"/> Filter</button>
+               <button onClick={() => setOpenFilter(!openFilter)} className='flex flex-row justify-center items-center w-[76px] h-[30px] rounded-[10px] border border-black opacity-25 font-medium text-[13px] mr-1'><img className='w-[13px] h-5 mr-2' src="/icon/filter.svg"/> Filter</button>
                {openFilter && (<div className='flex flex-col bg-white rounded-bl-[10px] rounded-br-[10px] shadow-[0_2px_1px_0_rgba(0,0,0,0.25)] absolute right-0 top-[25px]'>
-                  <button onClick={() => {handleServiceClick('Medical Assistance'); handleTypeOfServices('Medical');}} className='px-4 py-2 font-medium text-[13px] hover'>Medical Assistance</button>
-                  <button onClick={() => {handleServiceClick('Legal Consultation'); handleTypeOfServices('Consultation');}}  className='px-4 py-2 font-medium text-[13px] hover'>Legal Consultation</button>
-                  <button onClick={() => {handleServiceClick('Livelyhood'); handleTypeOfServices('Livelyhood');}}  className='px-4 py-2 font-medium text-[13px] hover'>Livelyhood</button>
-                  <button onClick={() => {handleServiceClick('Donation'); handleTypeOfServices('Donation');}}  className='px-4 py-2 font-medium text-[13px] hover'>Donation</button>
-                  <button onClick={() => {handleServiceClick('Scholarship');  handleTypeOfServices('Scholarship');}}  className='px-4 py-2 font-medium text-[13px] hover'>Scholarship</button>
-                  <button onClick={() => {handleServiceClick('Medical Solicitation'); handleTypeOfServices('Solicitation');}}  className='px-4 py-2 font-medium text-[13px] hover'>Solicitation</button>
+                  <button onClick={() => {handleServiceClick('Medical Assistance'); handleTypeOfServices('Medical');}} className='px-4 py-2 font-medium text-[13px] hover:bg-[#D9D9D9]'>Medical Assistance</button>
+                  <button onClick={() => {handleServiceClick('Legal Consultation'); handleTypeOfServices('Consultation');}}  className='px-4 py-2 font-medium text-[13px] hover:bg-[#D9D9D9]'>Legal Consultation</button>
+                  <button onClick={() => {handleServiceClick('Livelyhood'); handleTypeOfServices('Livelyhood');}}  className='px-4 py-2 font-medium text-[13px] hover:bg-[#D9D9D9]'>Livelyhood</button>
+                  <button onClick={() => {handleServiceClick('Donation'); handleTypeOfServices('Donation');}}  className='px-4 py-2 font-medium text-[13px] hover:bg-[#D9D9D9]'>Donation</button>
+                  <button onClick={() => {handleServiceClick('Scholarship');  handleTypeOfServices('Scholarship');}}  className='px-4 py-2 font-medium text-[13px] hover:bg-[#D9D9D9]'>Scholarship</button>
+                  <button onClick={() => {handleServiceClick('Medical Solicitation'); handleTypeOfServices('Solicitation');}}  className='px-4 py-2 font-medium text-[13px] rounded-br-[10px] rounded-bl-[10px] hover:bg-[#D9D9D9]'>Solicitation</button>
                </div>)}
             </div>
             <div className='flex flex-row w-[100%] mt-2 h-[100%] px-[10%] py-[4%] pt-6 justify-between items-start'>
