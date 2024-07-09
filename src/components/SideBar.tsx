@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="bg-gray-800 w-64 h-screen p-4 text-white">
+    <div className="bg-gray-800 w-[6.5&] h-screen p-4 text-white">
       <h2 className="text-xl mb-4">Sidebar</h2>
       <ul>
         <li className="mb-2">
