@@ -72,7 +72,7 @@ const DashBoardRIghtSection = () => {
             <div className='flex flex-row w-[100%] mt-2 h-[100%] px-[10%] py-[4%] pt-6 justify-between items-start'>
                <div className='flex flex-col w-[45%]'>
                {
-                     items.map((data, index) => (
+                     items.map((data: any, index: number) => (
                         index <10 &&(
                         <p key={index} className='font-normal text-[15px] mt-[2px]'><span className='mr-2'>{data.id}</span>{data.place}</p>
                      )))
@@ -80,7 +80,7 @@ const DashBoardRIghtSection = () => {
                </div>
                <div className='flex flex-col w-[40%]'> 
                {
-                  items.map((data, index) => (
+                  items.map((data: any, index: number) => (
                      index >= 10 &&(
                      <p key={index} className='font-normal text-[15px] mt-[2px]'><span className='mr-2'>{data.id}</span>{data.place}</p>
                   )))
