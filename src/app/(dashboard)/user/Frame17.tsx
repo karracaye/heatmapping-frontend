@@ -92,26 +92,30 @@ const Frame17 = ({addNew, addNewClick}) => {
    },[serviceChoices]);
 
    useEffect(() => {
-      const fetchPosts = async () => {
-      try {
-         const response = await axiosInstance.get('/users');
-         const users = response.data;
-         if (users.length > 0) {
-            const ID = Math.max(...users.map(user => user.id));
-            setLastId(ID);
-         }
-      } catch (err) {
-         if (err.response){
-         console.log(err.response.data);
-         console.log(err.response.status);
-         console.log(err.response.headers);
-         }else{
-            console.log(`Error: ${err.message}`);
-         } 
-      }
-      }
-      fetchPosts();
-   }, [])
+      setDataValue()
+   })
+
+   // useEffect(() => {
+   //    const fetchPosts = async () => {
+   //    try {
+   //       const response = await axiosInstance.get('/users');
+   //       const users = response.data;
+   //       if (users.length > 0) {
+   //          const ID = Math.max(...users.map(user => user.id));
+   //          setLastId(ID);
+   //       }
+   //    } catch (err) {
+   //       if (err.response){
+   //       console.log(err.response.data);
+   //       console.log(err.response.status);
+   //       console.log(err.response.headers);
+   //       }else{
+   //          console.log(`Error: ${err.message}`);
+   //       } 
+   //    }
+   //    }
+   //    fetchPosts();
+   // }, [])
 
    const handleSubmit = (event) => {//Submit new data to the json server
       event.preventDefault();
@@ -161,8 +165,8 @@ return (
                         {type} <img className='w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10' src="/icon/dropdown.svg"/>
                      </button>
                      {typeOpen && <div  className='w-[150px] h-[80px] border-radius bg-white flex flex-col absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
-                        <button id='Employee' onClick={() => {clickChoices("Employee"); handleClick();}} className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer'>Employee</button>
-                        <button onClick={() => {clickChoices("Politician"); clickPolitician();}} id='Politician' className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer border-radius'>Politician</button>
+                        <button id='Employee' onClick={() => {clickChoices("Employee"); handleClick();}} className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer hover:text-white'>Employee</button>
+                        <button onClick={() => {clickChoices("Politician"); clickPolitician();}} id='Politician' className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer border-radius hover:text-white'>Politician</button>
                      </div>}
                   </div>
                </div>

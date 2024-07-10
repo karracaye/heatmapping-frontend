@@ -12,7 +12,7 @@ const config: Config = {
         'custom': '63.00% 37.00%'
         },
         gridTemplateRows: {
-        'customrow': '330px 170px'
+        'customrow': '100% 45%'
         },
     },
   },

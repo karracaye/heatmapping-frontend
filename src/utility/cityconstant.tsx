@@ -1,4 +1,5 @@
-{
+const cityconstant: any = {
+   //Temporary data for the dashboard.
    "city": [
       {
          "id": 1,
@@ -345,3 +346,229 @@
    ]
    
 }
+
+export const usersconstant = [
+   {
+      "id": 1,
+      "Full_Name": "Ian Chesnut",
+      "Address": "Purok 3 Bugtong Na Pulo",
+      "Age": 43,
+      "Marital_Status": "Married",
+      "Occupation": "Tricycle Driver",
+      "Services": "Medical Assistance"
+   },
+   {
+   "id": 2,
+   "Full_Name": "Qan Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 3,
+   "Full_Name": "Wan Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 4,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 5,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 6,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 7,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 8,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 9,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 10,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 11,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 12,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 13,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 14,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 15,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 16,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 17,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 18,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 19,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   },
+   {
+   "id": 20,
+   "Full_Name": "Ean Chesnut",
+   "Address": "Purok 3 Bugtong Na Pulo",
+   "Age": 43,
+   "Marital_Status": "Married",
+   "Occupation": "Tricycle Driver",
+   "Services": "Medical Assistance"
+   }
+];
+
+export const addusers= [
+   {
+      "id": 1,
+      "Name": "Juan Dela Cruz",
+      "Email": "juandelacruz@gmail.com",
+      "Status": true
+   },
+   {
+      "id": 2,
+      "Name": "Juan Dela Cruz",
+      "Email": "juandelacruz@gmail.com",
+      "Status": false
+   },
+   {
+      "id": 3,
+      "Name": "Juan Dela Cruz",
+      "Email": "juandelacruz@gmail.com",
+      "Status": true
+   },
+   {
+      "id": 4,
+      "Name": "Juan Dela Cruz",
+      "Email": "juandelacruz@gmail.com",
+      "Status": true
+   },
+   {
+      "id": 5,
+      "Name": "Juan Dela Cruz",
+      "Email": "juandelacruz@gmail.com",
+      "Status": false
+   },
+   {
+      "id": 6,
+      "Name": "Louisse Angelo Sapaula",
+      "Email": "louisseangelosapaula1107@gmail.com",
+      "Status": false
+   }
+]
+
+
+
+export default cityconstant
