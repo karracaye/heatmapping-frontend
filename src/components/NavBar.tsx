@@ -28,10 +28,8 @@ const Navbar = () => {
     <nav>
       <div className="w-full px-[3%]">
         <div
-          className="w-[105px] h-[35px] flex flex-row mt-[20px] ml-[92%]"
-          onClick={toggleNotifications}
-        >
-          <img src="../icon/group6.svg" className="w-[30px] h-[30px]" />
+          className="w-[105px] h-[35px] flex flex-row mt-[20px] ml-[92%]">
+          <img src="../icon/group6.svg" className="w-[30px] h-[30px]" onClick={toggleNotifications} />
           <Link className="flex" href="/profile/[id]" as={`/profile/${10002}`}>
             <img
               src="../images/ellipse5.svg"
