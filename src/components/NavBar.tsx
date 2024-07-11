@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import EditProfile from "./EditProfile";
 import { useState } from "react";
 
@@ -39,11 +40,13 @@ const Navbar = () => {
               src="../icon/ellipse5.svg"
               className="w-[30px] h-[30px] ml-2"
             />
-            <img src="../icon/dropdown.svg" className="w-[30px] h-[30px]"/>
-            {editProfileOpen && <div className='absolute top-[35px] flex flex-col justify-center w-[130px] h-[87px] pb-[10px] bg-white right-[5px] shadow-[0_2px_2px_0_rgba(0,0,0,0.25)] z-10 rounded-br-[10px] rounded-bl-[10px]'>
-              <button className='h-[50%] font3 text-[15px] text-black hover:bg-[#00000080] hover:opacity-50'>View Profile</button>
-              <button onClick={() => {setEditProfileOpen(false); setEditProfile(true);}} className='h-[50%] font3 text-[15px] text-black hover:bg-[#00000080] hover:opacity-50'>Edit Profile</button>
-              <button className='h-[50%] font3 text-[15px] text-black hover:bg-[#00000080] hover:opacity-50'>Log Out</button>
+            <img src="../icon/dropdown.svg" className=" h-[10px]"/>
+            {editProfileOpen && <div className='py-1 absolute top-[35px] flex flex-col justify-center w-[150px] pb-1 bg-white right-[8px] shadow-[0_2px_2px_0_rgba(0,0,0,0.25)] z-10 rounded-br-[10px] rounded-bl-[10px]'>
+              <Link className='text-center p-2 font3 text-[15px] text-black hover:bg-[#303079] hover:text-white hover:font-semibold' href="/profile/[id]" as={`/profile/${10002}`}>
+              <button className="p-1">View Profile</button>
+              </Link>
+              <button onClick={() => {setEditProfileOpen(false); setEditProfile(true);}} className='  p-3 font3 text-[15px] text-black hover:bg-[#303079] hover:text-white hover:font-semibold'>Edit Profile</button>
+              <button className='p-3 font3 text-[15px] text-black hover:bg-[#303079] hover:text-white hover:font-semibold'>Log Out</button>
             </div>}
           </div>
         </div>
