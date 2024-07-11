@@ -1,4 +1,3 @@
-import Navbar from "@/components/NavBar";
 import Sidebar from "@/components/SideBar";
 
 export default function RootLayout({
@@ -9,10 +8,7 @@ export default function RootLayout({
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1">
-        <Navbar />
-        <main >{children}</main>
-      </div>
+      <main className="flex-auto">{children}</main>
     </div>
   );
 }
