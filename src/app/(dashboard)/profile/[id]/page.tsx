@@ -41,16 +41,15 @@ const Profile = () => {
     <div className="flex flex-col p-8">
       <div className="bg-[#373788] h-[120px] w-full">
       <img src="/images/Secretary-Lopez.png" className="absolute h-[170px] w-[170px] left-[170px] top-[170px]"/>
-      </div>
-        <div className="flex flex-col p-3 pl-[15rem]">
-          <div className="flex items-center">
-          <p className="text-lg font-semibold"> Selena Kathryn Lopez</p>
-            <div className="h-4 w-10 bg-green-500 rounded-full ml-2 flex items-center justify-center">
-              <p className="text-[9px] text-white"> Online </p>
-            </div>
+    </div>
+      <div className="flex flex-col p-3 pl-[15rem]">
+        <div className="flex items-center">
+        <p className="text-lg font-semibold"> Selena Kathryn Lopez</p>
+          <div className="h-4 w-10 bg-green-500 rounded-full ml-2 flex items-center justify-center">
+            <p className="text-[9px] text-white"> Online </p>
           </div>
-
-            <p className="text-sm font-medium opacity-60"> Secretary</p>
+        </div>
+        <p className="text-sm font-medium opacity-60"> Secretary</p>
           <div className="flex justify-between">
             <div className="flex py-1 opacity-50">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" className="mt-1" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15c.81 0 1.5-.3 2.11-.89c.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55c-.7.67-1.5 1-2.5 1c-1.2 0-2.19-.5-2.94-1.5c-1 1-2.18 1.5-3.56 1.5c-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg>
@@ -77,8 +76,7 @@ const Profile = () => {
              <p className="absolute left-5 rounded-full h-5 w-5 flex items-center justify-center bg-red-500 text-xs font-semibold text-white"> 5</p>
              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" className="mr-1" viewBox="0 0 2048 2048"><path fill="#373783" d="M0 1664v-640h384v640zM1920 384v384h-384V384zM1408 0v768h-256v896h-128V0zM512 1664V384h384v1280zm768-768h768v1152l-384-256l-384 256zm640 128h-512v785q65-43 128-85t128-86q65 42 128 85t128 86z"/></svg>
             </div>
-            
-            </div>
+          </div>
         </div>
       </div>
       <div className="flex grid grid-cols-2 gap-6">
@@ -100,19 +98,9 @@ const Profile = () => {
             width="500"
           />
         </div>
-  </div>
-  
-
-      
-        
-</div>
-
-    
-    
+      </div>  
+    </div>
   );
-
 };
-
-
 export default Profile;
 
