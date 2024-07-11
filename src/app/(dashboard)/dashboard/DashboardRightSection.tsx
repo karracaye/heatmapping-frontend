@@ -1,10 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react'
-<<<<<<< HEAD
 import cityconstant from '@/utility/cityconstant';
-=======
-import { city } from '@/app/utility/constants';
->>>>>>> 688e937459cd0be297ea86f87697e4161538e7e2
 const DashBoardRIghtSection = () => {
    const [items, setItems] = useState([]);
    const [openFilter, setOpenFilter] = useState(false);//Will toggle the choices in the filter button

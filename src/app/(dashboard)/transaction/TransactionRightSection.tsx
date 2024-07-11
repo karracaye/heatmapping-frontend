@@ -3,7 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { usersconstant } from '@/utility/cityconstant';
 
 const TransactionRightSection = ({addNewClick}) => {
-const [dataValue, setDataValue] = useState([]);
+const [dataValue, setDataValue] = useState([{
+   Full_Name: '',
+   Address: '',
+   Age: '',
+   Marital_Status: '',
+   Occupation: '',
+   Services: '',
+}]);
 const [totalNumber, setTotalNumber] = useState(0);
 const [currentPage, setCurrentPage] = useState(1);//Track the current page
 const recordPerPage = 7;//Number of data or id that will be shown
