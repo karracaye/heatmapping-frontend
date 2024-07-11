@@ -1,10 +1,7 @@
 'use client';
 import { useState, useEffect} from 'react'
-import axios from 'axios';
-import axiosInstance from '@/api/axiosInstance';
-import { addusers } from '@/utility/cityconstant';
 
-const Frame17 = ({addNew, addNewClick}) => {
+const addUserModal = ({addNew, addNewClick}) => {
    const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
    const [type, setType] =useState('Type');//It`s the initial state in the dropdown menun that you can choose between employee and politician. this can also be changed
    const [typeOpen, setTypeOpen] = useState(false);//It toggle the choices in Type. This will show Employee and POlitician dropdown
@@ -14,25 +11,12 @@ const Frame17 = ({addNew, addNewClick}) => {
    const [addRole, setAddRole] = useState(false);//It will toggle a box that you can input the new role
    const [newRole, setNewRole] =useState(false);//This will submit the new role
    const [typePolitician, setTypePolitician] = useState(false);//If you choose politician in type. It will toggle another information about Politician
-   const [serviceChoices, setServiceChoices] = useState([]);//The array of services that available 
+   const [serviceChoices, setServiceChoices] = useState<any[]>([]);//The array of services that available 
    const [deleteDecision, setDeleteDecision] = useState(false);//For deleting the new role in decision in Frame 17
-   const [roles, setRoles] = useState([]);//The new role will be stored in this array
+   const [roles, setRoles] = useState<any[]>([]);//The new role will be stored in this array
    const [typeRoles, setTypeRoles]= useState('');//Storage of new role other than superadmin, admin and secretary
    const [visibleChoices, setVisibleChoices] = useState(false);//This will show the new role
-   const [firstName, setFirstName] = useState('');//Storage for the first name
-   const [middleName, setMiddleName] = useState('');//Storage for the middle name
-   const [lastName, setLastName] = useState('');//Storage for the last name
    const [newAddedRole, setNewAddedRole] = useState('Select a role');//This help to appear the value of new role
-   const [lastId, setLastId] = useState(0);//To make the id in patter to previous pattern
-   const [dataValue, setDataValue]= useState({//Value that will be posted in the add user page
-      id: null,
-      Name: `${firstName} ${middleName} ${lastName}`,
-      Email: ''
-   });
-
-   const firstNameChange = (e: string) => setFirstName(e.target.value);//Get the value of first name in the input
-   const secondNameChange = (e: string) => setMiddleName(e.target.value);//Get the value of middle name in the input
-   const lastNameChange = (e: string) => setLastName(e.target.value);//Get the value of last name in the input
 
    const clickPolitician = () =>{//This will trigger components that ned when you select politician
       setTypePolitician(!typePolitician);
@@ -92,46 +76,6 @@ const Frame17 = ({addNew, addNewClick}) => {
       }
    },[serviceChoices]);
 
-   useEffect(() => {
-      setDataValue(addusers);
-   })
-
-   // useEffect(() => {
-   //    const fetchPosts = async () => {
-   //    try {
-   //       const response = await axiosInstance.get('/users');
-   //       const users = response.data;
-   //       if (users.length > 0) {
-   //          const ID = Math.max(...users.map(user => user.id));
-   //          setLastId(ID);
-   //       }
-   //    } catch (err) {
-   //       if (err.response){
-   //       console.log(err.response.data);
-   //       console.log(err.response.status);
-   //       console.log(err.response.headers);
-   //       }else{
-   //          console.log(`Error: ${err.message}`);
-   //       } 
-   //    }
-   //    }
-   //    fetchPosts();
-   // }, [])
-
-   const handleSubmit = (event) => {//Submit new data to the json server
-      event.preventDefault();
-      const name = `${firstName} ${middleName} ${lastName}`
-      const updatedValue ={...dataValue, Name: name, id: lastId + 1};
-      axios.post(axiosInstance, updatedValue)
-      .then(res => {console.log(res.data);
-         setLastId(lastId + 1);
-         setFirstName('');
-         setMiddleName('');
-         setLastName('');
-         setDataValue({Email: ''});
-      })
-      .catch(err => console.log(err))
-   };
 
    const handleClickNewRole = (role: string) => {//Add new roles
       if (!roles.includes(roles)){
@@ -174,27 +118,27 @@ return (
                <div className='flex flex-row mt-[13px]'>
                   <div className='w-[45%] flex flex-col ml-[5%] '>
                      <p className='font-normal text-[13px] opacity-50 text-black'>First Name</p>
-                     <input value={firstName}  onChange={firstNameChange} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='Juan' />
+                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Juan' />
                   </div>
                   <div className='w-[45%] flex flex-col ml-[2%] '>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Middle Name</p>
-                     <input value={middleName}  onChange={secondNameChange} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='Pablo'/>
+                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Pablo'/>
                   </div>
                </div>
                <div className='flex flex-row mt-[13px]'>
                   <div className='w-[45%] flex flex-col ml-[5%] '>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Last Name</p>
-                     <input value={lastName}  onChange={lastNameChange} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='Dela Cruz'/>
+                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Dela Cruz'/>
                   </div>
                   <div className='w-[45%] flex flex-col ml-[2%] justify-end'>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Email Address</p>
-                     <input value={dataValue.Email} onChange={(e) => setDataValue({...dataValue, Email: e.target.value})} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='example@gmail.com'/>
+                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='example@gmail.com'/>
                   </div>
                </div>
                <div className='flex flex-row mt-[13px]'>
                   <div className='w-[45%] flex flex-col ml-[5%] justify-end'>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Home Address</p>
-                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='Metro Manila, Philippines'/>
+                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Metro Manila, Philippines'/>
                   </div>
                   <div className='w-[45%] flex flex-col ml-[2%] justify-end'>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Mobile Number</p>
@@ -206,7 +150,7 @@ return (
                </div>
                {typePolitician && <div className='w-[45%] flex flex-col ml-[5%] justify-end mt-[13px]'>
                <p className='font-normal text-[13px] opacity-50 text-black'>EVR No.</p>
-               <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[17px] placeholder-[#0000001a]' type="text" placeholder='0000-000-000'/>
+               <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='0000-000-000'/>
             </div>}
             {assignNo && <div className='flex flex-col'>
             <div className='flex flex-row items-center pl-[30px] mt-4'>
@@ -281,8 +225,8 @@ return (
             </div>
             <div className='ml-[370px] mb-[15px] mt-[20px]'>
                <div className='flex flex-row justify-between w-[160px]'>
-                  <button onClick={addNewClick} className='w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-[15px] text-white cursor-pointer'>Cancel</button>
-                  <button onClick={handleSubmit} className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-[15px] text-white cursor-pointer'>Add</button>
+                  <button onClick={addNewClick} className='w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-sm text-white cursor-pointer'>Cancel</button>
+                  <button className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white cursor-pointer'>Add</button>
                </div>
             </div>
          </div>
@@ -298,7 +242,7 @@ return (
                   <button onClick={() => setDeleteDecision(!deleteDecision)} className='w-[123px] h-[60px] rounded-[10px] bg-[#F5C8C1] font-medium text-xl text-white cursor-pointer'>No</button>
                {
                   roles.map((role, index) => (
-                  <button onClick={() => removeNewRole(role)} className='w-[123px] h-[60px] ml-4 rounded-[10px] bg-[#303179] font-medium text-xl text-white cursor-pointer'>Yes</button>
+                  <button key={index} onClick={() => removeNewRole(role)} className='w-[123px] h-[60px] ml-4 rounded-[10px] bg-[#303179] font-medium text-xl text-white cursor-pointer'>Yes</button>
                ))}
             </div>
             </div>
@@ -309,4 +253,57 @@ return (
 </section>
 )
 }
-export default Frame17
+export default addUserModal
+// import axiosInstance from '@/api/axiosInstance';
+//Fetching the data in backend
+// const [firstName, setFirstName] = useState('');//Storage for the first name
+   // const [middleName, setMiddleName] = useState('');//Storage for the middle name
+   // const [lastName, setLastName] = useState('');//Storage for the last name
+   // const [lastId, setLastId] = useState(0);//To make the id in patter to previous pattern
+   // const [dataValue, setDataValue]= useState({//Value that will be posted in the add user page
+   //    id: null,
+   //    Name: `${firstName} ${middleName} ${lastName}`,
+   //    Email: ''
+   // });
+
+   // const firstNameChange = (e: string) => setFirstName(e.target.value);//Get the value of first name in the input
+   // const secondNameChange = (e: string) => setMiddleName(e.target.value);//Get the value of middle name in the input
+   // const lastNameChange = (e: string) => setLastName(e.target.value);//Get the value of last name in the input
+
+
+   // useEffect(() => {
+   //    const fetchPosts = async () => {
+   //    try {
+   //       const response = await axiosInstance.get('/users');
+   //       const users = response.data;
+   //       if (users.length > 0) {
+   //          const ID = Math.max(...users.map(user => user.id));
+   //          setLastId(ID);
+   //       }
+   //    } catch (err) {
+   //       if (err.response){
+   //       console.log(err.response.data);
+   //       console.log(err.response.status);
+   //       console.log(err.response.headers);
+   //       }else{
+   //          console.log(`Error: ${err.message}`);
+   //       } 
+   //    }
+   //    }
+   //    fetchPosts();
+   // }, [])
+
+   // const handleSubmit = (event) => {//Submit new data to the json server
+   //    event.preventDefault();
+   //    const name = `${firstName} ${middleName} ${lastName}`
+   //    const updatedValue ={...dataValue, Name: name, id: lastId + 1};
+   //    axios.post(axiosInstance, updatedValue)
+   //    .then(res => {console.log(res.data);
+   //       setLastId(lastId + 1);
+   //       setFirstName('');
+   //       setMiddleName('');
+   //       setLastName('');
+   //       setDataValue({Email: ''});
+   //    })
+   //    .catch(err => console.log(err))
+   // };

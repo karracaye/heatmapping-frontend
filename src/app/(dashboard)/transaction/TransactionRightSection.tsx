@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { usersconstant } from '@/utility/cityconstant';
+import { usersconstant, users } from '@/utility/cityconstant';
 
 
 const TransactionRightSection = ({addNewClick, importModalOpen, setImportModalOpen}) => {
-const [dataValue, setDataValue] = useState([]);
+const [dataValue, setDataValue] = useState<users[]>([]);
 const [totalNumber, setTotalNumber] = useState(0);
 const [currentPage, setCurrentPage] = useState(1);//Track the current page
 const recordPerPage = 7;//Number of data or id that will be shown
@@ -31,20 +31,20 @@ useEffect (() => {
 }, [currentPage])
 
 return (
-   <div className='w-[94%] h-[100%] min-h-[510px] mt-5 pt-5 px-[3%] ml-[3%] bg-white flex flex-col shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)] rounded-[10px] relative'>
-      <div className='flex flex-row items-center w-[100%] h-10%] justify-between py-[1.5%] px-[2%] pb-[20px]'>
+   <div className='w-[94%] max-h-[100%] grow min-h-[515px] mt-5 pt-5 px-[3%] mr-[3%] ml-[3%] bg-white flex flex-col shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)] rounded-[10px] relative'>
+      <div className='flex flex-row items-center justify-between py-[1.5%] pl-[0.5%] pr-[2%] pb-[20px]'>
          <div className='flex flex-row items-center justify-center w-[20%]'>
             <input className='bg-[#d9d9d9] w-[15px] h-[15px] opacity-70 rounded-[5px] mr-4' type="checkbox" />
             <h1 className='font-semibold text-[20px] text-black mr-2'>List of Data</h1>
          </div>
          <div className='flex flex-row justify-between h-[35px] w-[270px]'>
-            <button className='flex flex-row items-center justify-center font-medium text-[15px] rounded-[10px] px-[10px] border border-[#000000] opacity-25 py-[20px] cursor-pointer'>
+            <button className='flex flex-row items-center justify-center font-medium text-xs rounded-[10px] px-[15px] border border-[#000000] opacity-25 py-[20px] cursor-pointer'>
                <img className='w-[15 px] h-[25px] opacity-50 mr-1' src="/icon/outline.svg" /> Filter
             </button>
-            <button onClick={() => setImportModalOpen(!importModalOpen)} className='flex flex-row items-center justify-center font-medium text-[15px] text-white rounded-[10px] px-[10px] bg-[#303079] py-[20px] cursor-pointer'>
+            <button onClick={() => setImportModalOpen(!importModalOpen)} className='flex flex-row items-center justify-center font-medium text-xs text-white rounded-[10px] px-[15px] bg-[#303079] py-[20px] cursor-pointer'>
                Import
             </button>
-            <button onClick={addNewClick} className='flex flex-row items-center justify-center font-medium text-[15px] text-white bg-[#ec7965] rounded-[10px] px-[10px] py-[20px] cursor-pointer'>
+            <button onClick={addNewClick} className='flex flex-row items-center justify-center font-medium text-xs text-white bg-[#ec7965] rounded-[10px] px-[15px] py-[20px] cursor-pointer'>
                <img className='w-[15px] h-[15px] mr-1' src="/icon/addWhite.svg" /> Add New
             </button>
          </div>
