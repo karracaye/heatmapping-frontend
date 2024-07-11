@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        'guardsman-red': '#CF0000',
+      },
       gridTemplateColumns: {
         'custom': '63.00% 37.00%'
         },

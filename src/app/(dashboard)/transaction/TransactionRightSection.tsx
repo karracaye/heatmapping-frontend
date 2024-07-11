@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { usersconstant } from '@/utility/cityconstant';
 
+
 const TransactionRightSection = ({addNewClick, importModalOpen, setImportModalOpen}) => {
 const [dataValue, setDataValue] = useState([]);
 const [totalNumber, setTotalNumber] = useState(0);
