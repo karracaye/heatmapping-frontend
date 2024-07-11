@@ -10,8 +10,9 @@ export default function RootLayout({
       <Sidebar />
       <main className="flex-auto">
         <NavBar />
+
         {children}
-      </main>
+        </main>
     </div>
   );
 }
