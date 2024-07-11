@@ -33,7 +33,9 @@ const Transaction = () => {
   return (
     <div>
       <TransactionRightSection
-      addNewClick={addNewClick}/>
+      addNewClick={addNewClick}
+      importModalOpen={importModalOpen}
+      setImportModalOpen={setImportModalOpen}/>
       <Frame16 
         addNew={addNew}
         addNewClick={addNewClick}
@@ -41,12 +43,9 @@ const Transaction = () => {
         toggleServiceButton={toggleServiceButton}
         addressButton={addressButton}
         serviceButton={serviceButton}
-        importModalOpen={importModalOpen}
-        setImportModalOpen={setImportModalOpen}
       />
-      <ImportModal 
-      importModalOpen={importModalOpen}
-      setImportModalOpen={setImportModalOpen}/>
+      {importModalOpen && <ImportModal 
+      setImportModalOpen={setImportModalOpen}/>}
     </div>
   );
 };
