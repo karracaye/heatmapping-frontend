@@ -10,4 +10,7 @@ body{
    width: 99%;
    overflow: hidden;
 }
+#template {
+   height: calc(100% - 100px);
+}
 

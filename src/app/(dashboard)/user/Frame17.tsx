@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect} from 'react'
-import axios from 'axios';
+// import axios from 'axios';
 import axiosInstance from '@/api/axiosInstance';
 
 const Frame17 = ({addNew, addNewClick}) => {
