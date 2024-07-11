@@ -40,7 +40,7 @@ const Navbar = () => {
               src="../icon/ellipse5.svg"
               className="w-[30px] h-[30px] ml-2"
             />
-            <img src="../icon/dropdown.svg" className=" h-[10px]"/>
+            <img src="../icon/dropdown.svg" className=" w-[30px] h-[30px]"/>
             {editProfileOpen && <div className='py-1 absolute top-[35px] flex flex-col justify-center w-[150px] pb-1 bg-white right-[8px] shadow-[0_2px_2px_0_rgba(0,0,0,0.25)] z-10 rounded-br-[10px] rounded-bl-[10px]'>
               <Link className='text-center p-2 font3 text-[15px] text-black hover:bg-[#303079] hover:text-white hover:font-semibold' href="/profile/[id]" as={`/profile/${10002}`}>
               <button className="p-1">View Profile</button>
