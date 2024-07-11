@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { usersconstant } from '@/utility/cityconstant';
 
-const TransactionRightSection = ({addNewClick}) => {
+const TransactionRightSection = ({addNewClick, importModalOpen, setImportModalOpen}) => {
 const [dataValue, setDataValue] = useState([]);
 const [totalNumber, setTotalNumber] = useState(0);
 const [currentPage, setCurrentPage] = useState(1);//Track the current page
@@ -40,7 +40,7 @@ return (
             <button className='flex flex-row items-center justify-center font-medium text-[15px] rounded-[10px] px-[10px] border border-[#000000] opacity-25 py-[20px] cursor-pointer'>
                <img className='w-[15 px] h-[25px] opacity-50 mr-1' src="/icon/outline.svg" /> Filter
             </button>
-            <button className='flex flex-row items-center justify-center font-medium text-[15px] text-white rounded-[10px] px-[10px] bg-[#303079] py-[20px] cursor-pointer'>
+            <button onClick={() => setImportModalOpen(!importModalOpen)} className='flex flex-row items-center justify-center font-medium text-[15px] text-white rounded-[10px] px-[10px] bg-[#303079] py-[20px] cursor-pointer'>
                Import
             </button>
             <button onClick={addNewClick} className='flex flex-row items-center justify-center font-medium text-[15px] text-white bg-[#ec7965] rounded-[10px] px-[10px] py-[20px] cursor-pointer'>

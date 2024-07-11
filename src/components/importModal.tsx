@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImportModal = () => {
+const ImportModal = ({importModalOpen, setImportModalOpen}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-4/12 p-4 rounded-lg">
