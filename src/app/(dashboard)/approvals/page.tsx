@@ -29,10 +29,12 @@ const Approvals = () => {
     const [ confirm, setConfirm ] = useState(false);
   return (
     <Template>
-      <div className="h-20 flex gap-5 relative items-center p-5 pt-4">
-        <input type="checkbox" />
-        <p className="text-base font-semibold">List of Requests</p>
-        <div className="border border-opacity-15 absolute -top-11 right-0 gap-2 flex p-2 rounded-md w-[8%] h-[50%] ">
+      <div className="w-full h-20 flex justify-between gap-5 items-center p-5 pt-4">
+        <div className="flex">
+          <input type="checkbox" />
+          <p className="text-base font-semibold">List of Requests</p>
+        </div>
+        <div className="border border-opacity-15 gap-2 flex p-2 rounded-md ">
           <button className="opacity-25" type="button"><img src="/icons/filter.svg"></img></button>
           <button className="opacity-25" type="button">Filter</button>
         </div>
@@ -71,12 +73,14 @@ const Approvals = () => {
                 className="text-[#fdfdff]  bg-green-700 rounded-md p-3 py-1"
                 >
                 Approve
+                {/* <p>Approved</p> */}
                 </button>
                 <img src="/icons/marketeq_cross-circle.svg"/>
                 <button
                   className="text-[#fd4444]"
                 >
                 Decline
+                {/* <p>Declined</p> */}
                 </button>
                 <button
                 className="text-[#4450fd]"
