@@ -1,6 +1,6 @@
 "use client";
 import { addusers } from '@/utility/cityconstant';
-import axiosInstance from "@/api/axiosInstance";
+import axios from '@/lib/axios';
 import { useState, useEffect } from 'react';
 type PropsUser = {
   addNewClick: () => void
@@ -16,7 +16,7 @@ const UserRightSection: React.FC<PropsUser> = ({addNewClick}) => {
 useEffect(() => {
    const fetchData = async () => {//This will help to compile the full name of the user
       try {
-      const response = await axiosInstance.get('/users');
+      const response = await axios.instance.get('/users');
       const processedData = response.data.map((item) => ({
         fullname: `${item.firstname} ${item.middle_name ? item.middle_name + ' ' : ''}${item.lastname}`.trim(),//This will access by the accessor
         email: item.email,//This will access by the accessor

@@ -23,7 +23,7 @@ const addUserModal = ({addNew, addNewClick}) => {
       setAssignNo(false);
    }
 
-   const clickChoices = (type: string) =>{//Choic for employee or politician
+   const clickChoices = (type: string) =>{//Choice for employee or politician
       setType(type);
       setTypeOpen(!typeOpen);
    } 
@@ -75,7 +75,6 @@ const addUserModal = ({addNew, addNewClick}) => {
          setVisibleChoices(false);
       }
    },[serviceChoices]);
-
 
    const handleClickNewRole = (role: string) => {//Add new roles
       if (!roles.includes(roles)){
@@ -254,7 +253,7 @@ return (
 )
 }
 export default addUserModal
-// import axiosInstance from '@/api/axiosInstance';
+// import axios.instance from '@/api/axios.instance';
 //Fetching the data in backend
 // const [firstName, setFirstName] = useState('');//Storage for the first name
    // const [middleName, setMiddleName] = useState('');//Storage for the middle name
@@ -274,7 +273,7 @@ export default addUserModal
    // useEffect(() => {
    //    const fetchPosts = async () => {
    //    try {
-   //       const response = await axiosInstance.get('/users');
+   //       const response = await axios.instance.get('/users');
    //       const users = response.data;
    //       if (users.length > 0) {
    //          const ID = Math.max(...users.map(user => user.id));
@@ -297,7 +296,7 @@ export default addUserModal
    //    event.preventDefault();
    //    const name = `${firstName} ${middleName} ${lastName}`
    //    const updatedValue ={...dataValue, Name: name, id: lastId + 1};
-   //    axios.post(axiosInstance, updatedValue)
+   //    axios.post(axios.instance, updatedValue)
    //    .then(res => {console.log(res.data);
    //       setLastId(lastId + 1);
    //       setFirstName('');
