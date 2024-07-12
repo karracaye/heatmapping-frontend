@@ -14,7 +14,7 @@ useEffect(() => {
    setItems(cityconstant.city);
 }, [cityconstant.city])
    return (
-      <div className='flex flex-col pl px-[3%]'>
+      <div className='flex flex-col grow pl px-[3%]'>
          <div className='grid grid-cols-custom grid-rows-customrow gap-4 mt-5'>
             <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] min-h-[330px] max-h-[100%] bg-white flex flex-row'>
                <div className='w-[73%]'>

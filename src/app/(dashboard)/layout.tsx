@@ -1,8 +1,6 @@
 import Navbar from "@/components/NavBar";
 import Sidebar from "@/components/SideBar";
 import NavBar from "@/components/NavBar";
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
