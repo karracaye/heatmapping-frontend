@@ -13,7 +13,7 @@ export default function RootLayout({
     <div className="flex">
       <Sidebar />                 
       <main className="flex-auto">
-        <Navbar />
+        <NavBar />
         {children}
       </main>
     </div>

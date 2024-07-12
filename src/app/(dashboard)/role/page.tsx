@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import Popup from "@/components/PopUp";
 import Template from "@/components/Template";
+import Alert from "@/components/Alert";
 
 const Role = () => {
   const tableHead = [
@@ -12,14 +13,25 @@ const Role = () => {
     'Action',
   ]
 
-  const tableBody = [
-    {
-      id: 0,
-      name: '',
-      role: '',
-      email: '',
-    },
-  ]
+  interface tableDataType {
+    name: string,
+    role: string,
+    email: string,
+  }
+
+  const [ tableData, setTableData ] = useState< Array<tableDataType> >()
+  useEffect(() => {
+    // axios.instance.get('/users/roles', axios.authorization)
+    // .then((response) => {
+    //   console.log(response.data);
+    //   setTableData(response.data);
+    // })
+
+    axios.instance.get('/users/roles')
+    .then((response) => {
+      setTableData(response.data);
+    })
+  }, [])
 
   const [ role, setRole ] = useState([
     {
@@ -27,11 +39,43 @@ const Role = () => {
     }
   ]);
   useEffect(() => {
-    axios.instance.get(axios.baseUrl('/roles'))
+    // axios.instance.get('/roles', axios.authorization)
+    // .then((response) => {
+    //   setRole(response.data);
+    // })
+
+    axios.instance.get('/roles')
     .then((response) => {
       setRole(response.data);
     })
   }, [])
+
+  const [ addRole, setAddRole ] = useState<boolean>();
+  const [ updateRole, setUpdateRole ] = useState<boolean>();
+  const [ newRole, setNewRole ] = useState({
+    role_type: '',
+  });
+
+  const handleNewRole = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setNewRole((prevState) => ({
+      ...prevState,
+      [ name ]: value,
+    }));
+  }
+
+  const submitNewRole = () => {
+    console.log(newRole);
+    axios.instance.post('/roles', {
+      role_type: newRole.role_type,
+    })
+    .then((response) => {
+      console.log(response.data);
+      if (response.data.success) setUpdateRole(true);
+    })
+  }
 
   return (
     <Template role='Superadmin'>
@@ -46,43 +90,45 @@ const Role = () => {
               </p>
             </div>
 
-            <div className="h-[146px] p-4 grid grid-cols-3 grid-rows-3 gap-2">
+            <div className="h-[114px] m-4 overflow-auto">
               {
-                role ? (
-                  role.map((item) => (
-                    <div className="flex justify-between py-2 px-4 bg-guardsman-red rounded-[20px]">
-                      <p className="w-full text-white text-xs text-center">{ item.role_type }</p>
-                      {/* <Verification 
+                role[0].role_type || updateRole ? (
+                  role.map((item, index) => (
+                    <div key={index} className="w-fit float-left mx-[2px] my-[3px] px-4 py-2 bg-guardsman-red rounded-[20px]">
+                      <p className="text-white text-xs">{ item.role_type }</p>
+                      <Alert
                         button='/icons/cross.svg'
                         icon='/icons/warning.svg'
                         message={ `You’re going to delete this role.\nAre you sure?` }
-                      /> */}
+                      />
                     </div>
                   ))
                 ): ''
               }
-              {/* {
-                newRole && (
-                  <input type="text" 
-                    className="text-xs border-[1px] border-guardsman-red rounded-[20px] py-2 px-4 outline-none"
-                  />
-                )
-              }
               {
-                confirm ? (
-                  <button onClick={ () => ( setNewRole(false), setConfirm(false) ) }
-                    className="h-[32px] flex justify-center items-center rounded-full aspect-square shadow-[0_2px_2px_2px_rgba(0,0,0,0.1)]"
-                  >
-                    <img src="/buttons/check.svg" alt="" />
-                  </button>
+                addRole ? (
+                  <>
+                    <input type="text"
+                      className="float-left text-xs border-[1px] border-guardsman-red rounded-[20px] mx-[2px] my-[3px] py-2 px-4 outline-none"
+                      name='role_type'
+                      value={ newRole.role_type }
+                      onChange={ handleNewRole }
+                    />
+
+                    <button onClick={ () => ( setAddRole(!addRole), submitNewRole() ) }
+                      className="h-[32px] float-left flex justify-center items-center rounded-full aspect-square mx-[2px] my-[3px] shadow-[0_2px_2px_2px_rgba(0,0,0,0.1)]"
+                    >
+                      <img src="/buttons/check.svg" alt="" />
+                    </button>
+                  </>
                 ) : (
-                  <button onClick={ () => ( setNewRole(true), setConfirm(true) ) }
-                    className="h-[32px] flex justify-center items-center rounded-full aspect-square shadow-[0_2px_2px_2px_rgba(0,0,0,0.1)]"
+                  <button onClick={ () => setAddRole(true) }
+                    className="h-[32px] float-left flex justify-center items-center rounded-full aspect-square mx-[2px] my-[3px] shadow-[0_2px_2px_2px_rgba(0,0,0,0.1)]"
                   >
                     <img src="/buttons/add.svg" alt="" />
                   </button>
                 )
-              } */}
+              }
             </div> 
           </Popup>
 
@@ -112,12 +158,12 @@ const Role = () => {
             </thead>
             <tbody>
               {
-                tableBody.map((item, index) => (
-                  item.id ? (
+                tableData ? (
+                  tableData.map((item, index) => (
                     <tr key={index} className="h-12 border-b border-[#F2F2F2]">
                       <td className="w-12 p-3">
                         <p className="bg-[#D9D9D9] text-white flex items-center justify-center rounded-full aspect-square">
-                          { item.id }
+                          { index + 1 }
                         </p>
                       </td>
                       <td>{ item.name }</td>
@@ -138,8 +184,8 @@ const Role = () => {
                         </button>
                       </td>
                     </tr>
-                  ): ''
-                ))
+                  ))
+                ): ''
               }
             </tbody>
           </table>

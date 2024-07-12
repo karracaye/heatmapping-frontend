@@ -11,12 +11,15 @@ const config: Config = {
       colors: {
         'guardsman-red': '#CF0000',
       },
+      fontFamily: {
+        'plus-jakarta-sans': ['Plus Jakarta Sans', 'sans-serif']
+      },
       gridTemplateColumns: {
         'custom': '63.00% 37.00%'
-        },
-        gridTemplateRows: {
+      },
+      gridTemplateRows: {
         'customrow': '100% 45%'
-        },
+      },
     },
   },
   plugins: [],
