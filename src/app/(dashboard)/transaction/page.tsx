@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 // import axios from "axios"
 import TransactionRightSection from "./TransactionRightSection";
 import Frame16 from "./AddNewModal";
-import ImportModal from "@/components/importModal";
 const Transaction = () => {
   const [addNew, setAddNew] = useState(false);//TOggle the add new section
   const [addressButton, setAddressButton] = useState(false);//Toggle service option
@@ -33,9 +32,7 @@ const Transaction = () => {
   return (
     <div className="flex">
       <TransactionRightSection
-      addNewClick={addNewClick}
-      importModalOpen={importModalOpen}
-      setImportModalOpen={setImportModalOpen}/>
+      addNewClick={addNewClick}/>
       <Frame16 
         addNew={addNew}
         addNewClick={addNewClick}
@@ -43,8 +40,6 @@ const Transaction = () => {
         addressButton={addressButton}
         serviceButton={serviceButton}
       />
-      {importModalOpen && <ImportModal 
-      setImportModalOpen={setImportModalOpen}/>}
     </div>
   );
 };
