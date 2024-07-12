@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect} from 'react'
-import axios from 'axios';
 import axiosInstance from '@/lib/axios';
 import { addusers } from '@/utility/cityconstant';
 
