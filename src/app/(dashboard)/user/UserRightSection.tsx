@@ -36,7 +36,7 @@ return (
         <div className="relative max-h-[100%] min-h-[80vh] bg-white rounded-[10px] shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)]">
             <div className="flex justify-between items-center pl-14 pr-9 pt-5 pb-2">
                 <p className="text-base font-semibold">Users</p>
-                <div className="w-[35%] h-[54px] flex flex-row items-center justify-between">
+                <div className="w-[35%] h-[54px] flex flex-row items-center justify-end gap-2">
                       <div>
                             <button onClick={addNewClick} className='bg-[#303079] rounded-[10px] font-medium text-xs text-white h-[40px] px-4 cursor-pointer hover:opacity-10 duration-300 transition'>Add New User</button>
                       </div>

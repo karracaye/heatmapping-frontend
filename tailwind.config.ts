@@ -14,12 +14,6 @@ const config: Config = {
       fontFamily: {
         'plus-jakarta-sans': ['Plus Jakarta Sans', 'sans-serif']
       },
-      gridTemplateColumns: {
-        'custom': '63.00% 37.00%'
-      },
-      gridTemplateRows: {
-        'customrow': '100% 45%'
-      },
     },
   },
   plugins: [],

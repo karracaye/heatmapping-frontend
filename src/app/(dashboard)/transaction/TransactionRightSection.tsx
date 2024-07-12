@@ -41,7 +41,8 @@ const TransactionRightSection = ({ addNewClick }) => {
   }, [currentPage]);
 
   return (
-    <div className="w-[94%] h-[100%] grow min-h-[510px] mt-5 pt-5 px-[3%] ml-[3%] mr-[2.5%] bg-white flex flex-col shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)] rounded-[10px] relative">
+    <div className="w-[100%] h-[100%] grow pt-5 pl-[3%] pr-[2.5%]">
+      <div className="relative max-h-[100%] min-h-[80vh] bg-white rounded-[10px] shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)]">
       <div className="flex flex-row items-center w-[100%] h-10%] justify-between py-[1.5%] pl-[0.5%] pr-[2%] pb-[20px]">
         <div className="flex flex-row items-center justify-center w-[20%]">
           <input
@@ -52,7 +53,7 @@ const TransactionRightSection = ({ addNewClick }) => {
             List of Data
           </h1>
         </div>
-        <div className="flex flex-row justify-between h-[35px] w-[26%]">
+        <div className="flex flex-row justify-between h-[35px] gap-2">
           <button className="flex flex-row items-center justify-center font-medium text-xs rounded-[10px] px-[15px] border border-[#000000] opacity-25 py-[20px] cursor-pointer">
             <img
               className="w-[15 px] h-[25px] opacity-50 mr-1"
@@ -128,6 +129,7 @@ const TransactionRightSection = ({ addNewClick }) => {
             src="/icon/greaterthan.svg"
           />
         </div>
+      </div>
       </div>
       {importModalOpen && <ImportModal 
       setImportModalOpen={setImportModalOpen}/>}
