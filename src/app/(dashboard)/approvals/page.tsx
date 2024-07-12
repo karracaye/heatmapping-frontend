@@ -74,7 +74,7 @@ const Approvals = () => {
                 </button>
                 <img src="/icons/marketeq_cross-circle.svg"/>
                 <button
-                className="text-[#fd4444]"
+                  className="text-[#fd4444]"
                 >
                 Decline
                 </button>
