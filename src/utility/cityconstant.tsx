@@ -347,7 +347,17 @@ const cityconstant: any = {
    
 }
 
-export const usersconstant = [
+export type users = {
+   id: number;
+   Full_Name: string;
+   Address: any;
+   Age: number;
+   Marital_Status: string;
+   Occupation: string;
+   Services: string
+}
+
+export const usersconstant: users[] = [
    {
       "id": 1,
       "Full_Name": "Ian Chesnut",

@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react"
 // import axios from "axios"
 import TransactionRightSection from "./TransactionRightSection";
-import Frame16 from "./Frame16";
+import Frame16 from "./AddNewModal";
 import ImportModal from "@/components/importModal";
 const Transaction = () => {
   const [addNew, setAddNew] = useState(false);//TOggle the add new section
   const [addressButton, setAddressButton] = useState(false);//Toggle service option
   const [serviceButton, setServiceButton] = useState(false);//TOggle services option
-  const [dataValue, setDataValue] = useState([]);//Storage of the datapen
+  // const [dataValue, setDataValue] = useState([]);//Storage of the datapen
   const [importModalOpen, setImportModalOpen] = useState(false);//Toggle import modal
 
 // useEffect(() => {
@@ -31,7 +31,7 @@ const Transaction = () => {
     setServiceButton(false);
   };
   return (
-    <div>
+    <div className="flex">
       <TransactionRightSection
       addNewClick={addNewClick}
       importModalOpen={importModalOpen}
@@ -39,7 +39,6 @@ const Transaction = () => {
       <Frame16 
         addNew={addNew}
         addNewClick={addNewClick}
-        toggleAddressButton={toggleAddressButton}
         toggleServiceButton={toggleServiceButton}
         addressButton={addressButton}
         serviceButton={serviceButton}
