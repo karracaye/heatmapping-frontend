@@ -1,5 +1,6 @@
 'use client';
 import { useState } from "react";
+import Template from "@/components/Template";
 // import PopUp from "@/components/modals/pop-up";
 // import Verification from "@/components/modals/verification";
 
@@ -32,18 +33,23 @@ const Approvals = () => {
     const [ newRole, setNewRole ] = useState(false);
     const [ confirm, setConfirm ] = useState(false);
 
-
   return (
-    <>
-      <div className="h-20 flex gap-5 items-center pl-14 pr-9 pt-4">
+    
+    <Template>
+       
+      <div className="h-20 flex gap-5 items-center p-5 pt-4">
         <input type="checkbox" />
         <p className="text-base font-semibold">List of Requests</p>
+        <div className="border border-gray-500 gap-2 flex p-2 rounded-md w-[8%] h-[80%] ">
+            <button className="opacity-10" type="button"><img src="/icons/filter.svg"></img></button>
+            <button className="opacity-10" type="button">Filter</button>
+        </div>
         <div className="w-[30%] flex gap-3 z-10">
 
         </div>
       </div>
 
-      <div className="w-full h-full absolute top-0 pt-[80px]">
+      <div className="w-full border">
         <div className="overflow-y-auto h-full rounded-b-[10px]">
           <table className="w-full text-sm">
             <thead className="sticky top-0">
@@ -72,9 +78,9 @@ const Approvals = () => {
                             <td className="text-gray-400">
                               { item.time }
                             </td>
-                              <td className="h-12 flex gap-3 items-center font-semibold">
+                              <td className="h-12 flex gap-5 items-center font-semibold">
                                 <button
-                                  className="text-[#fdfdff] border border-green-500 bg-green-500 rounded-sm"
+                                  className="text-[#fdfdff]  bg-green-700 rounded-md p-3 py-1"
                                             >
                                     Approve
                                 </button>
@@ -96,7 +102,7 @@ const Approvals = () => {
           </table>
         </div>
       </div>
-    </>  
+      </Template>  
   );
 };
   
