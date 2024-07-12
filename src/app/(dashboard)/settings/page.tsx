@@ -1,11 +1,7 @@
 
 const Settings = () => {
-  
-
-  
-
   return (
-    <p>Sample</p>
+    <p>No Selected Setting yet....</p>
   );
 };
 

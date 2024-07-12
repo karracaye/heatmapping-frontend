@@ -1,4 +1,5 @@
-import ToggleSwitch from "./ToggleSwitch";
+'use client';
+import ToggleSwitch from "../../../../components/ToggleSwitch";
 import { useState } from "react";
 
 export default function ColorSchemeSetting() {
@@ -17,7 +18,7 @@ export default function ColorSchemeSetting() {
 
   return (
     <div className="flex flex-col p-5">
-      <label className="text-black font-medium text-sm">Color</label>
+      <label className="text-black font-medium text-xs">Color</label>
       <div className="flex flex-row mt-2">
         <div className="w-8 h-8 bg-violet-500 rounded-xl shadow-md mr-2"></div>
         <div className="w-8 h-8 bg-pink-500 rounded-xl shadow-md mr-2"></div>
@@ -33,29 +34,29 @@ export default function ColorSchemeSetting() {
         <div className="w-8 h-8 bg-white rounded-xl shadow-md mr-2"></div>
       </div>
       <div className="mt-10">
-        <label className="text-sm text-black">
-          <input type="checkbox" className="mr-[5px]" />
+        <input type="checkbox" className="mr-[5px]" />
+        <text className="text-xs text-black font-medium">
           Automatically pick an accent color from my background
-        </label>
+        </text>
       </div>
       <div className="mt-10">
-        <text className="text-sm text-black font-medium">
+        <text className="text-xs text-black font-medium">
           Show Color on Title bar
         </text>
         <ToggleSwitch />
       </div>
       <div className="flex flex-col mt-10">
-        <text className="text-black text-sm font-medium">
+        <text className="text-black text-xs font-medium">
           Choose your System Mode
         </text>
         <div>
           <input type="radio" checked={isLight} onChange={handleLightToggle} />
-          <label className="mr-5 pl-[5px] text-sm">Light</label>
+          <label className="mr-5 pl-[5px] text-xs">Light</label>
           <input type="radio" checked={isDark} onChange={handleDarkToggle} />
-          <label className="pl-[5px] text-sm">Dark</label>
+          <label className="pl-[5px] text-xs">Dark</label>
         </div>
       </div>
-      <div className="flex mt-52">
+      <div className="mt-10">
         <button className="bg-gray-400 text-white mr-8 py-2 px-10 rounded-lg font-medium text-sm">
           Cancel
         </button>

@@ -1,8 +1,10 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 40px;
+    /* Adjusted width */
+    height: 24px;
+    /* Adjusted height */
 }
 
 .switch input {
@@ -20,17 +22,25 @@
     bottom: 0;
     background-color: #ccc;
     transition: .4s;
+    border-radius: 12px;
+    /* Adjusted border radius */
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 18px;
+    /* Adjusted height */
+    width: 18px;
+    /* Adjusted width */
+    left: 3px;
+    /* Adjusted position */
+    bottom: 3px;
+    /* Adjusted position */
     background-color: white;
     transition: .4s;
+    border-radius: 50%;
+    /* Makes it round */
 }
 
 input:checked+.slider {
@@ -38,7 +48,8 @@ input:checked+.slider {
 }
 
 input:checked+.slider:before {
-    transform: translateX(26px);
+    transform: translateX(16px);
+    /* Adjusted translation */
 }
 
 .slider.round {
