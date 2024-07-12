@@ -36,7 +36,7 @@ const Profile = () => {
 
       
 
-    
+
   return (
     <div className="flex flex-col p-8">
       <div className="bg-[#373788] h-[120px] w-full">

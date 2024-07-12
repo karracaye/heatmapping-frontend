@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { usersconstant } from "@/utility/cityconstant";
 import ImportModal from "@/components/importModal";
-const TransactionRightSection = ({ addNewClick }) => {
+import AddNewModal from "./AddNewModal";
+const TransactionRightSection = () => {
   const [dataValue, setDataValue] = useState([
     {
       Full_Name: "",
@@ -21,6 +22,8 @@ const TransactionRightSection = ({ addNewClick }) => {
   const records: any = usersconstant.slice(firstIndex, lastIndex); //Get the data
   const nPage: number = Math.ceil(usersconstant.length / recordPerPage); //Number of pages
   const [importModalOpen, setImportModalOpen] = useState(false);
+  const [addNew, setAddNew] = useState(false);//TOggle the add new section
+
   const previousPage = () => {
     //Previous page
     if (currentPage !== 1) {
@@ -61,12 +64,12 @@ const TransactionRightSection = ({ addNewClick }) => {
             />{" "}
             Filter
           </button>
-          <button onClick={() => setImportModalOpen(true)} className="flex flex-row items-center justify-center font-medium text-xs text-white rounded-[10px] px-[15px] bg-[#303079] py-[20px] cursor-pointer">
+          <button onClick={() => setImportModalOpen(true)} className="flex flex-row items-center justify-center font-medium text-xs text-white rounded-[10px] px-[15px] bg-[#303079] py-[20px] cursor-pointer transition duration-300 ease-in-out">
             Import
           </button>
           <button
-            onClick={addNewClick}
-            className="flex flex-row items-center justify-center font-medium text-xs text-white bg-[#ec7965] rounded-[10px] px-[15px] py-[20px] cursor-pointer"
+            onClick={() => setAddNew(true)}
+            className="flex flex-row items-center justify-center font-medium text-xs text-white bg-[#ec7965] rounded-[10px] px-[15px] py-[20px] cursor-pointer transition duration-300 ease-in-out"
           >
             <img className="w-[15px] h-[15px] mr-1" src="/icon/addWhite.svg" />{" "}
             Add New
@@ -131,6 +134,9 @@ const TransactionRightSection = ({ addNewClick }) => {
         </div>
       </div>
       </div>
+      <AddNewModal
+      addNew={addNew}
+      setAddNew={setAddNew}/>
       {importModalOpen && <ImportModal 
       setImportModalOpen={setImportModalOpen}/>}
     </div>
