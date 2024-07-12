@@ -18,7 +18,7 @@ const User = () => {
       <AddUserModal
       addNewClick={addNewClick}
       addNew={addNew}/>
-    </div>
+    </div> 
   );
 };
 
