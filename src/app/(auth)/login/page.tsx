@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from '@/lib/axios';
@@ -20,29 +21,23 @@ function Login() {
 
     setLoginData((prevState) => ({
       ...prevState,
-      [ name ]: value
+      [ name ]: value,
     }));
   }
 
   const submitLoginData = () => {
-    axios.instance.post(axios.baseUrl('/login'), {
+    axios.instance.post('/login', {
       username: loginData.username,
       password: loginData.password,
     })
     .then((response) => {
       if (!response.data.error) {
-        axios.instance.interceptors.request.use((config) => {
-            config.headers['authorization'] = `bearer ${response.data.token}`;
-            return config;
-          }, (error) => {
-            return Promise.reject(error);
-          }
-        );
+        const token = response.data.token;
+        Cookies.set('token', token, { expires: 7, secure: true });
+        axios.instance.defaults.withCredentials = true;
         router.push('/dashboard');
       }
-
       setLoginError(response.data.error);
-      console.log(response.data);
     })
   }
 

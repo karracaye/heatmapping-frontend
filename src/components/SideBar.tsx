@@ -81,8 +81,8 @@ const Sidebar = () => {
         {
           roleBasedButtons.map((item1) => (
             // undefined role: change the role if needed
-            item1.Superadmin?.map((item2) => (
-              <Link href={`/${item2.name.toLowerCase()}`}
+            item1.Superadmin?.map((item2, index2) => (
+              <Link key={index2} href={`/${item2.name.toLowerCase()}`}
                 className={`link ${pathname === `/${item2.name.toLowerCase()}` ? 'text-guardsman-red' : 'text-gray-500'} flex flex-col items-center text-xs`}
               >
                 <img src={`${pathname === `/${item2.name.toLowerCase()}` ? `/buttons-red${item2.path}` : `/buttons${item2.path}`}`} alt=""
