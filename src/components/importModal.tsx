@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImportModal = () => {
+const ImportModal = ({setImportModalOpen}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-4/12 p-4 rounded-lg">
@@ -23,7 +23,7 @@ const ImportModal = () => {
                     </div>
                 </div>
                 <div className="flex justify-end mt-4">
-                    <button className="text-sm hover:bg-gray-300 text-gray-100 font-medium py-2 px-4 mr-2 rounded">
+                    <button onClick={() => setImportModalOpen(false)} className="text-sm hover:bg-gray-300 text-gray-100 font-medium py-2 px-4 mr-2 rounded">
                         Cancel
                     </button>
                     <button className=" text-sm text-[#303079] border-blue-500 hover:bg-[#303079] hover:text-white font-medium py-2 px-4 rounded">

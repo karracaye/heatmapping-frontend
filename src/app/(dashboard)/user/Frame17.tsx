@@ -2,6 +2,7 @@
 import { useState, useEffect} from 'react'
 // import axios from 'axios';
 import axiosInstance from '@/api/axiosInstance';
+import { addusers } from '@/utility/cityconstant';
 
 const Frame17 = ({addNew, addNewClick}) => {
    const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
@@ -92,7 +93,7 @@ const Frame17 = ({addNew, addNewClick}) => {
    },[serviceChoices]);
 
    useEffect(() => {
-      setDataValue()
+      setDataValue(addusers);
    })
 
    // useEffect(() => {

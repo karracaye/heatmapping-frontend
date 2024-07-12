@@ -7,9 +7,9 @@ const EditProfile: React.FC<EditProfileProps> = ({editProfile, setEditProfile}) 
    return (
       <>
          {editProfile && <div>
-            <div onClick={() => setEditProfile(false)} className={'absolute transition top-0 right-0 bottom-0 left-0 bg-[#0000004d]'}>
+            <div onClick={() => setEditProfile(false)} className={'absolute transition top-0 right-0 bottom-0 left-0 bg-[#0000004d] z-10'}>
             </div>
-            <div className={`w-[557px] h-[100vh] bg-white flex flex-col absolute right-0 top-0 bottom-0 rounded-[10px] transition1  overflow-y-auto`}>
+            <div className={`w-[557px] h-[100vh] bg-white flex flex-col absolute right-0 top-0 bottom-0 rounded-[10px] transition1  overflow-y-auto z-10`}>
                <h3 className='font-medium text-[15px] mt-[30px] pl-[5%]'>Edit your account</h3>
                <p className='font-normal text-[13px] opacity-50 text-black mt-1 pl-[5%]'>Please fill up the following information</p>
                <div className='flex flex-row mt-[15px]'>

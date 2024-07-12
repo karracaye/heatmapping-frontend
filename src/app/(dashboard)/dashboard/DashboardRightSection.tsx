@@ -16,7 +16,7 @@ useEffect(() => {
    return (
       <div className='flex flex-col pl px-[3%]'>
          <div className='grid grid-cols-custom grid-rows-customrow gap-4 mt-5'>
-            <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] bg-white flex flex-row'>
+            <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] min-h-[330px] max-h-[100%] bg-white flex flex-row'>
                <div className='w-[73%]'>
                   <div className='ml-[43px] mt-[15px] relative'>
                      <p className='font-medium text-[18px] leading-[25.2px]'>Lipa, Batangas Philippines</p>
@@ -40,7 +40,7 @@ useEffect(() => {
                </div>
                </div>
             </div>
-            <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] flex flex-col bg-white'>
+            <div className='rounded-[10px] shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] min-h-[330px] max-h-[100%] flex flex-col bg-white'>
                <div className='flex flex-row items-center justify-between border-3 h-[18px] mt-4 ml-[40px] mr-5 relative'>
                   <div className='flex flex-col relative mt-4'>
                      <button onClick={() => {setServices(''); setItems(cityconstant.city);}}  className='font-normal text-[20px] pb-[20px]'>Lipa Barangays </button>
