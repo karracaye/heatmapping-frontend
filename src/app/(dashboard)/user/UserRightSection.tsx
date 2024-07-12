@@ -32,7 +32,7 @@ useEffect(() => {
 }, []);
 
 return (
-  <div className="w-[100%] h-[100%] grow pt-5 px-[3%]">
+  <div className="w-[100%] h-[100%] grow pt-5 pl-[3%] pr-[2.5%]">
         <div className="relative max-h-[100%] min-h-[80vh] bg-white rounded-[10px] shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)]">
             <div className="flex justify-between items-center pl-14 pr-9 pt-5 pb-2">
                 <p className="text-base font-semibold">Users</p>
