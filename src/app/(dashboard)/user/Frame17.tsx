@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect} from 'react'
 import axios from 'axios';
-import axiosInstance from '@/api/axiosInstance';
+import axiosInstance from '@/lib/axios';
 import { addusers } from '@/utility/cityconstant';
 
 const Frame17 = ({addNew, addNewClick}) => {
@@ -96,27 +96,27 @@ const Frame17 = ({addNew, addNewClick}) => {
       setDataValue(addusers);
    })
 
-   // useEffect(() => {
-   //    const fetchPosts = async () => {
-   //    try {
-   //       const response = await axiosInstance.get('/users');
-   //       const users = response.data;
-   //       if (users.length > 0) {
-   //          const ID = Math.max(...users.map(user => user.id));
-   //          setLastId(ID);
-   //       }
-   //    } catch (err) {
-   //       if (err.response){
-   //       console.log(err.response.data);
-   //       console.log(err.response.status);
-   //       console.log(err.response.headers);
-   //       }else{
-   //          console.log(`Error: ${err.message}`);
-   //       } 
-   //    }
-   //    }
-   //    fetchPosts();
-   // }, [])
+   useEffect(() => {
+      const fetchPosts = async () => {
+      try {
+         const response = await axiosInstance.get('/users');
+         const users = response.data;
+         if (users.length > 0) {
+            const ID = Math.max(...users.map(user => user.id));
+            setLastId(ID);
+         }
+      } catch (err) {
+         if (err.response){
+         console.log(err.response.data);
+         console.log(err.response.status);
+         console.log(err.response.headers);
+         }else{
+            console.log(`Error: ${err.message}`);
+         } 
+      }
+      }
+      fetchPosts();
+   }, [])
 
    const handleSubmit = (event) => {//Submit new data to the json server
       event.preventDefault();
