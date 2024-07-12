@@ -21,16 +21,16 @@ const Role = () => {
 
   const [ tableData, setTableData ] = useState< Array<tableDataType> >()
   useEffect(() => {
-    // axios.instance.get('/users/roles', axios.authorization)
-    // .then((response) => {
-    //   console.log(response.data);
-    //   setTableData(response.data);
-    // })
-
-    axios.instance.get('/users/roles')
+    axios.instance.get('/users/roles', axios.authorization)
     .then((response) => {
+      console.log(response.data);
       setTableData(response.data);
     })
+
+    // axios.instance.get('/users/roles')
+    // .then((response) => {
+    //   setTableData(response.data);
+    // })
   }, [])
 
   const [ role, setRole ] = useState([
@@ -39,15 +39,15 @@ const Role = () => {
     }
   ]);
   useEffect(() => {
-    // axios.instance.get('/roles', axios.authorization)
-    // .then((response) => {
-    //   setRole(response.data);
-    // })
-
-    axios.instance.get('/roles')
+    axios.instance.get('/roles', axios.authorization)
     .then((response) => {
       setRole(response.data);
     })
+
+    // axios.instance.get('/roles')
+    // .then((response) => {
+    //   setRole(response.data);
+    // })
   }, [])
 
   const [ addRole, setAddRole ] = useState<boolean>();
@@ -94,7 +94,7 @@ const Role = () => {
               {
                 role[0].role_type || updateRole ? (
                   role.map((item, index) => (
-                    <div key={index} className="w-fit float-left mx-[2px] my-[3px] px-4 py-2 bg-guardsman-red rounded-[20px]">
+                    <div key={index} className="w-fit flex gap-2 float-left mx-[2px] my-[3px] px-4 py-2 bg-guardsman-red rounded-[20px]">
                       <p className="text-white text-xs">{ item.role_type }</p>
                       <Alert
                         button='/icons/cross.svg'
