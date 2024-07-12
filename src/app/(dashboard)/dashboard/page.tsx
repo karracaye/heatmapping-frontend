@@ -11,7 +11,7 @@ const Dashboard = () => {
     .catch(err => console.log(err))
   }, [])
   return (
-    <div>
+    <div className="flex">
       <DashBoardRIghtSection />
     </div>
   );
