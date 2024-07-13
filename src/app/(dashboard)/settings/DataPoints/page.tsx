@@ -1,9 +1,9 @@
+import { Header } from '@/components/Settings/Header';
+
 export default function DataPoints() {
   return (
-    <div className="p-5">
-      <div>
-        <h1 className="font-bold">Data Points</h1>
-      </div>
-    </div>
+    <>
+      <Header category={'Data Points'} label={'Lorem ipsum dolor sit amet, consectetur adipiscing elit'} />
+    </>
   );
 }

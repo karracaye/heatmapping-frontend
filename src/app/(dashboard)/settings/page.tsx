@@ -1,7 +1,9 @@
 
 const Settings = () => {
   return (
-    <p>No Selected Setting yet....</p>
+    <>
+      <h1 className="text-sm font-bold mb-4">Main Content Here...</h1>
+    </>
   );
 };
 

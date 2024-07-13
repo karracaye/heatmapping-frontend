@@ -1,9 +1,9 @@
+import { Header } from '@/components/Settings/Header';
+
 export default function DataImportExport() {
   return (
-    <div className="p-5">
-      <div>
-        <h1 className="font-bold">Data Import/Exportt</h1>
-      </div>
-    </div>
+    <>
+      <Header category={'Data Import Export'} label={'Lorem ipsum dolor sit amet, consectetur adipiscing elit'} />
+    </>
   );
 }
