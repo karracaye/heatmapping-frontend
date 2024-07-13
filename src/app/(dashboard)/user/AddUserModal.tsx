@@ -96,7 +96,7 @@ return (
    <section>
    {addNew &&
       <div>
-         <div style={{opacity: addNew ? 1 : 0, maxHeight: addNew ? '100vh' : 0}} onClick={addNewClick} className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]'>
+         <div  onClick={addNewClick} className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]'>
          </div>
          <div className='w-[557px] h-[100vh] bg-white flex flex-col justify-between absolute right-0 top-0 bottom-0 overflow-auto'>
             <div>
@@ -105,14 +105,14 @@ return (
                      <h3 className='font-medium text-[15px] mt-[30px]'>User Registartion Form</h3>
                      <p className='font-normal text-[13px] opacity-50 text-black mt-1'>Please fill up the followinf Information</p>
                   </div>
-                  <div className='w-[40%] pl-[50px] pt-[30px] relative'> 
+                  <div className='pl-[50px] pt-[30px] relative'> 
                      <button 
                      onClick={clickType} id='Type'  className='py-[6px] text-[#0000001a] font-normal text-[15px] relative border-[#0000001a] border-[1px] rounded-[10px] w-[150px] pl-[5px] pr-[10px] text-left'>
                         {type} <img className='w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10' src="/icon/dropdown.svg"/>
                      </button>
-                     {typeOpen && <div  className='w-[150px] h-[80px] border-radius bg-white flex flex-col absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
+                     {typeOpen && <div  className='w-[150px] h-[90px] py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white flex flex-col absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
                         <button id='Employee' onClick={() => {clickChoices("Employee"); handleClick();}} className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer hover:text-white'>Employee</button>
-                        <button onClick={() => {clickChoices("Politician"); clickPolitician();}} id='Politician' className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer border-radius hover:text-white'>Politician</button>
+                        <button onClick={() => {clickChoices("Politician"); clickPolitician();}} id='Politician' className='w-full h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer hover:text-white'>Politician</button>
                      </div>}
                   </div>
                </div>
@@ -144,7 +144,7 @@ return (
                   <div className='w-[45%] flex flex-col ml-[2%] justify-end'>
                      <p className='font-normal text-[13px] opacity-50 text-black'>Mobile Number</p>
                      <div className='relative'>
-                        <p className='font-normal text-[14px] absolute top-[13px] left-[10px] border-r pr-2 text-[#0000001a]'>+63</p>
+                        <p className='font-normal text-[14px] absolute top-[12px] left-[10px] border-r pr-2 text-[#0000001a]'>+63</p>
                         <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[52px] placeholder-[#0000001a]' type="text" placeholder='0000000000'/>
                      </div>
                   </div>
@@ -160,7 +160,7 @@ return (
                <button onClick={handleClick} className='bg-[#D9D9D9] w-[40px] h-[32px] rounded-[5px] text-white font-normal text-[13px] ml-4 cursor-pointer'>No</button>
                <button onClick={() => {setToggleYes(!toggleYes); setAddNewRole(false);}} className='bg-[#303079] transition duration-300 ease-in-out w-[40px] h-[32px] rounded-[5px] text-white font-normal text-[12px] ml-2 cursor-pointer'>Yes</button>
             </div>
-            {toggleYes && <div className='flex flex-col w-full h-[20%] mt-3 pl-[30px] pr-[20px]'>
+            {toggleYes && <div className='flex flex-col w-full mt-3 pl-[30px] pr-[20px]'>
                <p className='font-normal text-[14px] opacity-50'>If yes, please select a role from the available options. If the desired role is not listed, you can create a new role for them.</p>
                <div className='flex flex-row items-center mt-2'>
                   <div className='relative'>
@@ -175,7 +175,7 @@ return (
                   <button onClick={() => {setAddNewRole(!addNewRole); setToggleYes(false);}} className='font-semibold text-[14px] text-[#23b2ff] pl-3 transition duration-300 ease-in-out cursor-pointer'>Add new role...</button>
                </div>
             </div>}
-               {addNewRole && <div className='flex flex-col w-full h-[20%] mt-3 pl-[60px] pr-[50px]'>
+               {addNewRole && <div className='flex flex-col w-full mt-3 pl-[60px] pr-[50px]'>
                      <h3 className='font-medium text-[18px]'>Roles</h3>
                      <p className='font-normal text-[14px] opacity-50 mt-1'>These role descriptions outline the core responsibilities and duties</p>
                      <div className='flex flex-row items-center'>
@@ -233,21 +233,21 @@ return (
          </div>
          {deleteDecision && 
          <section className='absolute top-0 right-0 left-0 bottom-0 z-0'>
-         <div className='flex justify-center items-center w-full h-full'>
-            <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
+            <div className='flex justify-center items-center w-full h-full'>
+               <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
+               </div>
+               <div className='w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'>
+                  <img className='h-[82px] w-[82px]' src="/icon/deleteWarning.svg" alt="" />
+                  <p className='font-medium text-center text-base text-black'>You’re going to delete this role. <br/>Are you sure?</p>
+                  <div className='mt-5'>
+                     <button onClick={() => setDeleteDecision(!deleteDecision)} className='w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white cursor-pointer'>No</button>
+                  {
+                     roles.map((role, index) => (
+                     <button key={index} onClick={() => removeNewRole(role)} className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white cursor-pointer'>Yes</button>
+                  ))}
+               </div>
+               </div>
             </div>
-            <div className='w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'>
-               <img className='h-[92px] w-[92px]' src="/icon/deleteWarning.svg" alt="" />
-               <p className='font-medium text-center text-[18px] text-black'>You’re going to delete this role. <br/>Are you sure?</p>
-               <div className='mt-2'>
-                  <button onClick={() => setDeleteDecision(!deleteDecision)} className='w-[123px] h-[60px] rounded-[10px] bg-[#F5C8C1] font-medium text-xl text-white cursor-pointer'>No</button>
-               {
-                  roles.map((role, index) => (
-                  <button key={index} onClick={() => removeNewRole(role)} className='w-[123px] h-[60px] ml-4 rounded-[10px] bg-[#303179] font-medium text-xl text-white cursor-pointer'>Yes</button>
-               ))}
-            </div>
-            </div>
-         </div>
          </section>}
       </div>
    }
@@ -255,56 +255,3 @@ return (
 )
 }
 export default addUserModal
-// import axios.instance from '@/api/axios.instance';
-//Fetching the data in backend
-// const [firstName, setFirstName] = useState('');//Storage for the first name
-   // const [middleName, setMiddleName] = useState('');//Storage for the middle name
-   // const [lastName, setLastName] = useState('');//Storage for the last name
-   // const [lastId, setLastId] = useState(0);//To make the id in patter to previous pattern
-   // const [dataValue, setDataValue]= useState({//Value that will be posted in the add user page
-   //    id: null,
-   //    Name: `${firstName} ${middleName} ${lastName}`,
-   //    Email: ''
-   // });
-
-   // const firstNameChange = (e: string) => setFirstName(e.target.value);//Get the value of first name in the input
-   // const secondNameChange = (e: string) => setMiddleName(e.target.value);//Get the value of middle name in the input
-   // const lastNameChange = (e: string) => setLastName(e.target.value);//Get the value of last name in the input
-
-
-   // useEffect(() => {
-   //    const fetchPosts = async () => {
-   //    try {
-   //       const response = await axios.instance.get('/users');
-   //       const users = response.data;
-   //       if (users.length > 0) {
-   //          const ID = Math.max(...users.map(user => user.id));
-   //          setLastId(ID);
-   //       }
-   //    } catch (err) {
-   //       if (err.response){
-   //       console.log(err.response.data);
-   //       console.log(err.response.status);
-   //       console.log(err.response.headers);
-   //       }else{
-   //          console.log(`Error: ${err.message}`);
-   //       } 
-   //    }
-   //    }
-   //    fetchPosts();
-   // }, [])
-
-   // const handleSubmit = (event) => {//Submit new data to the json server
-   //    event.preventDefault();
-   //    const name = `${firstName} ${middleName} ${lastName}`
-   //    const updatedValue ={...dataValue, Name: name, id: lastId + 1};
-   //    axios.post(axios.instance, updatedValue)
-   //    .then(res => {console.log(res.data);
-   //       setLastId(lastId + 1);
-   //       setFirstName('');
-   //       setMiddleName('');
-   //       setLastName('');
-   //       setDataValue({Email: ''});
-   //    })
-   //    .catch(err => console.log(err))
-   // };
