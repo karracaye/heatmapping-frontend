@@ -1,7 +1,8 @@
 "use client";
-import { addusers } from '@/utility/cityconstant';
+import Link from 'next/link';
 import axios from '@/lib/axios';
 import { useState, useEffect } from 'react';
+import EditProfile from './EditProfile';
 type PropsUser = {
   addNewClick: () => void
 }
@@ -12,7 +13,7 @@ type processedData = {
 }
 const UserRightSection: React.FC<PropsUser> = ({addNewClick}) => {
   const [dataValue, setDataValue] = useState<processedData[]>([]);
-
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
 useEffect(() => {
    const fetchData = async () => {//This will help to compile the full name of the user
       try {
@@ -36,7 +37,7 @@ return (
         <div className="relative max-h-[100%] min-h-[80vh] bg-white rounded-[10px] shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)]">
             <div className="flex justify-between items-center pl-14 pr-9 pt-5 pb-2">
                 <p className="text-base font-semibold">Users</p>
-                <div className="w-[35%] h-[54px] flex flex-row items-center justify-end gap-2">
+                <div className="h-[54px] flex flex-row items-center justify-end gap-2">
                       <div>
                             <button onClick={addNewClick} className='bg-[#303079] rounded-[10px] font-medium text-xs text-white h-[40px] px-4 cursor-pointer hover:opacity-10 duration-300 transition'>Add New User</button>
                       </div>
@@ -50,25 +51,27 @@ return (
               <table className="w-full table-auto">
                   <thead>
                   <tr className="bg-[#F2F2F2] text-black font-semibold text-[15px] leading-normal">
-                    <th className="py-3 pl-[65px] px-6 text-left font-medium">Name</th>
-                    <th className="py-3 px-6 text-left font-medium">Email Address</th>
-                    <th className="py-3 px-6 text-left font-medium">Status</th>
-                    <th className="py-3 px-6 text-left font-medium">Action</th>
+                    <th className="py-3 pl-[65px] px-6 text-left font-medium w-[30%]">Name</th>
+                    <th className="py-3 px-6 text-left font-medium w-[30%]">Email Address</th>
+                    <th className="py-3 px-6 text-left font-medium w-[18%]">Status</th>
+                    <th className="py-3 px-6 text-left font-medium w-[15%]">Action</th>
                   </tr>
                   </thead>
                   <tbody className="font-normal text-[15px] text-black">
                   {dataValue.map((user, index) => (
                     <tr key={index} className="border-b">
-                        <td className="pr-3 px-6 text-left pl-[40px]">{user.fullname}</td>
-                        <td className="py-3 px-6 text-left">{user.email}</td>
-                        <td onClick={() => console.log(user.status)} className="py-3 px-6 text-left flex items-center">
+                        <td className="pr-3 px-6 text-left pl-[40px] w-[30%]">{user.fullname}</td>
+                        <td className="py-3 px-6 text-left w-[35%]">{user.email}</td>
+                        <td className="py-3 px-6 text-left flex items-center">
                           <div className={`w-[9px] h-[9px] mr-2 shadow-[0_2px_1px_0_rgba(0,0,0,0.25)] rounded-full ${user.status === "active" ? 'bg-[#ffff00]' : 'bg-[#ff0000]'}`}></div>
                           <p>{user.status === "active" ? "Active" : "Deactivated"}</p>
                         </td>
-                        <td className="py-3 px-6 text-left">
+                        <td className="py-3 px-6 text-left w-[15%]">
                         <div className='w-[90px] flex justify-between pr-[5px] items-center'>
+                          <Link href="/profile/[id]" as={`/profile/${10002}`}>
                           <button className='font-semibold text-[15px] text-[#0500e8]'>View</button>
-                          <button className='font-semibold text-[15px] text-[#daa318]'>Edit</button>
+                          </Link>
+                          <button  onClick={() => setEditProfileOpen(true)} className='font-semibold text-[15px] text-[#daa318]'>Edit</button>
                         </div>
                         </td>
                     </tr>
@@ -77,6 +80,9 @@ return (
               </table>
             </div>
         </div>
+        <EditProfile
+        editProfileOpen={editProfileOpen}
+        setEditProfileOpen={setEditProfileOpen}/>
   </div>
 );
 };
