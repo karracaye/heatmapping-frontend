@@ -27,7 +27,7 @@ const EditProfile = ({editProfileOpen, setEditProfileOpen}) => {
                   </div>
                   <div className='relative'>
                      <img onClick={() => setStatusChoiceOpen(!statusChoiceOpen)} className='w-[28px] h-[29px] mt-[-5px]' src="../icon/threedot.svg" alt="" />
-                     {statusChoiceOpen &&<div className='w-[185px] h-[100px] right-0 top-[29px] absolute z-10 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex flex-col rounded-br-[10px] rounded-bl-[10px] py-[5px]'>
+                     {statusChoiceOpen &&<div className='w-[165px] h-[100px] right-0 top-[29px] absolute z-10 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex flex-col rounded-br-[10px] rounded-bl-[10px] py-[5px]'>
                         <button onClick={() => {setDeactivateChoice(true); setStatusChoiceOpen(false)}} className='font-normal text-sm py-3 hover:bg-[#EC7966] hover:text-white'>Deactivate Account</button>
                         <button onClick={() => {setDeleteChoice(true); setStatusChoiceOpen(false)}} className='font-normal text-sm py-3 hover:bg-[#EC7966] hover:text-white'>Delete Account</button>
                      </div>}
@@ -131,7 +131,7 @@ const EditProfile = ({editProfileOpen, setEditProfileOpen}) => {
                      <p className='font-medium text-center text-base text-black'>Are you sure you want to <span className='text-[#FF0000]'>delete</span> <br/>this accoung?</p>
                      <div className='mt-5'>
                         <button onClick={() => setDeleteChoice(false)} className='w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white cursor-pointer'>No</button>
-                        <button className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white cursor-pointer'>Yes</button>
+                        <button className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white cursor-pointer'>Confirm</button>
                      </div>
                   </div>
             </section>}

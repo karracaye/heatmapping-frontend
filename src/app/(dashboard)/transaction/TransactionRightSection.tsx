@@ -25,14 +25,12 @@ const TransactionRightSection = () => {
   const [addNew, setAddNew] = useState(false);//TOggle the add new section
 
   const previousPage = () => {
-    //Previous page
     if (currentPage !== 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
   const nextPage = () => {
-    //Next page
     if (currentPage !== nPage) {
       setCurrentPage(currentPage + 1);
     }
@@ -76,46 +74,36 @@ const TransactionRightSection = () => {
           </button>
         </div>
       </div>
-      <div className="overflow-x-autom">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-[#F2F2F2] text-black font-semibold text-[15px] leading-normal">
-              <th className="py-3 pl-[65px] px-6 text-left font-medium">
-                Full Name
-              </th>
-              <th className="py-3 px-6 text-left font-medium">Address</th>
-              <th className="py-3 px-6 text-left font-medium">Age</th>
-              <th className="py-3 px-6 text-left font-medium">
-                Marital Status
-              </th>
-              <th className="py-3 px-6 text-left font-medium">
-                Tricycle Driver
-              </th>
-              <th className="py-3 px-6 text-left font-medium">
-                Medical Assistance
-              </th>
+      <table className="w-full table-auto">
+        <thead>
+          <tr className="bg-[#F2F2F2] text-black font-semibold text-[15px] leading-normal">
+            <th className="py-3 pl-[65px] px-6 text-left font-medium w-[19%]">Full Name</th>
+            <th className="py-3 px-6 text-left font-medium w-[20%]">Address</th>
+            <th className="py-3 px-6 text-left font-medium w-[8%]">Age</th>
+            <th className="py-3 px-6 text-left font-medium w-[12%]">Marital Status</th>
+            <th className="py-3 px-6 text-left font-medium w-[12%]">Tricycle Driver</th>
+            <th className="py-3 px-6 text-left font-medium w-[15%]">Medical Assistance</th>
+          </tr>
+        </thead>
+        <tbody className="font-normal text-[15px] text-black">
+          {dataValue.map((user, index) => (
+            <tr key={index} className="border-b">
+              <td className="text-left whitespace-nowrap flex items-center py-3 px-6 pl-[35px]">
+                <input
+                  className="bg-[#d9d9d9] mr-2 w-[15px] h-[15px] opacity-70 rounded-[5px]"
+                  type="checkbox"
+                />
+                {user.Full_Name}
+              </td>
+              <td className="py-3 px-6 text-left">{user.Address}</td>
+              <td className="py-3 px-6 text-left">{user.Age}</td>
+              <td className="py-3 px-6 text-left">{user.Marital_Status}</td>
+              <td className="py-3 px-6 text-left">{user.Occupation}</td>
+              <td className="py-3 px-6 text-left">{user.Services}</td>
             </tr>
-          </thead>
-          <tbody className="font-normal text-[15px] text-black">
-            {dataValue.map((user, index) => (
-              <tr key={index} className="border-b">
-                <td className="text-left whitespace-nowrap flex items-center py-3 px-6 pl-[35px]">
-                  <input
-                    className="bg-[#d9d9d9] mr-2 w-[15px] h-[15px] opacity-70 rounded-[5px]"
-                    type="checkbox"
-                  />
-                  {user.Full_Name}
-                </td>
-                <td className="py-3 px-6 text-left">{user.Address}</td>
-                <td className="py-3 px-6 text-left">{user.Age}</td>
-                <td className="py-3 px-6 text-left">{user.Marital_Status}</td>
-                <td className="py-3 px-6 text-left">{user.Occupation}</td>
-                <td className="py-3 px-6 text-left">{user.Services}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
       <div className="w-[100px] flex justify-center items-center mt-1 absolute bottom-[10px] left-[45%] ">
         <div className="flex flex-row justify-center items-center">
           <p className="font-normal text-[11px] text-black">
