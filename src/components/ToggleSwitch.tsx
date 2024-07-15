@@ -7,7 +7,7 @@ export default function ToggleSwitch() {
         setIsOn(!isOn);
     }
     return (
-        <div className="flex flex-row mt-2">
+        <div className="flex flex-row">
             <div>
                 <label className={styles.switch}>
                     <input type="checkbox" checked={isOn} onChange={handleToggle} />
@@ -15,7 +15,7 @@ export default function ToggleSwitch() {
                 </label>
             </div>
             <div className=''>
-                <text className="mt-2 ml-2 text-black text-xs text-center">{isOn ? 'On' : 'Off'}</text>
+                <text className="p-2 text-black text-xs text-center">{isOn ? 'On' : 'Off'}</text>
             </div>
         </div>
     );
