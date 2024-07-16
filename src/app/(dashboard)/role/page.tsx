@@ -34,7 +34,6 @@ const Role = () => {
   const [ pageIndex, setPageIndex ] = useState<number>(0);
   const pagination = (action) => {
     if (tableData  && (action == 'prev') && pageIndex) {
-      console.log('prev 1');
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex - 20,
@@ -45,7 +44,6 @@ const Role = () => {
         setPageIndex(pageIndex - 20);
       })
     } else if (tableData  && (action == 'prev') && !pageIndex) {
-      console.log('prev 2');
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex,
@@ -57,7 +55,6 @@ const Role = () => {
     }
 
     if (tableData  && (action == 'next') && (totalRoleUser < pageIndex + 20) ) {
-      console.log('next 1');
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex,
@@ -67,7 +64,6 @@ const Role = () => {
         setTableData(response.data.userRoles);
       })
     } else if (tableData  && (action == 'next') && (totalRoleUser > pageIndex) ) {
-      console.log('next 2');
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex + 20,
@@ -203,7 +199,7 @@ const Role = () => {
                     <tr key={index} className="h-12 border-b border-[#F2F2F2]">
                       <td className="w-12 p-3">
                         <p className="bg-[#D9D9D9] text-white flex items-center justify-center rounded-full aspect-square">
-                          { index + 1 }
+                          { pageIndex + index + 1 }
                         </p>
                       </td>
                       <td>{ item.name }</td>
@@ -243,11 +239,19 @@ const Role = () => {
             )
           }
         </p>
-        <button onClick={() => pagination('prev')}>
-          <img src="/icons/prev.svg" alt="" />
+        <button onClick={() => pagination('prev')}
+          disabled={!pageIndex ? true: false}  
+        >
+          <img src="/icons/prev.svg" alt=""
+            className={`${!pageIndex ? 'opacity-50': ''} h-5`}
+          />
         </button>
-        <button onClick={() => pagination('next')}>
-          <img src="/icons/next.svg" alt="" />
+        <button onClick={() => pagination('next')}
+          disabled={pageIndex + 20 > totalRoleUser ? true: false}   
+        >
+          <img src="/icons/next.svg" alt=""
+            className={`${pageIndex + 20 > totalRoleUser ? 'opacity-50': ''} h-5`}
+          />
         </button>
       </div>
     </Template>
