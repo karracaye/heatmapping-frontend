@@ -28,40 +28,42 @@ const DashboardAdmin = () => {
   // }, [])
 
   return (
-    <div id="template" className="h-full grid gap-5 grid-rows-7 grid-cols-5">
-      <div className="grid grid-rows-5 grid-cols-3 row-span-4 col-span-3 p-6 gap-x-6 bg-white rounded-[10px] shadow-[0_0_2px_2px_rgba(0,0,0,0.03)]">
-        <div className="col-span-2">
-          <p className="text-base font-normal">Lipa, Batangas Phillipines</p>
-          <p className="text-xs text-gray-400">72 third level subdivisions</p>
-        </div>
-
-        <div className="row-span-3">
-          <p className="text-2xl font-medium">Wednesday</p>
-          <p className="text-sm text-gray-400 font-normal">July 3, 2024</p>
-        </div>
-
-        <div className="relative flex justify-center row-span-4 col-span-2">
-          <div className="w-fit h-fit absolute left-0 bottom-0">
-            <div className="w-[15px] h-[25px] bg-[#CF0000]"></div>
-            <div className="w-[15px] h-[25px] bg-[#FF0000]"></div>
-            <div className="w-[15px] h-[25px] bg-[#FF7373]"></div>
+    <div id="template" className="grid gap-5 grid-rows-7 grid-cols-5">
+      <div className="flex items-center row-span-4 col-span-3 bg-white rounded-[10px] shadow-[0_0_2px_2px_rgba(0,0,0,0.03)]">
+        <div id="dashboard-map" className="w-full mx-6 grid grid-rows-5 grid-cols-3 gap-x-6">
+          <div className="col-span-2">
+            <p className="text-base font-normal">Lipa, Batangas Phillipines</p>
+            <p className="text-xs text-gray-400">72 third level subdivisions</p>
           </div>
-          
-          <img src={hover ? '/maps/lipa-city-map-filled.svg': '/maps/lipa-city-map-outline.svg'} alt=""
-            className='h-full absolute'
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(!hover)}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2 row-span-2">
-          <div>
-            <p className="text-xs text-gray-400">Top Location</p>
-            <p className="text-lg font-medium">San Guillermo</p>
+  
+          <div className="row-span-3">
+            <p className="text-2xl font-medium">Wednesday</p>
+            <p className="text-sm text-gray-400 font-normal">July 3, 2024</p>
           </div>
-          <div>
-            <p className="text-xs text-gray-400">Population</p>
-            <p className="text-lg font-medium">5,394</p>
+  
+          <div className="relative flex justify-center row-span-4 col-span-2">
+            <div className="w-fit h-fit absolute left-0 bottom-0">
+              <div className="w-[15px] h-[25px] bg-[#CF0000]"></div>
+              <div className="w-[15px] h-[25px] bg-[#FF0000]"></div>
+              <div className="w-[15px] h-[25px] bg-[#FF7373]"></div>
+            </div>
+            
+            <img src={hover ? '/maps/lipa-city-map-filled.svg': '/maps/lipa-city-map-outline.svg'} alt=""
+              className='h-full absolute'
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(!hover)}
+            />
+          </div>
+  
+          <div className="flex flex-col gap-2 row-span-2">
+            <div>
+              <p className="text-xs text-gray-400">Top Location</p>
+              <p className="text-lg font-medium">San Guillermo</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400">Population</p>
+              <p className="text-lg font-medium">5,394</p>
+            </div>
           </div>
         </div>
       </div>

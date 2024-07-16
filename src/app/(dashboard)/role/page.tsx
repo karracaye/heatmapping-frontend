@@ -114,7 +114,7 @@ const Role = () => {
   }
 
   return (
-    <Template role='Superadmin'>
+    <Template>
       <div className="w-full h-20 flex justify-between items-center pl-14 pr-9 pt-4">
         <p className="text-base font-semibold">Roles and Permission</p>
         <div className="w-[30%] flex gap-3">

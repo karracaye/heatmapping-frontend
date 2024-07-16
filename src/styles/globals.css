@@ -16,6 +16,10 @@ body{
    padding: 8px 8px 20px 24px;
 }
 
+#dashboard-map {
+  height: calc(100% - 45px);
+}
+
 #table {
   height: calc(100% - 112px);
 }
