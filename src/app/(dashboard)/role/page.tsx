@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import axios from "@/lib/axios";
 import Popup from "@/components/PopUp";
 import Template from "@/components/Template";
@@ -19,19 +19,66 @@ const Role = () => {
     email: string,
   }
 
-  const [ tableData, setTableData ] = useState< Array<tableDataType> >()
+
+  const [ totalRoleUser, setTotalRoleUser ] = useState<number>(0);
+  const [ tableData, setTableData ] = useState< Array<tableDataType> >();
   useEffect(() => {
     axios.instance.get('/users/roles', axios.authorization)
     .then((response) => {
-      console.log(response.data);
-      setTableData(response.data);
+    
+      setTotalRoleUser(response.data.total_users);
+      setTableData(response.data.userRoles);
     })
-
-    // axios.instance.get('/users/roles')
-    // .then((response) => {
-    //   setTableData(response.data);
-    // })
   }, [])
+
+  const [ pageIndex, setPageIndex ] = useState<number>(0);
+  const pagination = (action) => {
+    if (tableData  && (action == 'prev') && pageIndex) {
+      console.log('prev 1');
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex - 20,
+        },
+      }, axios.authorization)
+      .then((response) => {
+        setTableData(response.data.userRoles);
+        setPageIndex(pageIndex - 20);
+      })
+    } else if (tableData  && (action == 'prev') && !pageIndex) {
+      console.log('prev 2');
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex,
+        },
+      }, axios.authorization)
+      .then((response) => {
+        setTableData(response.data.userRoles);
+      })
+    }
+
+    if (tableData  && (action == 'next') && (totalRoleUser < pageIndex + 20) ) {
+      console.log('next 1');
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex,
+        },
+      }, axios.authorization)
+      .then((response) => {
+        setTableData(response.data.userRoles);
+      })
+    } else if (tableData  && (action == 'next') && (totalRoleUser > pageIndex) ) {
+      console.log('next 2');
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex + 20,
+        },
+      }, axios.authorization)
+      .then((response) => {
+        setTableData(response.data.userRoles);
+        setPageIndex(pageIndex + 20);
+      })
+    }
+  }
 
   const [ role, setRole ] = useState([
     {
@@ -43,11 +90,6 @@ const Role = () => {
     .then((response) => {
       setRole(response.data);
     })
-
-    // axios.instance.get('/roles')
-    // .then((response) => {
-    //   setRole(response.data);
-    // })
   }, [])
 
   const [ addRole, setAddRole ] = useState<boolean>();
@@ -67,19 +109,17 @@ const Role = () => {
   }
 
   const submitNewRole = () => {
-    console.log(newRole);
     axios.instance.post('/roles', {
       role_type: newRole.role_type,
     })
     .then((response) => {
-      console.log(response.data);
       if (response.data.success) setUpdateRole(true);
     })
   }
 
   return (
     <Template role='Superadmin'>
-      <div className="w-full h-20 absolute flex justify-between items-center pl-14 pr-9 pt-4 z-10">
+      <div className="w-full h-20 flex justify-between items-center pl-14 pr-9 pt-4">
         <p className="text-base font-semibold">Roles and Permission</p>
         <div className="w-[30%] flex gap-3">
           <Popup name='Roles'>
@@ -143,7 +183,7 @@ const Role = () => {
         </div>
       </div>
 
-      <div className="w-full h-full absolute top-0 pt-[80px]">
+      <div id='table' className="w-full absolute">
         <div className="overflow-y-auto h-full rounded-b-[10px]">
           <table className="w-full text-sm">
             <thead className="sticky top-0">
@@ -190,6 +230,25 @@ const Role = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="w-full h-8 absolute bottom-0 flex items-center justify-center gap-3 rounded-b-[10px]">
+        <p className="text-xs font-normal">
+          {
+            totalRoleUser ? (
+              `${pageIndex + 1} - ${pageIndex + 20 > totalRoleUser ? totalRoleUser: pageIndex + 20} of ${totalRoleUser}`
+              
+            ): (
+              '0 - 0 of 0'
+            )
+          }
+        </p>
+        <button onClick={() => pagination('prev')}>
+          <img src="/icons/prev.svg" alt="" />
+        </button>
+        <button onClick={() => pagination('next')}>
+          <img src="/icons/next.svg" alt="" />
+        </button>
       </div>
     </Template>
   );

@@ -47,7 +47,7 @@ const DashboardAdmin = () => {
             <div className="w-[15px] h-[25px] bg-[#FF7373]"></div>
           </div>
           
-          <img src={hover ? '/map/lipa-city-map-filled.svg': '/map/lipa-city-map-outline.svg'} alt=""
+          <img src={hover ? '/maps/lipa-city-map-filled.svg': '/maps/lipa-city-map-outline.svg'} alt=""
             className='h-full absolute'
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(!hover)}
