@@ -5,9 +5,7 @@ import TransactionRightSection from "./TransactionRightSection";
 const Transaction = () => {
  
   return (
-    <div className="flex">
-      <TransactionRightSection/>
-    </div>
+    <TransactionRightSection/>
   );
 };
 

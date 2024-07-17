@@ -19,7 +19,6 @@ const Role = () => {
     email: string,
   }
 
-
   const [ totalRoleUser, setTotalRoleUser ] = useState<number>(0);
   const [ tableData, setTableData ] = useState< Array<tableDataType> >();
   useEffect(() => {
@@ -80,7 +79,7 @@ const Role = () => {
     {
       role_type: '',
     }
-  ]);
+  ])
   useEffect(() => {
     axios.instance.get('/roles', axios.authorization)
     .then((response) => {
@@ -92,7 +91,7 @@ const Role = () => {
   const [ updateRole, setUpdateRole ] = useState<boolean>();
   const [ newRole, setNewRole ] = useState({
     role_type: '',
-  });
+  })
 
   const handleNewRole = (event) => {
     const name = event.target.name;
@@ -192,6 +191,7 @@ const Role = () => {
                 }
               </tr>
             </thead>
+
             <tbody>
               {
                 tableData ? (
