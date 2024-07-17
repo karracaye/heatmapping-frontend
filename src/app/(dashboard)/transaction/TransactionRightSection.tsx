@@ -4,7 +4,6 @@ import { usersconstant } from "@/utility/cityconstant";
 import ImportModal from "@/components/importModal";
 import AddNewModal from "./AddNewModal";
 import Template from "@/components/Template";
-
 import axios from "@/lib/axios";
 
 const TransactionRightSection = () => {
