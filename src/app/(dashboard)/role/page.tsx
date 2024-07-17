@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import Popup from "@/components/PopUp";
 import Template from "@/components/Template";
@@ -24,7 +24,6 @@ const Role = () => {
   useEffect(() => {
     axios.instance.get('/users/roles', axios.authorization)
     .then((response) => {
-    
       setTotalRoleUser(response.data.total_users);
       setTableData(response.data.userRoles);
     })
@@ -32,7 +31,7 @@ const Role = () => {
 
   const [ pageIndex, setPageIndex ] = useState<number>(0);
   const pagination = (action) => {
-    if (tableData  && (action == 'prev') && pageIndex) {
+    if (action == 'prev') {
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex - 20,
@@ -42,27 +41,9 @@ const Role = () => {
         setTableData(response.data.userRoles);
         setPageIndex(pageIndex - 20);
       })
-    } else if (tableData  && (action == 'prev') && !pageIndex) {
-      axios.instance.get('/users/roles', {
-        params: {
-          index: pageIndex,
-        },
-      }, axios.authorization)
-      .then((response) => {
-        setTableData(response.data.userRoles);
-      })
     }
 
-    if (tableData  && (action == 'next') && (totalRoleUser < pageIndex + 20) ) {
-      axios.instance.get('/users/roles', {
-        params: {
-          index: pageIndex,
-        },
-      }, axios.authorization)
-      .then((response) => {
-        setTableData(response.data.userRoles);
-      })
-    } else if (tableData  && (action == 'next') && (totalRoleUser > pageIndex) ) {
+    if (action == 'next') {
       axios.instance.get('/users/roles', {
         params: {
           index: pageIndex + 20,
@@ -75,11 +56,15 @@ const Role = () => {
     }
   }
 
-  const [ role, setRole ] = useState([
-    {
-      role_type: '',
-    }
-  ])
+  const [ addRole, setAddRole ] = useState<boolean>();
+  const [ newRole, setNewRole ] = useState<string>();
+
+  interface roleDataType {
+    _id: string,
+    role_type: string,
+  }
+
+  const [ role, setRole ] = useState< Array<roleDataType> >()
   useEffect(() => {
     axios.instance.get('/roles', axios.authorization)
     .then((response) => {
@@ -87,29 +72,41 @@ const Role = () => {
     })
   }, [])
 
-  const [ addRole, setAddRole ] = useState<boolean>();
-  const [ updateRole, setUpdateRole ] = useState<boolean>();
-  const [ newRole, setNewRole ] = useState({
-    role_type: '',
-  })
-
   const handleNewRole = (event) => {
-    const name = event.target.name;
     const value = event.target.value;
-
-    setNewRole((prevState) => ({
-      ...prevState,
-      [ name ]: value,
-    }));
+    setNewRole(value);
   }
 
   const submitNewRole = () => {
     axios.instance.post('/roles', {
-      role_type: newRole.role_type,
+      role_type: newRole,
     })
     .then((response) => {
-      if (response.data.success) setUpdateRole(true);
+      if (response.data.success) {
+        axios.instance.get('/roles', axios.authorization)
+        .then((response) => {
+          setRole(response.data);
+        })
+      };
     })
+  }
+
+  const confirm = (bool, id) => {
+    if (bool) {
+      axios.instance.delete('/roles', {
+        data: {
+          _id: id,
+        }
+      }, axios.authorization)
+      .then((response) => {
+        if (response.data.success) {
+          axios.instance.get('/roles', axios.authorization)
+          .then((response) => {
+            setRole(response.data);
+          })
+        }
+      })
+    }
   }
 
   return (
@@ -127,14 +124,16 @@ const Role = () => {
 
             <div className="h-[114px] m-4 overflow-auto">
               {
-                role[0].role_type || updateRole ? (
+                role ? (
                   role.map((item, index) => (
                     <div key={index} className="w-fit flex gap-2 float-left mx-[2px] my-[3px] px-4 py-2 bg-guardsman-red rounded-[20px]">
                       <p className="text-white text-xs">{ item.role_type }</p>
                       <Alert
+                        id={item._id}
                         button='/icons/cross.svg'
                         icon='/icons/warning.svg'
-                        message={ `You’re going to delete this role.\nAre you sure?` }
+                        message={`You’re going to delete this role.\nAre you sure?`}
+                        confirm={confirm}
                       />
                     </div>
                   ))
@@ -145,8 +144,7 @@ const Role = () => {
                   <>
                     <input type="text"
                       className="float-left text-xs border-[1px] border-guardsman-red rounded-[20px] mx-[2px] my-[3px] py-2 px-4 outline-none"
-                      name='role_type'
-                      value={ newRole.role_type }
+                      value={ newRole }
                       onChange={ handleNewRole }
                     />
 
