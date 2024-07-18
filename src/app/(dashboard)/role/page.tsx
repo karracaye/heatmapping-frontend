@@ -36,7 +36,8 @@ const Role = () => {
         params: {
           index: pageIndex - 20,
         },
-      }, axios.authorization)
+        headers: axios.authorization.headers,
+      })
       .then((response) => {
         setTableData(response.data.userRoles);
         setPageIndex(pageIndex - 20);
@@ -48,7 +49,8 @@ const Role = () => {
         params: {
           index: pageIndex + 20,
         },
-      }, axios.authorization)
+        headers: axios.authorization.headers,
+      })
       .then((response) => {
         setTableData(response.data.userRoles);
         setPageIndex(pageIndex + 20);
@@ -80,7 +82,7 @@ const Role = () => {
   const submitNewRole = () => {
     axios.instance.post('/roles', {
       role_type: newRole,
-    })
+    }, axios.authorization)
     .then((response) => {
       if (response.data.success) {
         axios.instance.get('/roles', axios.authorization)
@@ -96,8 +98,9 @@ const Role = () => {
       axios.instance.delete('/roles', {
         data: {
           _id: id,
-        }
-      }, axios.authorization)
+        },
+        headers: axios.authorization.headers,
+      })
       .then((response) => {
         if (response.data.success) {
           axios.instance.get('/roles', axios.authorization)
@@ -231,7 +234,6 @@ const Role = () => {
           {
             totalRoleUser ? (
               `${pageIndex + 1} - ${pageIndex + 20 > totalRoleUser ? totalRoleUser: pageIndex + 20} of ${totalRoleUser}`
-              
             ): (
               '0 - 0 of 0'
             )
