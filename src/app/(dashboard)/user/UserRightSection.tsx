@@ -17,12 +17,12 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [totalNumber, setTotalNumber] = useState(0);
-
+  const [search, setSearch] = useState('');
   useEffect(() => {
     const fetchData = async () => {
       //This will help to compile the full name of the user
       try {
-        const response = await axios.instance.get("/users");
+        const response = await axios.instance.get("/users", axios.authorization);
         const processedData = response.data.result.map((item: any) => ({
           fullname: `${item.firstname} ${
             item.middle_name ? item.middle_name + " " : ""
@@ -32,13 +32,12 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
         }));
         setDataValue(processedData);
         setTotalNumber(response.data.total_users);
-        console.log(processedData);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [dataValue]);
 
   const processedData = (response) => {//Update the data that will be presented
       return response.data.result.map((item: any) => ({
@@ -62,7 +61,7 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
       axios.instance
         .get("/users", {
           params: {index}
-        })
+        }, axios.authorization)
         .then((response) => {
           const responseData = processedData(response);
           if (action === 'next' && index !== pageNumber){
@@ -73,6 +72,8 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
           setDataValue(responseData);
         });
     };
+
+
 
   return (
     <div className="w-[100%] h-[100%] grow pt-5 pl-[3%] pr-[2.5%]">
@@ -92,6 +93,7 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
               <input
                 className="border-[#0000001a] border-[1px] h-[40px] w-[240px] rounded-[10px] font-normal text-[12px] pl-[30px]"
                 type="text"
+                onChange={(e) => setSearch((e.target.value).toLowerCase())}
                 placeholder="Who are you looking for?"
               />
               <img
@@ -113,7 +115,9 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
               </tr>
             </thead>
             <tbody className="font-normal text-[15px]">
-              {dataValue.map((user, index) => (
+              {dataValue.filter((item) => {
+                return search.toLowerCase() === '' ? item : item.fullname.toLowerCase().includes(search);
+              }).map((user, index) => (
                 <tr key={index} className="border-b text-left">
                   <td className="pr-3 px-6 pl-[40px] w-[30%]">
                     {user.fullname}
