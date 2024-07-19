@@ -58,11 +58,17 @@ export default function SettingsLayout({
           </div>
           {settingsList.map((section, index) => (
             <div key={index} className="flex flex-wrap flex-col">
-              <label className="text-gray-300 font-bold text-xs mt-3 pl-2">
+              <label className="text-gray-300 font-medium text-xs mt-3 pl-2">
                 {section.category}
               </label>
               {section.links.map((link, idx) => (
-                <Link key={idx} href={link.href} className={`text-xs font-normal text-black cursor-pointer pb-2 pt-2 pl-10 ${pathName === link.href ? 'text-red-900' : 'text-black'}`}>
+                <Link
+                  key={idx}
+                  href={link.href}
+                  className={`text-xs font-normal text-black cursor-pointer pb-2 pt-2 pl-10 ${
+                    pathName === link.href ? "text-red-600" : "text-black"
+                  }`}
+                >
                   {link.label}
                 </Link>
               ))}
@@ -70,7 +76,7 @@ export default function SettingsLayout({
           ))}
         </div>
         {/* Content Area */}
-        <div className="w-[80%] pt-14 pl-8 pr-14 rounded-r-[10px] bg-white">
+        <div className="w-[80%] pt-10 pl-14 pr-24 rounded-r-[10px] bg-white">
           {children}
         </div>
       </div>

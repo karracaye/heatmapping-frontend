@@ -46,7 +46,7 @@ const EditProfile: React.FC<EditProfileProps> = ({editProfile, setEditProfile}) 
                   </div>
                </div>
                <div className='flex flex-row w-[28%] justify-between h-[40px] ml-[68%] mt-[50%]'>
-                  <button className='w-[73px] h-[44px] rounded-[10px] bg-[#E7E7E7] font-medium text-xs text-white'>Cancel</button>
+                  <button onClick={() => setEditProfile(false)} className='w-[73px] h-[44px] rounded-[10px] bg-[#E7E7E7] font-medium text-xs text-white'>Cancel</button>
                   <button className='w-[73px] h-[44px] rounded-[10px] bg-[#303079] font-medium text-xs text-white'>Add</button>
                </div>
             </div>

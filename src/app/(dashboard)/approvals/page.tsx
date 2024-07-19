@@ -17,8 +17,8 @@ const Approvals = () => {
         body: [
         {            
         name: 'Juan Dela Cruz',
-        datatype: 'Heat Map File',
-        purpose: 'Save',
+        datatype: 'List of  data.csv',
+        purpose: 'Import',
         time: '06-26-2024 9:04 am',
                     
         },
@@ -29,17 +29,30 @@ const Approvals = () => {
     const [ confirm, setConfirm ] = useState(false);
   return (
     <Template>
-      <div className="w-full h-20 flex justify-between gap-5 items-center p-5 pt-4">
-        <div className="flex">
-          <input type="checkbox" />
+      <div className="w-full h-20 flex justify-between gap-5 items-center p-5 pt-4 ">
+        <div className="flex gap-5">
+          <input className="" type="checkbox" />
           <p className="text-base font-semibold">List of Requests</p>
         </div>
-        <div className="border border-opacity-15 gap-2 flex p-2 rounded-md ">
-          <button className="opacity-25" type="button"><img src="/icons/filter.svg"></img></button>
-          <button className="opacity-25" type="button">Filter</button>
+        <div className="gap-2 flex items-center w-[40%] justify-between ">
+        <div className="gap-2 flex">
+        <button
+                className="text-[#fdfdff] bg-[#008000] rounded-md p-3 py-1"
+                >
+                Approve all
+        </button>
+        <button
+                className="text-[#fdfdff]  bg-[#FF0000] rounded-md p-3 py-1"
+                >
+                Reject all
+        </button>
         </div>
-        <div className="w-[30%] flex gap-3 z-10">
+        <button className="flex items-center border gap-2 p-2 rounded-md opacity-30" type="button">
+          <img src="/icons/filter.svg" />
+          Filter
+        </button>      
         </div>
+        
       </div>
       <div className="w-full border">
         <div className="overflow-y-auto h-full rounded-b-[10px]">
@@ -70,20 +83,20 @@ const Approvals = () => {
             <td className="h-12 flex gap-5 items-center font-semibold">
                 <img src="/icons/ei_check.svg"/>
                 <button
-                className="text-[#fdfdff]  bg-green-700 rounded-md p-3 py-1"
+                className="text-[#fdfdff]  bg-[#008000] rounded-md p-3 py-1"
                 >
                 Approve
                 {/* <p>Approved</p> */}
                 </button>
                 <img src="/icons/marketeq_cross-circle.svg"/>
                 <button
-                  className="text-[#fd4444]"
+                  className="text-[#CF0000]"
                 >
                 Decline
                 {/* <p>Declined</p> */}
                 </button>
                 <button
-                className="text-[#4450fd]"
+                className="text-[#0500E8]"
                 >
                 View
                 </button>

@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect} from 'react'
-import axiosInstance from '@/lib/axios';
-import { addusers } from '@/utility/cityconstant';
-
+type roles = {
+   id: number;
+   value: string;
+   status: boolean;
+}
 const addUserModal = ({addNew, addNewClick}) => {
    const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
    const [type, setType] =useState('Type');//It`s the initial state in the dropdown menun that you can choose between employee and politician. this can also be changed
@@ -15,11 +17,13 @@ const addUserModal = ({addNew, addNewClick}) => {
    const [typePolitician, setTypePolitician] = useState(false);//If you choose politician in type. It will toggle another information about Politician
    const [serviceChoices, setServiceChoices] = useState<any[]>([]);//The array of services that available 
    const [deleteDecision, setDeleteDecision] = useState(false);//For deleting the new role in decision in Frame 17
-   const [roles, setRoles] = useState<any[]>([]);//The new role will be stored in this array
-   const [typeRoles, setTypeRoles]= useState('');//Storage of new role other than superadmin, admin and secretary
    const [visibleChoices, setVisibleChoices] = useState(false);//This will show the new role
    const [newAddedRole, setNewAddedRole] = useState('Select a role');//This help to appear the value of new role
-
+   const [newRoles, setNewRoles]= useState<roles[]>([]);
+   const [addButtonOpen, setAddButtonOpen] = useState(true);
+   const [newRoleOpen, setNewRoleOpen] = useState(false);
+   const [assignNewRole, setAssignNewRole] = useState('');
+   const [emailSentOpen, setEmailSentOpen] = useState(false);
    const clickPolitician = () =>{//This will trigger components that ned when you select politician
       setTypePolitician(!typePolitician);
       setAssignNo(false);
@@ -32,7 +36,6 @@ const addUserModal = ({addNew, addNewClick}) => {
 
    const submitNewRole = (role: string) => {//Submit new role that will be choose between superadmin, admin and secretary
       setNewAddedRole(role);
-      setTypeRoles(role);
       setSelectRole(false);
    }
 
@@ -69,6 +72,9 @@ const addUserModal = ({addNew, addNewClick}) => {
          setVisibleChoices(false);
          setType('Type');
          setNewAddedRole('Select a role');
+         setNewRoleOpen(false);
+         setAssignNewRole('');
+         setNewRoles([]);
       };
    }, [addNew]);
 
@@ -78,20 +84,37 @@ const addUserModal = ({addNew, addNewClick}) => {
       }
    },[serviceChoices]);
 
-   const handleClickNewRole = (role: string) => {//Add new roles
-      if (!roles.includes(roles)){
-         setRoles([...roles, role]);
-      }
-   };
-   const removeNewRole = (role: string) =>{//Remove roles in employee side
-      setRoles(roles.filter(item => item !== role));
-      setDeleteDecision(!deleteDecision);
-   };
+   const handleRoleInput = (id: number, value: string) => {
+      setNewRoles((prevRoles) => 
+         prevRoles.map((role) => 
+            role.id === id ? { ...role, value: value } : role
+         ) 
+      );
+    };
+    
+    const handleInputFixed = (id: number) => {//Will set the data as uneditable
+      setNewRoles((prevRoles) => 
+         prevRoles.map((role) => 
+            role.id === id ? { ...role, status: true } : role
+         ) 
+      );
+      setAddButtonOpen(true);
+    };
+    const handleSubmitInput = () => {
+      setNewRoles((prevRoles) =>[
+         ...prevRoles,
+         {id: prevRoles.length + 1, value: '', status: false},
+      ]);
+      setAddButtonOpen(false);
+    };
+
+   const removeRole = (id: number) => {//Remove new role that added
+      setNewRoles(newRoles.filter(item => item.id !== id))
+   }
 
    const removeChoice = (choice: string) => {//Remove service choice in politician side
       setServiceChoices(serviceChoices.filter(item => item !== choice))
    }
-
 return (
    <section>
    {addNew &&
@@ -149,6 +172,12 @@ return (
                      </div>
                   </div>
                </div>
+               {newRoleOpen &&<div className='flex flex-row mt-[13px]'>
+                  <div className='w-[45%] flex flex-col ml-[5%] justify-end'>
+                     <p className='font-normal text-[13px] opacity-50 text-black'>Role</p>
+                     <button className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] text-left px-[17px]'>{assignNewRole}</button>
+                  </div>
+               </div>}
                {typePolitician && <div className='w-[45%] flex flex-col ml-[5%] justify-end mt-[13px]'>
                <p className='font-normal text-[13px] opacity-50 text-black'>EVR No.</p>
                <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='0000-000-000'/>
@@ -178,23 +207,34 @@ return (
                {addNewRole && <div className='flex flex-col w-full mt-3 pl-[60px] pr-[50px]'>
                      <h3 className='font-medium text-[18px]'>Roles</h3>
                      <p className='font-normal text-[14px] opacity-50 mt-1'>These role descriptions outline the core responsibilities and duties</p>
-                     <div className='flex flex-row items-center'>
-                        <button className='mt-4 pl-3 pr-7 rounded-full py-1 bg-[#303079] font-medium text-[14px] text-white relative'>Superadmin <img className='w-5 h-5 absolute top-[5px] right-[5px]' src="/icon/close.svg"/></button>
-                        <button className='mt-4 ml-2 pl-3 pr-7 rounded-full py-1 bg-[#303079] font-medium text-[14px] text-white relative'>Admin <img className='w-5 h-5 absolute top-[5px] right-[5px]' src="/icon/close.svg"/></button>
-                        <button className='mt-4 ml-2 pl-3 pr-7 rounded-full py-1 bg-[#303079] font-medium text-[14px] text-white relative'>Secretary<img className='w-5 h-5 absolute top-[5px] right-[5px]' src="/icon/close.svg"/></button>
-                        <button onClick={() => setAddRole(!addRole)} className='mt-4 ml-4 px-1 py-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center'><img src="/icon/addblue.svg"/></button>
-                     </div>
-                     {addRole && <div className='flex flex-row mt-2'>
-                        <input value={typeRoles} onChange={(e) => setTypeRoles(e.target.value)} className='border border-[#303079] focus:border-[#303079] py-1 h-[29px] w-[140px] rounded-full font-medium text-[14px] text-black pl-2 mt-2 relative' type="text" /> 
-                        <button onClick={() => {handleClickNewRole(typeRoles); setNewRole(!newRole); setAddRole(false);}} className='ml-2 px-1 py-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center'><img src="/icon/checkblue.svg"/></button>
-                     </div>}
-                     {newRole && <div className='grid grid-rows-[45px_45px] grid-cols-[130px_130px_130px] justify-between gap-[5px] items-center'>
+                     <div className='grid grid-cols-3 items-center justify-center w-[100%] gap-2 mt-3'>
                         {
-                        roles.map((role, index) => (
-                              <button key={index} className='mt-2 pl-3 pr-7 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white relative'>{role}<img onClick={() => setDeleteDecision(!deleteDecision)} key={index} className='w-5 h-5 absolute top-[5px] right-[5px]' src="/icon/close.svg"/></button>
-                        ))
+                           newRoles.map((role) => (
+                              <div key={role.id} className='flex flex-row items-center justify-center'>
+                                 {
+                                    role.status ? (
+                                       <div className='relative h-[30px] min-w-[130px] w-[150px]'>
+                                          <button onClick={() => {setAssignNewRole(role.value); setNewRoleOpen(true); setAddNewRole(false); handleClick();}} className='px-3 pr-8 py-1 h-[30px] min-w-[130px] w-[150px] rounded-full bg-[#303079] font-medium text-[14px] text-white relative mb-[2px]'>{role.value}</button>
+                                          <img onClick={() => {setDeleteDecision(true); setNewRoleOpen(false)}} className='w-5 h-5 rounded-full absolute top-[5px] right-[2px] cursor-pointer' src="/icon/close.svg"/>
+                                       </div>
+                                    ):(
+                                       <div className='flex flex-row h-[30px] justify-center items-center'>
+                                          <input value={role.value} onChange={(e) => handleRoleInput(role.id, e.target.value)}  className='border border-[#303079] focus:border-[#303079] py-1 h-[30px] w-[130px] rounded-full font-medium text-[14px] text-black px-2 ml-[30px] relative' type="text" /> 
+                                          {
+                                             !role.status &&(
+                                                <button onClick={() => handleInputFixed(role.id)} className='h-[30px] w-[30px] px-1 py-1 ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center '><img src="/icon/checkblue.svg"/></button>
+                                             )
+                                          }     
+                                       </div>
+                                    )
+                                    }
+                              </div>
+                           ))
                         }
-                     </div>}                  
+                        {addButtonOpen &&
+                           <button onClick={handleSubmitInput} className='h-[30px] w-[30px] rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'><img className='flex items-center justify-center h-[30px] w-[30px]' src="/icon/addblue.svg"/></button>
+                        }
+                     </div>
                </div>}
             </div>}
             {typePolitician && <div className='w-[90%] border-t-[1px] border-[#0000001a] ml-[5%] h-[30%] mt-6 pt-5'>
@@ -227,12 +267,12 @@ return (
             <div className='ml-[370px] mb-[15px] mt-[20px]'>
                <div className='flex flex-row justify-between w-[160px]'>
                   <button onClick={addNewClick} className='w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-sm text-white cursor-pointer'>Cancel</button>
-                  <button className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white cursor-pointer'>Add</button>
+                  <button onClick={() => setEmailSentOpen(true)} className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white cursor-pointer'>Add</button>
                </div>
             </div>
          </div>
          {deleteDecision && 
-         <section className='absolute top-0 right-0 left-0 bottom-0 z-0'>
+         <section className='absolute top-0 right-0 left-0 bottom-0'>
             <div className='flex justify-center items-center w-full h-full'>
                <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
                </div>
@@ -241,14 +281,27 @@ return (
                   <p className='font-medium text-center text-base text-black'>You’re going to delete this role. <br/>Are you sure?</p>
                   <div className='mt-5'>
                      <button onClick={() => setDeleteDecision(!deleteDecision)} className='w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white cursor-pointer'>No</button>
-                  {
-                     roles.map((role, index) => (
-                     <button key={index} onClick={() => removeNewRole(role)} className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white cursor-pointer'>Yes</button>
-                  ))}
+                     {
+                        newRoles.map((role, index) => (
+                           <button key={index} onClick={() => {removeRole(role.id); setDeleteDecision(false)}} className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white cursor-pointer'>Yes</button>
+                        ))
+                     }
                </div>
                </div>
             </div>
          </section>}
+         {emailSentOpen &&
+            <div className='absolute top-0 right-0 left-0 bottom-0'>
+               <div className='flex justify-center items-center w-full h-full'>
+                  <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
+                  </div>
+                  <div className='h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'>
+                     <img src="/icon/checkall.svg" alt="" />
+                     <p className='fonr-medium text-[15px] text-white ml-2'>Email sent to juandelacruz@gmail.com</p>
+                  </div>
+               </div>
+            </div>
+         }
       </div>
    }
 </section>
