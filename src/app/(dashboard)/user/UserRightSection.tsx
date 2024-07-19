@@ -3,10 +3,12 @@ import Link from "next/link";
 import axios from "@/lib/axios";
 import { useState, useEffect } from "react";
 import EditProfile from "./EditProfile";
+
 type PropsUser = {
   addNewClick: () => void;
 };
 type processedData = {
+  id: string;
   fullname: string;
   email: string;
   status: string;
@@ -17,62 +19,63 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [totalNumber, setTotalNumber] = useState(0);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  const [dataNumber, setDataNumber] = useState(0);
+  const [userID, setUserID] = useState("");
+
   useEffect(() => {
-    const fetchData = async () => {
-      //This will help to compile the full name of the user
-      try {
-        const response = await axios.instance.get("/users", axios.authorization);
+    axios.instance.get("/users", axios.authorization).then((response) => {
+      const processedData = response.data.result.map((item: any) => ({
+        id: item._id,
+        fullname: `${item.firstname} ${
+          item.middle_name ? item.middle_name + " " : ""
+        }${item.lastname}`.trim(), //This will access by the accessor
+        email: item.email, //This will access by the accessor
+        status: item.status, //This will access by the accessor
+      }));
+      setDataValue(processedData);
+      setDataNumber(processedData.length);
+      setTotalNumber(response.data.total_users);
+    });
+  }, []);
+
+  const pagination = (action) => {
+    if (!dataValue) return;
+    let index = pageNumber;
+    if (action === "next") {
+      index =
+        totalNumber < pageNumber + dataNumber
+          ? pageNumber
+          : pageNumber + dataNumber;
+    } else if (action === "prev") {
+      index = pageNumber ? pageNumber - dataNumber : pageNumber;
+    }
+
+    console.log(index);
+    axios.instance
+      .get("/users", {
+        params: {
+          index: index,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((response) => {
         const processedData = response.data.result.map((item: any) => ({
+          id: item._id,
           fullname: `${item.firstname} ${
             item.middle_name ? item.middle_name + " " : ""
           }${item.lastname}`.trim(), //This will access by the accessor
           email: item.email, //This will access by the accessor
           status: item.status, //This will access by the accessor
         }));
+        if (action === "next" && index !== pageNumber) {
+          setPageNumber(index);
+        } else if (action === "prev" && pageNumber) {
+          setPageNumber(index);
+        }
         setDataValue(processedData);
-        setTotalNumber(response.data.total_users);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, [dataValue]);
-
-  const processedData = (response) => {//Update the data that will be presented
-      return response.data.result.map((item: any) => ({
-      fullname: `${item.firstname} ${
-        item.middle_name ? item.middle_name + " " : ""
-      }${item.lastname}`.trim(),
-      email: item.email, 
-      status: item.status, 
-    }));
-    };
-
-    const pagination = (action) => {
-      if (!dataValue) return;
-      let index = pageNumber;
-      if (action === 'next'){
-        index = totalNumber < pageNumber + 20 ? pageNumber : pageNumber + 20;
-      }else if(action === 'prev'){
-        index = pageNumber ? pageNumber - 20 : pageNumber;
-      }
-
-      axios.instance
-        .get("/users", {
-          params: {index}
-        }, axios.authorization)
-        .then((response) => {
-          const responseData = processedData(response);
-          if (action === 'next' && index !== pageNumber){
-            setPageNumber(index);
-          }else if (action === 'prev' && pageNumber){
-            setPageNumber(index);
-          }
-          setDataValue(responseData);
-        });
-    };
-
+      });
+  };
 
 
   return (
@@ -93,7 +96,7 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
               <input
                 className="border-[#0000001a] border-[1px] h-[40px] w-[240px] rounded-[10px] font-normal text-[12px] pl-[30px]"
                 type="text"
-                onChange={(e) => setSearch((e.target.value).toLowerCase())}
+                onChange={(e) => setSearch(e.target.value.toLowerCase())}
                 placeholder="Who are you looking for?"
               />
               <img
@@ -115,50 +118,67 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
               </tr>
             </thead>
             <tbody className="font-normal text-[15px]">
-              {dataValue.filter((item) => {
-                return search.toLowerCase() === '' ? item : item.fullname.toLowerCase().includes(search);
-              }).map((user, index) => (
-                <tr key={index} className="border-b text-left">
-                  <td className="pr-3 px-6 pl-[40px] w-[30%]">
-                    {user.fullname}
-                  </td>
-                  <td className="py-3 px-6 w-[35%]">{user.email}</td>
-                  <td className="py-3 px-6 flex items-center">
-                    <div
-                      className={`w-[9px] h-[9px] mr-2 shadow-[0_2px_1px_0_rgba(0,0,0,0.25)] rounded-full ${
-                        user.status === "active"
-                          ? "bg-[#ffff00]"
-                          : "bg-[#ff0000]"
-                      }`}
-                    ></div>
-                    <p className="font-normal text-[15px]">
-                      {user.status === "active" ? "Active" : "Deactivated"}
-                    </p>
-                  </td>
-                  <td className="py-3 px-6 w-[15%]">
-                    <div className="w-[90px] flex justify-between pr-[5px] items-center">
-                      <Link href="/profile/[id]" as={`/profile/${10002}`}>
-                        <button className="font-semibold text-[15px] text-[#0500e8]">
-                          View
+              {dataValue
+                .filter((item) => {
+                  return search.toLowerCase() === ""
+                    ? item
+                    : item.fullname.toLowerCase().includes(search);
+                })
+                .map((user, index) => (
+                  <tr key={index} className="border-b text-left">
+                    <td className="pr-3 px-6 pl-[40px] w-[30%]">
+                      {user.fullname}
+                    </td>
+                    <td className="py-3 px-6 w-[35%]">{user.email}</td>
+                    <td className="py-3 px-6 flex items-center">
+                      <div
+                        className={`w-[9px] h-[9px] mr-2 shadow-[0_2px_1px_0_rgba(0,0,0,0.25)] rounded-full ${
+                          user.status === "active"
+                            ? "bg-[#ffff00]"
+                            : "bg-[#ff0000]"
+                        }`}
+                      ></div>
+                      <p className="font-normal text-[15px]">
+                        {user.status === "active" ? "Active" : "Deactivated"}
+                      </p>
+                    </td>
+                    <td className="py-3 px-6 w-[15%]">
+                      <div className="w-[90px] flex justify-between pr-[5px] items-center">
+                        <Link href="/profile/[id]" as={`/profile/${10002}`}>
+                          <button className="font-semibold text-[15px] text-[#0500e8]">
+                            View
+                          </button>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setEditProfileOpen(true);
+                            {
+                              dataValue.map((data) => {
+                                if(data.id === user.id){
+                                  setUserID(user.id)
+                                }
+                              })
+                            }
+                          }}
+                          className="font-semibold text-[15px] text-[#daa318]"
+                        >
+                          Edit
                         </button>
-                      </Link>
-                      <button
-                        onClick={() => setEditProfileOpen(true)}
-                        className="font-semibold text-[15px] text-[#daa318]"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
         <div className="w-[200px] absolute bottom-[10px] left-[42%] ">
           <div className="flex flex-row justify-center items-center">
             <p className="font-normal text-xs">
-              {pageNumber + 1}-{pageNumber + 20 < totalNumber ? pageNumber + 20 : totalNumber} of {totalNumber}
+              {pageNumber + 1}-
+              {pageNumber + dataNumber < totalNumber
+                ? pageNumber + dataNumber
+                : totalNumber}{" "}
+              of {totalNumber}
             </p>
             <img
               onClick={() => pagination("prev")}
@@ -176,6 +196,7 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
       <EditProfile
         editProfileOpen={editProfileOpen}
         setEditProfileOpen={setEditProfileOpen}
+        userID={userID}
       />
     </div>
   );
