@@ -1,11 +1,6 @@
 'use client';
 import { useState, useEffect} from 'react'
 import axios from '@/lib/axios';
-type roles = {
-   id: number;
-   value: string;
-   status: boolean;
-}
 
 const addUserModal = ({addNew, addNewClick}) => {
    const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
@@ -18,8 +13,54 @@ const addUserModal = ({addNew, addNewClick}) => {
    const [serviceChoices, setServiceChoices] = useState<any[]>([]);//The array of services that available 
    const [deleteDecision, setDeleteDecision] = useState(false);//For deleting the new role in decision in Frame 17
    const [visibleChoices, setVisibleChoices] = useState(false);//This will show the new role
-   const [newAddedRole, setNewAddedRole] = useState('Select a role');//This help to appear the value of new role
-   const [newRoles, setNewRoles]= useState<roles[]>([]);
+   const [newAddedRole, setNewAddedRole] = useState('');//This help to appear the value of new role
+   const [newRoles, setNewRoles]= useState([
+      {
+         id: 1,
+         value: 'Superadmin',
+         status: true
+
+      },
+      {
+         id: 2,
+         value: 'Admin',
+         status: true
+
+      },
+      {
+         id: 3,
+         value: 'Secretary',
+         status: true
+
+      }
+   ]);
+   const [newServices, setNewServices]= useState([
+      {
+         id: 1,
+         value: 'Medical assistance',
+         status: true
+
+      },
+      {
+         id: 2,
+         value: 'Financial assistance',
+         status: true
+
+      },
+      {
+         id: 3,
+         value: 'Scholarship',
+         status: true
+
+      },
+      {
+         id: 4,
+         value: 'Legal advise',
+         status: true
+
+      }
+   ]);
+   const [addNewServicesOpen, setAddNewServicesOpen] = useState(false);
    const [addButtonOpen, setAddButtonOpen] = useState(true);
    const [newRoleOpen, setNewRoleOpen] = useState(false);
    const [assignNewRole, setAssignNewRole] = useState('');
@@ -43,10 +84,13 @@ const addUserModal = ({addNew, addNewClick}) => {
       EVR_No: "N/A",
       account_typeID: ''
    });
+
    const clickPolitician = () =>{//This will trigger components that ned when you select politician
       setTypePolitician(!typePolitician);
       setAssignNo(false);
-   }
+      setAssignNewRole('');
+      setNewRoleOpen(false);
+   };
 
    const clickChoices = (type: string) =>{//Choice for employee or politician
       setType(type);
@@ -56,12 +100,12 @@ const addUserModal = ({addNew, addNewClick}) => {
       }else if(type === "Politician"){
          setDataValue({...dataValue, account_typeID: '66862e2e311b616ac697a2bc'});
       }
-   } 
+   };
 
    const submitNewRole = (role: string) => {//Submit new role that will be choose between superadmin, admin and secretary
       setNewAddedRole(role);
       setSelectRole(false);
-   }
+   };
 
    const handleClick= () => {//Handle toggle the need too be closed
       setAssignNo(!assignNo);
@@ -69,12 +113,13 @@ const addUserModal = ({addNew, addNewClick}) => {
       setToggleYes(false);
       setAddNewRole(false);
    };
+
    const handleChoice= () => {
       setVisibleChoices(!visibleChoices);
    };
 
    const selectedChoices = (choice: string) => {//Add Services to the list in politician
-      if (!serviceChoices.includes(serviceChoices)){
+      if (!serviceChoices.includes(choice)){
          setServiceChoices([...serviceChoices, choice]);
          if(!visibleChoices){
             handleChoice();
@@ -83,20 +128,19 @@ const addUserModal = ({addNew, addNewClick}) => {
       }
    };
 
-   useEffect(() => {
-      if(!addNew){
-         setType('Type');
-         setAssignNo(false);
-         setTypePolitician(false);
-         setServiceChoices([]);
-         setVisibleChoices(false);
-         setType('Type');
-         setNewAddedRole('Select a role');
-         setNewRoleOpen(false);
-         setAssignNewRole('');
-         setNewRoles([]);
-      };
-   }, [addNew]);
+   const closeButton = () => {
+      setType('Type');
+      setAssignNo(false);
+      setTypePolitician(false);
+      setServiceChoices([]);
+      setVisibleChoices(false);
+      setNewAddedRole('');
+      setNewRoleOpen(false);
+      setAssignNewRole('');
+      setNewRoles([]);
+      setNewRoles(newRoles);
+      setSelectRole(false);
+   }
 
    useEffect(() => {
       if(serviceChoices.length=== 0){
@@ -127,8 +171,8 @@ const addUserModal = ({addNew, addNewClick}) => {
    setAddButtonOpen(false);
    };
 
-   const removeChoice = (choice: string) => {//Remove service choice in politician side
-      setServiceChoices(serviceChoices.filter(item => item !== choice))
+   const removeChoice = (choice: string, index) => {//Remove service choice in politician side
+      setServiceChoices(serviceChoices.filter(item => item !== choice && item.index !== index))
    }
 
    const handleEmailSentClick = () => {//Email sent modal when you click add
@@ -180,7 +224,7 @@ const addUserModal = ({addNew, addNewClick}) => {
       const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`
       const updatedData = {...dataValue, username: userName}
       console.log({updatedData});
-      axios.instance.post('/users/addUser', updatedData)
+      axios.instance.post('/users/addUser', updatedData, axios.authorization)
       .then(res => {
          console.log(res.data);
       })
@@ -192,8 +236,8 @@ const addUserModal = ({addNew, addNewClick}) => {
 return (
    <section>
    {addNew &&
-      <div className={`${!addNew && 'animate-dissolve'}`}>
-         <div  onClick={addNewClick} className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]'>
+      <section>
+         <div  onClick={() => {addNewClick(); closeButton();}} className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]'>
          </div>
          <div className='w-[557px] h-[100vh] bg-white flex flex-col justify-between absolute right-0 top-0 bottom-0 overflow-auto'>
             <div>
@@ -203,11 +247,11 @@ return (
                      <p className='font-normal text-[13px] opacity-50 mt-1'>Please fill up the followinf Information</p>
                   </div>
                   <div className='pl-[50px] pt-[30px] relative'> 
-                     <button onClick={() => setTypeOpen(!typeOpen)} className='py-[6px] text-[#0000001a] font-normal text-[15px] relative border-[#0000001a] border-[1px] rounded-[10px] w-[150px] pl-[5px] pr-[10px] text-left'>{type}<img className='w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10' src="/icon/dropdown.svg"/></button>
+                     <button onClick={() => setTypeOpen(!typeOpen)} className={`${type === 'Type' ? 'text-[#0000001a]' : 'text-black'} py-[6px] font-normal text-[15px] relative border-[#0000001a] border-[1px] rounded-[10px] w-[150px] pl-[5px] pr-[10px] text-left`}>{type}<img className='w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10' src="/icon/dropdown.svg"/></button>
                      {typeOpen && 
-                        <div  className='w-[150px] h-[90px] py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white flex flex-col absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
-                           <button onClick={() => {clickChoices("Employee"); handleClick();}} className='h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer hover:text-white'>Employee</button>
-                           <button onClick={() => {clickChoices("Politician"); clickPolitician();}} className='h-[40px] flex items-center pl-[10px] font-normal text-[15px] hover:bg-[#303079] cursor-pointer hover:text-white'>Politician</button>
+                        <div  className='w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
+                           <button onClick={() => {clickChoices("Employee"); handleClick();}} className='h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white'>Employee</button>
+                           <button onClick={() => {clickChoices("Politician"); clickPolitician();}} className='h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white'>Politician</button>
                         </div>
                      }
                   </div>
@@ -245,7 +289,7 @@ return (
                      </div>
                   </div>
                </div>
-               {newRoleOpen &&
+               {newRoleOpen && type === 'Employee' &&
                   <div className='flex flex-row mt-[13px] transition duration-300 ease-in-out'>
                      <div className='w-[45%] flex flex-col ml-[5%] justify-end'>
                         <p className='font-normal text-[13px] opacity-50'>Role</p>
@@ -272,12 +316,12 @@ return (
                         <p className='font-normal text-[14px] opacity-50'>If yes, please select a role from the available options. If the desired role is not listed, you can create a new role for them.</p>
                         <div className='flex flex-row items-center mt-2'>
                            <div className='relative'>
-                              <input onClick={() => setSelectRole(!selectRole)} className='w-[240px] h-[40px] transition duration-300 ease-in-out rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] cursor-pointer text pl-[15px] font-normal text-[14px]' type="text" placeholder={newAddedRole ? newAddedRole : 'Select a role'}/>
-                              <img onClick={() => setSelectRole(!selectRole)} className='absolute w-[24px] h-[24px] top-[12px] right-[10px]' src="/icon/dropdown1.svg" />
-                              {selectRole && <div className='w-[100%] absolute flex flex-col rounded-[10px] items-start bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)]'>
-                                 <button onClick={() => submitNewRole('Superadmin')} className='font-normal text-sm pl-[10px] py-2'>Superadmin</button>
-                                 <button onClick={() => submitNewRole('Admin')} className='font-normal text-sm pl-[10px] py-2'>Admin</button>
-                                 <button onClick={() => submitNewRole('Secretary')} className='font-normal text-sm pl-[10px] py-2'>Secretary</button>
+                              <input onClick={() => {newAddedRole ? handleNewRoleSubmit(newAddedRole) : ''}} className={`w-[240px] h-[40px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] cursor-pointer text pl-[15px] font-normal text-[14px] ${newAddedRole ? 'text-black' : 'text-[#0000001a]'}`} type="text" value={newAddedRole ? newAddedRole : 'Select a role'}/>
+                              <img onClick={() => setSelectRole(!selectRole)} className='absolute w-[24px] h-[24px] top-[12px] right-[10px] cursor-pointer' src="/icon/dropdown1.svg" />
+                              {selectRole && <div className='w-[100%] absolute flex flex-col font-normal text-sm rounded-br-[10px] rounded-bl-[10px] bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] transition duration-300 ease-in-out'>
+                                 <button onClick={() => submitNewRole('Superadmin')} className='text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]'>Superadmin</button>
+                                 <button onClick={() => submitNewRole('Admin')} className='text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]'>Admin</button>
+                                 <button onClick={() => submitNewRole('Secretary')} className='text-left pl-[10px] rounded-br-[10px] rounded-bl-[10px] w-full py-2 hover:bg-[#D9D9D9]'>Secretary</button>
                               </div>}
                            </div>
                            <button onClick={() => {setAddNewRole(!addNewRole); setToggleYes(false);}} className='font-semibold text-[14px] text-[#23b2ff] pl-3 transition duration-300 ease-in-out cursor-pointer'>Add new role...</button>
@@ -288,7 +332,7 @@ return (
                      <div className='flex flex-col w-full mt-3 pl-[60px] pr-[50px] transition duration-300 ease-in-out'>
                            <h3 className='font-medium text-lg'>Roles</h3>
                            <p className='font-normal text-sm opacity-50 mt-1'>These role descriptions outline the core responsibilities and duties</p>
-                           <div className='w-full flex flex-wrap items-center'>
+                           <div className='w-full flex flex-wrap items-center mt-1'>
                               {
                                  newRoles.map((role) => (
                                     <div key={role.id} className='flex items-center align-middle mt-1'>
@@ -300,8 +344,8 @@ return (
                                              </div>
                                           ) : (
                                              <div className='flex items-center ml-1'>
-                                                <input value={role.value} onChange={(e) => handleRoleInput(role.id, e.target.value)} className='border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2' type="text" />
-                                                <button onClick={() => handleInputFixed(role.id)} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]'><img src="/icon/checkblue.svg"/></button>
+                                                <input value={role.value}  onChange={(e) => handleRoleInput(role.id, e.target.value)} className='border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2' type="text" />
+                                                <button onClick={() => {role.value ? handleInputFixed(role.id) : null}} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]'><img src="/icon/checkblue.svg"/></button>
                                              </div>
                                           )
                                        }
@@ -335,15 +379,47 @@ return (
                      {visibleChoices && 
                         <div className='mt-3 pl-1'>
                            <p className='font-normal text-xs opacity-50 mb-[2px]'>List you added</p>
-                           <div className='flex flex-wrap items-center gap-1 border-[1px] border-[#eeeeee] rounded-[10px] p-1 py-1'>
+                           <div className='border border-[#eeeeee] w-full min-h-[100px]'>
+                           <div className='flex flex-wrap items-center gap-1 rounded-[10px] p-1 py-1'>
                               {serviceChoices.map((choice, index) => (   
                                  <button
                                  key={index}
-                                 className='px-[5px] text-white bg-[#303179] py-[3px] pr-[20px] border-[1px] border-[#303079] rounded-full font-normal text-[12px] relative'>{choice}<img onClick={() => removeChoice(choice)} src="/icon/cancel.svg" alt="cancel" className='absolute w-[15px] h-[15px] top-[5px] right-[4px]'/></button> 
+                                 className='px-[5px] text-white bg-[#303179] py-[3px] pr-[20px] border-[1px] border-[#303079] rounded-full font-normal text-[12px] relative'>{choice}<img onClick={() => removeChoice(choice, index)} src="/icon/cancel.svg" alt="cancel" className='absolute w-[15px] h-[15px] top-[5px] right-[4px]'/></button> 
                               ))}
+                           </div>
                            </div>
                         </div>
                      }
+                  </div>
+               }
+               {addNewServicesOpen &&
+                  <div className='flex flex-col w-full mt-3 pl-[40px] pr-[50px] transition duration-300 ease-in-out'>
+                     <h3 className='font-medium text-lg'>Services</h3>
+                     <p className='font-normal text-sm opacity-50 mt-1'>These services descriptions outline the core responsibilities and duties</p>
+                     <div className='w-full flex flex-wrap items-center mt-1'>
+                        {
+                           newServices.map((services) => (
+                              <div key={services.id} className='flex items-center align-middle mt-1'>
+                                 {
+                                    services.status ? (
+                                       <div className='ml-1 relative'>
+                                          <button onClick={() => {handleNewRoleSubmit(services.value);}} className='px-3 pr-7 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white'>{services.value}</button>
+                                          <img onClick={() => handleNewRoleDelete(services)} className='w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer' src="/icon/close.svg"/>
+                                       </div>
+                                    ) : (
+                                       <div className='flex items-center ml-1'>
+                                          <input value={services.value}  onChange={(e) => handleRoleInput(services.id, e.target.value)} className='border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2' type="text" />
+                                          <button onClick={() => {services.value ? handleInputFixed(services.id) : null}} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]'><img src="/icon/checkblue.svg"/></button>
+                                       </div>
+                                    )
+                                 }
+                              </div>
+                           ))
+                        }
+                        {addButtonOpen &&
+                           <button onClick={handleSubmitInput} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center'><img className='h-[30px] w-[30px]' src="/icon/addblue.svg"/></button>
+                        }
+                     </div>
                   </div>
                }
             </div>
@@ -382,7 +458,7 @@ return (
                </div>
             </div>
          }
-      </div>
+      </section>
    }
 </section>
 )
