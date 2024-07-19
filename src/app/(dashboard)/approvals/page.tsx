@@ -49,13 +49,13 @@ const Approvals = () => {
               className="text-[#fdfdff] bg-[#008000] rounded-md p-3 py-1"
               onClick={handleApprove}
             >
-              {approved ? 'Approved' : 'Approve'}
+              {approved ? 'Approved all' : 'Approve'}
             </button>
             <button
               className="text-[#fdfdff] bg-[#FF0000] rounded-md p-3 py-1"
               onClick={handleDecline}
             >
-              {declined ? 'Declined' : 'Decline'}
+              {declined ? 'Declined all' : 'Decline'}
             </button>
           </div>
           <button className="flex items-center border gap-2 p-2 rounded-md opacity-30" type="button">
