@@ -1,18 +1,51 @@
 "use client";
-import React from 'react'
+import axios from '@/lib/axios';
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-const EditProfile = ({editProfileOpen, setEditProfileOpen}) => {
+
+type editUser = {
+   firstname: '',
+   middle_name: '',
+   lastname: '',
+   email: '',
+}
+const EditProfile = ({editProfileOpen, setEditProfileOpen, userID}) => {
    const [statusChoiceOpen, setStatusChoiceOpen] = useState(false);
    const [addressButton, setAddressButton] = useState(false);
    const [serviceButton, setServiceButton] = useState(false);
    const [deactivateChoice, setDeactivateChoice] = useState(false);
    const [deleteChoice, setDeleteChoice] = useState(false);
+   const [editUserData, setEditUserData] = useState({
+      firstname: '',
+      middle_name: '',
+      lastname: '',
+      email: '',
+      username: '',
+      password:'',
+      home_address: {
+         city: 'Quezon City',
+         region: 'Metro Manila',
+         country: 'Philippines'
+      },
+      roleID: 'N/A',
+      status: 'active',
+      EVR_No: "N/A",
+      account_typeID: ''
+   })
    const handleClick = () => {
       setEditProfileOpen(false);
       setStatusChoiceOpen(false);
       setAddressButton(false);
       setServiceButton(false);
    }
+
+   useEffect(() => {
+      axios.instance.get(`/users?_id=${userID}`, axios.authorization)
+      .then(res => {
+         console.log(res.data.result);
+      })
+      .catch(err => console.log(err))
+   })
   return (
    <section>
       {editProfileOpen && (
@@ -108,7 +141,7 @@ const EditProfile = ({editProfileOpen, setEditProfileOpen}) => {
                      </div>
                   </div>
                </div>
-               <div className='flex flex-row bottom-[20px] right-[20px] fixed w-[160px] justify-between'>
+               <div className='flex flex-row mt-[26%] ml-[67%] w-[160px] justify-between'>
                   <button onClick={() => setEditProfileOpen(false)} className='w-[73px] h-[42px] rounded-[10px] bg-[#ec7965] font-medium text-sm text-white cursor-pointer'>Cancel</button>
                   <button className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white cursor-pointer'>Add</button>
                </div>
