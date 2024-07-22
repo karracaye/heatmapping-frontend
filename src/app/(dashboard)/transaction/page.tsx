@@ -128,7 +128,9 @@ const Transaction = () => {
                     tableHead.map((item, index) => (
                       <th key={index} 
                         className={`${item == 'Address' ? 'w-2/6': ''}`}
-                      >{ item }</th>
+                      >
+                        { item }
+                      </th>
                     ))
                   }
                 </tr>
