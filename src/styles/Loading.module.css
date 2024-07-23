@@ -1,0 +1,113 @@
+.point_map {
+  display: flex;
+  justify-content: end;
+  animation: loader 10s linear;
+}
+
+.loader {
+  width: 100%;
+  height: 100%;
+  background-color: #CF0000;
+  position: relative;
+  overflow: hidden;
+  animation: loader 10s linear;
+}
+
+@keyframes loader {
+  0% {
+    width: 0;
+  }
+  20% {
+    width: 8%;
+  }
+  30% {
+    width: 8%;
+  }
+  35% {
+    width: 20%;
+  }
+  45% {
+    width: 40%;
+  }
+  50% {
+    width: 40%;
+  }
+  55% {
+    width: 85%;
+  }
+  60% {
+    width: 95%;
+  }
+  90% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.render::before {
+  content: '';
+  width: 250px;
+  height: 16px;
+  position: absolute;
+  left: -250px;
+  background: linear-gradient(to right,
+    transparent 20%,
+    rgba(0, 0, 0, 0.3) 37.5%,
+    rgba(0, 0, 0, 0.5) 45%,
+    rgba(0, 0, 0, 0.5) 55%,
+    rgba(0, 0, 0, 0.3) 62.5%,
+    transparent 80%
+  );
+  animation: render 3s linear infinite;
+}
+
+@keyframes render {
+  0% {
+    left: -250px;
+  }
+  100% {
+    left: 500px;
+  }
+}
+
+.texter {
+  height: 20px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.texter::before {
+  content: '';
+  animation: texter 10s linear;
+}
+
+@keyframes texter {
+  0% {
+    content: 'Welcome!';
+  }
+  20% {
+    content: 'I\'m excited to see you!';
+  }
+  40% {
+    content: 'Everything looks good!';
+  }
+  50% {
+    content: 'You\'re halfway there!';
+  }
+  60% {
+    content: 'Woah, that was so fast!';
+  }
+  80% {
+    content: 'Oh no! please be patient.';
+  }
+  90% {
+    content: 'Almost there.';
+  }
+  100% {
+    content: 'Finally!';
+  }
+}

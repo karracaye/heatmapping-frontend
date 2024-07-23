@@ -19,67 +19,102 @@ const Role = () => {
     email: string,
   }
 
-  const [ tableData, setTableData ] = useState< Array<tableDataType> >()
+  const [ totalRoleUser, setTotalRoleUser ] = useState<number>(0);
+  const [ tableData, setTableData ] = useState< Array<tableDataType> >();
   useEffect(() => {
     axios.instance.get('/users/roles', axios.authorization)
     .then((response) => {
-      console.log(response.data);
-      setTableData(response.data);
+      setTotalRoleUser(response.data.total_users);
+      setTableData(response.data.userRoles);
     })
-
-    // axios.instance.get('/users/roles')
-    // .then((response) => {
-    //   setTableData(response.data);
-    // })
   }, [])
 
-  const [ role, setRole ] = useState([
-    {
-      role_type: '',
+  const [ pageIndex, setPageIndex ] = useState<number>(0);
+  const pagination = (action) => {
+    if (action == 'prev') {
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex - 20,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((response) => {
+        setTableData(response.data.userRoles);
+        setPageIndex(pageIndex - 20);
+      })
     }
-  ]);
+
+    if (action == 'next') {
+      axios.instance.get('/users/roles', {
+        params: {
+          index: pageIndex + 20,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((response) => {
+        setTableData(response.data.userRoles);
+        setPageIndex(pageIndex + 20);
+      })
+    }
+  }
+
+  const [ addRole, setAddRole ] = useState<boolean>();
+  const [ newRole, setNewRole ] = useState<string>();
+
+  interface roleDataType {
+    _id: string,
+    role_type: string,
+  }
+
+  const [ role, setRole ] = useState< Array<roleDataType> >()
   useEffect(() => {
     axios.instance.get('/roles', axios.authorization)
     .then((response) => {
       setRole(response.data);
     })
-
-    // axios.instance.get('/roles')
-    // .then((response) => {
-    //   setRole(response.data);
-    // })
   }, [])
 
-  const [ addRole, setAddRole ] = useState<boolean>();
-  const [ updateRole, setUpdateRole ] = useState<boolean>();
-  const [ newRole, setNewRole ] = useState({
-    role_type: '',
-  });
-
   const handleNewRole = (event) => {
-    const name = event.target.name;
     const value = event.target.value;
-
-    setNewRole((prevState) => ({
-      ...prevState,
-      [ name ]: value,
-    }));
+    setNewRole(value);
   }
 
   const submitNewRole = () => {
-    console.log(newRole);
     axios.instance.post('/roles', {
-      role_type: newRole.role_type,
-    })
+      role_type: newRole,
+    }, axios.authorization)
     .then((response) => {
-      console.log(response.data);
-      if (response.data.success) setUpdateRole(true);
+      if (response.data.success) {
+        axios.instance.get('/roles', axios.authorization)
+        .then((response) => {
+          setRole(response.data);
+        })
+      };
     })
   }
 
+  const confirm = (bool, id) => {
+    if (bool) {
+      axios.instance.delete('/roles', {
+        data: {
+          _id: id,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          axios.instance.get('/roles', axios.authorization)
+          .then((response) => {
+            setRole(response.data);
+          })
+        }
+      })
+    }
+  }
+
   return (
-    <Template role='Superadmin'>
-      <div className="w-full h-20 absolute flex justify-between items-center pl-14 pr-9 pt-4 z-10">
+    <Template>
+      <div className="w-full h-20 flex justify-between items-center pl-14 pr-9 pt-4">
         <p className="text-base font-semibold">Roles and Permission</p>
         <div className="w-[30%] flex gap-3">
           <Popup name='Roles'>
@@ -92,14 +127,16 @@ const Role = () => {
 
             <div className="h-[114px] m-4 overflow-auto">
               {
-                role[0].role_type || updateRole ? (
+                role ? (
                   role.map((item, index) => (
                     <div key={index} className="w-fit flex gap-2 float-left mx-[2px] my-[3px] px-4 py-2 bg-guardsman-red rounded-[20px]">
                       <p className="text-white text-xs">{ item.role_type }</p>
                       <Alert
+                        id={item._id}
                         button='/icons/cross.svg'
                         icon='/icons/warning.svg'
-                        message={ `You’re going to delete this role.\nAre you sure?` }
+                        message={`You’re going to delete this role.\nAre you sure?`}
+                        confirm={confirm}
                       />
                     </div>
                   ))
@@ -110,8 +147,7 @@ const Role = () => {
                   <>
                     <input type="text"
                       className="float-left text-xs border-[1px] border-guardsman-red rounded-[20px] mx-[2px] my-[3px] py-2 px-4 outline-none"
-                      name='role_type'
-                      value={ newRole.role_type }
+                      value={ newRole }
                       onChange={ handleNewRole }
                     />
 
@@ -143,7 +179,7 @@ const Role = () => {
         </div>
       </div>
 
-      <div className="w-full h-full absolute top-0 pt-[80px]">
+      <div id='table' className="w-full absolute">
         <div className="overflow-y-auto h-full rounded-b-[10px]">
           <table className="w-full text-sm">
             <thead className="sticky top-0">
@@ -156,6 +192,7 @@ const Role = () => {
                 }
               </tr>
             </thead>
+
             <tbody>
               {
                 tableData ? (
@@ -163,7 +200,7 @@ const Role = () => {
                     <tr key={index} className="h-12 border-b border-[#F2F2F2]">
                       <td className="w-12 p-3">
                         <p className="bg-[#D9D9D9] text-white flex items-center justify-center rounded-full aspect-square">
-                          { index + 1 }
+                          { pageIndex + index + 1 }
                         </p>
                       </td>
                       <td>{ item.name }</td>
@@ -190,6 +227,32 @@ const Role = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="w-full h-8 absolute bottom-0 flex items-center justify-center gap-3 rounded-b-[10px]">
+        <p className="text-xs font-normal">
+          {
+            totalRoleUser ? (
+              `${pageIndex + 1} - ${pageIndex + 20 > totalRoleUser ? totalRoleUser: pageIndex + 20} of ${totalRoleUser}`
+            ): (
+              '0 - 0 of 0'
+            )
+          }
+        </p>
+        <button onClick={() => pagination('prev')}
+          disabled={!pageIndex ? true: false}  
+        >
+          <img src="/icons/prev.svg" alt=""
+            className={`${!pageIndex ? 'opacity-50': ''} h-5`}
+          />
+        </button>
+        <button onClick={() => pagination('next')}
+          disabled={pageIndex + 20 > totalRoleUser ? true: false}   
+        >
+          <img src="/icons/next.svg" alt=""
+            className={`${pageIndex + 20 > totalRoleUser ? 'opacity-50': ''} h-5`}
+          />
+        </button>
       </div>
     </Template>
   );

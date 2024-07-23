@@ -3,7 +3,12 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { initDB, useIndexedDB } from "react-indexed-db-hook";
+import { indexedDatabase } from '@/lib/indexed_db';
 import axios from '@/lib/axios';
+
+indexedDB.deleteDatabase('heatmap_db');
+initDB(indexedDatabase);
 
 function Login() {
   const router = useRouter();
@@ -25,6 +30,8 @@ function Login() {
     }));
   }
 
+  const { add } = useIndexedDB('user');
+
   const submitLoginData = () => {
     axios.instance.post('/login', {
       username: loginData.username,
@@ -34,7 +41,26 @@ function Login() {
       if (!response.data.error) {
         const token = response.data.token;
         Cookies.set('token', token, { expires: 7, secure: true });
-        axios.instance.defaults.withCredentials = true;
+
+        axios.instance.get('/users', {
+          params: {
+            _id: response.data._id,
+          },
+          headers: axios.authorization.headers,
+        })
+        .then((response) => {
+          response.data.result.map((item) => {
+            add({
+              username: item.username,
+              name: item.firstname + ' ' + item.lastname,
+              email: item.email,
+              role: item.roleID.role_type,
+            })
+            .then((error) => {
+              console.log(error);
+            })
+          })
+        })
         router.push('/dashboard');
       }
       setLoginError(response.data.error);

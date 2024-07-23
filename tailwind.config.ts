@@ -12,8 +12,11 @@ const config: Config = {
         'guardsman-red': '#CF0000',
       },
       fontFamily: {
-        'plus-jakarta-sans': ['Plus Jakarta Sans', 'sans-serif']
+        'plus-jakarta-sans': ['Plus Jakarta Sans', 'sans-serif'],
       },
+      spacing: {
+        'custom-table-height': 'calc(100% - 112px)',
+      }
     },
   },
   plugins: [],

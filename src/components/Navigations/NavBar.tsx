@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import EditProfile from "./EditProfile";
-import { useState } from "react";
+import EditProfile from "../EditProfile";
+import { useEffect, useState } from "react";
+import { useIndexedDB } from "react-indexed-db-hook";
 
 const Navbar = () => {
   const logNotification = [
@@ -29,6 +30,15 @@ const Navbar = () => {
     setShowNotifications(!showNotifications);
     setEditProfileOpen(false);
   };
+
+  const { getByID } = useIndexedDB('user');
+  const [ accountRole, setAccountRole ] = useState<string>();
+  useEffect(() => {
+    getByID(1).then((response) => {
+      setAccountRole(response.role);
+    })
+  }, [])
+  
   return (
     <nav>
       <div className="w-full px-[3%]">
@@ -52,7 +62,7 @@ const Navbar = () => {
         </div>
 
         <p className="font-medium text-[25px] mt-[-15px]">
-          Good Morning Superadmin!
+          Good Morning { accountRole }!
         </p>
         <p className="font-normal text-[15px] text-black opacity-50">
           Things are looking good.

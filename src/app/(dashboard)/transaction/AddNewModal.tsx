@@ -14,7 +14,7 @@ const AddNewModal = ({addNew, setAddNew}) => {
       setAddNew(false);
    }
   return (
-    <section>
+    <section className="border border-black">
       {addNew && (
          <>
             <div onClick={handleClick} className={'absolute transition duration-300 ease-in-out top-0 right-0 bottom-0 left-0 bg-[#0000004d]'}>
