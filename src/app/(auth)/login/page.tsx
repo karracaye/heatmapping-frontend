@@ -1,17 +1,40 @@
 'use client';
 import React from 'react';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { initDB, useIndexedDB } from "react-indexed-db-hook";
-import { indexedDatabase } from '@/lib/indexed_db';
 import axios from '@/lib/axios';
-
-indexedDB.deleteDatabase('heatmap_db');
-initDB(indexedDatabase);
 
 function Login() {
   const router = useRouter();
+
+  const [ db, setDb ] = useState<any>();
+
+  useEffect(() => {
+    const request = indexedDB.open('heatmap_db', 1);
+
+    request.onsuccess = () => {
+      const database = request.result;
+      setDb(database);
+    }
+
+    // request.onerror = (event) => {
+    //   console.error(event.target.error);
+    // }
+
+    request.onupgradeneeded = () => {
+      const database = request.result;
+      let objectStore = database.createObjectStore('user', {
+          keyPath: '_id',
+          autoIncrement: true,
+      })
+      
+      objectStore.createIndex('username', 'username', { unique: false });
+      objectStore.createIndex('name', 'name', { unique: false });
+      objectStore.createIndex('email', 'email', { unique: false });
+      objectStore.createIndex('role', 'role', { unique: false });
+    }
+  }, [])
 
   const [ loginData, setLoginData ] = useState({
     username: '',
@@ -29,8 +52,6 @@ function Login() {
       [ name ]: value,
     }));
   }
-
-  const { add } = useIndexedDB('user');
 
   const submitLoginData = () => {
     axios.instance.post('/login', {
@@ -50,15 +71,22 @@ function Login() {
         })
         .then((response) => {
           response.data.result.map((item) => {
-            add({
+            const transaction = db.transaction(['user'], 'readwrite');
+            const store = transaction.objectStore('user');
+            const request = store.add({
               username: item.username,
               name: item.firstname + ' ' + item.lastname,
               email: item.email,
               role: item.roleID.role_type,
             })
-            .then((error) => {
-              console.log(error);
-            })
+
+            request.onsuccess = () => {
+              console.log('Data successfully added to IndexedDB!');
+            }
+
+            request.onerror = (event) => {
+              console.error(event.target.error);
+            }
           })
         })
         router.push('/dashboard');

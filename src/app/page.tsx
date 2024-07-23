@@ -1,12 +1,10 @@
 'use client'
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import SplashScreen from '@/components/LandingScreen/SplashScreen';
 import LoadingScreen from '@/components/LandingScreen/LoadingScreen';
+import Login from './(auth)/login/page';
 
 function Home() {
-  const router = useRouter();
-
   const [ screen, setScreen ] = useState<string>();
 
   const finish = (newScreen) => {
@@ -21,7 +19,7 @@ function Home() {
         ): screen === 'splashed' ? (
           <LoadingScreen finish={finish} />
         ): screen === 'loaded' ? (
-          router.push('/login')
+          <Login />
         ): ''
       }
     </>
