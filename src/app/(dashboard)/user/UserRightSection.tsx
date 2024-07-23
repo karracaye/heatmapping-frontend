@@ -170,27 +170,29 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
             </tbody>
           </table>
         </div>
-        <div className="w-[200px] absolute bottom-[10px] left-[42%] ">
-          <div className="flex flex-row justify-center items-center">
-            <p className="font-normal text-xs">
-              {pageNumber + 1}-
-              {pageNumber + dataNumber < totalNumber
-                ? pageNumber + dataNumber
-                : totalNumber}{" "}
-              of {totalNumber}
-            </p>
-            <img
-              onClick={() => pagination("prev")}
-              className="ml-1 w-3 h-3"
-              src="/icon/lessthan.svg"
-            />
-            <img
-              onClick={() => pagination("next")}
-              className="w-3 h-3 ml-2"
-              src="/icon/greaterthan.svg"
-            />
+        {dataNumber > 19 && (
+          <div className="w-[200px] absolute bottom-[10px] left-[42%] ">
+            <div className="flex flex-row justify-center items-center">
+              <p className="font-normal text-xs">
+                {pageNumber + 1}-
+                {pageNumber + dataNumber < totalNumber
+                  ? pageNumber + dataNumber
+                  : totalNumber}{" "}
+                of {totalNumber}
+              </p>
+              <img
+                onClick={() => pagination("prev")}
+                className="ml-1 w-3 h-3"
+                src="/icon/lessthan.svg"
+              />
+              <img
+                onClick={() => pagination("next")}
+                className="w-3 h-3 ml-2"
+                src="/icon/greaterthan.svg"
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <EditProfile
         editProfileOpen={editProfileOpen}

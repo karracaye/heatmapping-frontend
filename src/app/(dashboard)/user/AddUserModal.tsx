@@ -61,6 +61,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const [assignNewRole, setAssignNewRole] = useState("");
   const [emailSentOpen, setEmailSentOpen] = useState(false);
   const [deleteRoleIndex, setDeleteRoleIndex] = useState(null);
+  const [email, setEmail] = useState("");
   const [dataValue, setDataValue] = useState({
     firstname: "",
     middle_name: "",
@@ -81,6 +82,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
 
   const closeButton = () => {
     setType("Type");
+    setTypeOpen(false);
     setAssignNo(false);
     setTypePolitician(false);
     setServiceChoices([]);
@@ -430,9 +432,10 @@ const addUserModal = ({ addNew, addNewClick }) => {
                   </p>
                   <input
                     value={dataValue.email}
-                    onChange={(e) =>
-                      setDataValue({ ...dataValue, email: e.target.value })
-                    }
+                    onChange={(e) => {
+                      setDataValue({ ...dataValue, email: e.target.value });
+                      setEmail(e.target.value);
+                    }}
                     className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
                     type="text"
                     placeholder="example@gmail.com"
@@ -851,7 +854,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                 <div className="h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
                   <img src="/icon/checkall.svg" alt="" />
                   <p className="fonr-medium text-[15px] text-white ml-2">
-                    Email sent to juandelacruz@gmail.com
+                    {`Email sent to ${email}`}
                   </p>
                 </div>
               </div>
