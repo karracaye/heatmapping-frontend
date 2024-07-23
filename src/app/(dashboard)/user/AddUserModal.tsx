@@ -1,543 +1,865 @@
-'use client';
-import { useState, useEffect} from 'react'
-import axios from '@/lib/axios';
+"use client";
+import { useState, useEffect } from "react";
+import axios from "@/lib/axios";
 
-const addUserModal = ({addNew, addNewClick}) => {
-   const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
-   const [type, setType] =useState('Type');//It`s the initial state in the dropdown menun that you can choose between employee and politician. this can also be changed
-   const [typeOpen, setTypeOpen] = useState(false);//It toggle the choices in Type. This will show Employee and POlitician dropdown
-   const [toggleYes, setToggleYes] = useState(false);//It will toggle the Yes button in question assigning new role.It will shot input to assign new role.
-   const [selectRole, setSelectRole] = useState(false);//It will toggle the dropdown button to input new role.
-   const [addNewRole, setAddNewRole] = useState(false);//It will show an input box the you can add the new role
-   const [typePolitician, setTypePolitician] = useState(false);//If you choose politician in type. It will toggle another information about Politician
-   const [typePoliticianEVR, setTypePoliticianEVR] = useState(false);
-   const [serviceChoices, setServiceChoices] = useState<any[]>([]);//The array of services that available 
-   const [deleteDecision, setDeleteDecision] = useState(false);//For deleting the new role in decision in Frame 17
-   const [visibleChoices, setVisibleChoices] = useState(false);//This will show the new role
-   const [newAddedRole, setNewAddedRole] = useState('');//This help to appear the value of new role
-   const [newRoles, setNewRoles]= useState([
-      {
-         id: 1,
-         value: 'Superadmin',
-         status: true
+const addUserModal = ({ addNew, addNewClick }) => {
+  const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
+  const [type, setType] = useState("Type"); //It`s the initial state in the dropdown menun that you can choose between employee and politician. this can also be changed
+  const [typeOpen, setTypeOpen] = useState(false); //It toggle the choices in Type. This will show Employee and POlitician dropdown
+  const [toggleYes, setToggleYes] = useState(false); //It will toggle the Yes button in question assigning new role.It will shot input to assign new role.
+  const [selectRole, setSelectRole] = useState(false); //It will toggle the dropdown button to input new role.
+  const [addNewRole, setAddNewRole] = useState(false); //It will show an input box the you can add the new role
+  const [typePolitician, setTypePolitician] = useState(false); //If you choose politician in type. It will toggle another information about Politician
+  const [typePoliticianEVR, setTypePoliticianEVR] = useState(false);
+  const [serviceChoices, setServiceChoices] = useState<any[]>([]); //The array of services that available
+  const [deleteDecision, setDeleteDecision] = useState(false); //For deleting the new role in decision in Frame 17
+  const [visibleChoices, setVisibleChoices] = useState(false); //This will show the new role
+  const [newAddedRole, setNewAddedRole] = useState(""); //This help to appear the value of new role
+  const [newRoles, setNewRoles] = useState([
+    {
+      id: 1,
+      value: "Superadmin",
+      status: true,
+    },
+    {
+      id: 2,
+      value: "Admin",
+      status: true,
+    },
+    {
+      id: 3,
+      value: "Secretary",
+      status: true,
+    },
+  ]);
+  const [newServices, setNewServices] = useState([
+    {
+      id: 1,
+      value: "Medical assistance",
+      status: true,
+    },
+    {
+      id: 2,
+      value: "Financial assistance",
+      status: true,
+    },
+    {
+      id: 3,
+      value: "Scholarship",
+      status: true,
+    },
+    {
+      id: 4,
+      value: "Legal advise",
+      status: true,
+    },
+  ]);
+  const [addNewServices, setAddNewServices] = useState(false);
+  const [addServiceButtonOpen, setAddServiceButtonOpen] = useState(true);
+  const [addButtonOpen, setAddButtonOpen] = useState(true);
+  const [newRoleOpen, setNewRoleOpen] = useState(false);
+  const [assignNewRole, setAssignNewRole] = useState("");
+  const [emailSentOpen, setEmailSentOpen] = useState(false);
+  const [deleteRoleIndex, setDeleteRoleIndex] = useState(null);
+  const [dataValue, setDataValue] = useState({
+    firstname: "",
+    middle_name: "",
+    lastname: "",
+    email: "",
+    username: "",
+    password: "",
+    home_address: {
+      city: "Quezon City",
+      region: "Metro Manila",
+      country: "Philippines",
+    },
+    roleID: "",
+    status: "active",
+    EVR_No: "N/A",
+    account_typeID: "",
+  });
 
-      },
-      {
-         id: 2,
-         value: 'Admin',
-         status: true
+  const closeButton = () => {
+    setType("Type");
+    setAssignNo(false);
+    setTypePolitician(false);
+    setServiceChoices([]);
+    setVisibleChoices(false);
+    setNewAddedRole("");
+    setNewRoleOpen(false);
+    setAssignNewRole("");
+    setNewRoles([]);
+    setNewRoles(newRoles);
+    setSelectRole(false);
+    setTypePoliticianEVR(false);
+  };
 
-      },
-      {
-         id: 3,
-         value: 'Secretary',
-         status: true
-
-      }
-   ]);
-   const [newServices, setNewServices]= useState([
-      {
-         id: 1,
-         value: 'Medical assistance',
-         status: true
-
-      },
-      {
-         id: 2,
-         value: 'Financial assistance',
-         status: true
-
-      },
-      {
-         id: 3,
-         value: 'Scholarship',
-         status: true
-
-      },
-      {
-         id: 4,
-         value: 'Legal advise',
-         status: true
-
-      }
-   ]);
-   const [addNewServices, setAddNewServices] = useState(false);
-   const [addServiceButtonOpen, setAddServiceButtonOpen] = useState(true);
-   const [addButtonOpen, setAddButtonOpen] = useState(true);
-   const [newRoleOpen, setNewRoleOpen] = useState(false);
-   const [assignNewRole, setAssignNewRole] = useState('');
-   const [emailSentOpen, setEmailSentOpen] = useState(false);
-   const [deleteRoleIndex, setDeleteRoleIndex] = useState(null);
-   const [dataValue, setDataValue] = useState({
-      firstname: '',
-      middle_name: '',
-      lastname: '',
-      email: '',
-      username: '',
-      password:'',
-      home_address: {
-         city: 'Quezon City',
-         region: 'Metro Manila',
-         country: 'Philippines'
-      },
-      roleID: '',
-      status: 'active',
-      EVR_No: "N/A",
-      account_typeID: ''
-   });
-
-   const closeButton = () => {
-      setType('Type');
+  //Function for choosing the type of user(Politician or Employee).
+  const clickPolitician = () => {
+    //This will trigger components that ned when you select politician
+    if (type !== "Politician") {
+      setTypePolitician(!typePolitician);
       setAssignNo(false);
-      setTypePolitician(false);
-      setServiceChoices([]);
-      setVisibleChoices(false);
-      setNewAddedRole('');
+      setAssignNewRole("");
       setNewRoleOpen(false);
-      setAssignNewRole('');
-      setNewRoles([]);
-      setNewRoles(newRoles);
-      setSelectRole(false);
-      setTypePoliticianEVR(false);
-   }
+      setTypePoliticianEVR(true);
+    }
+  };
 
-   //Function for choosing the type of user(Politician or Employee).
-   const clickPolitician = () =>{//This will trigger components that ned when you select politician
-      if(type !== "Politician")
-      {
-         setTypePolitician(!typePolitician);
-         setAssignNo(false);
-         setAssignNewRole('');
-         setNewRoleOpen(false);
-         setTypePoliticianEVR(true);
-      }
-   };
+  const clickChoices = (type: string) => {
+    //Choice for employee or politician
+    setType(type);
+    setTypeOpen(!typeOpen);
+    if (type === "Employee") {
+      setDataValue({
+        ...dataValue,
+        account_typeID: "66862cfe311b616ac697a2bb",
+      });
+    } else if (type === "Politician") {
+      setDataValue({
+        ...dataValue,
+        account_typeID: "66862e2e311b616ac697a2bc",
+      });
+    }
+  };
 
-   const clickChoices = (type: string) =>{//Choice for employee or politician
-      setType(type);
-      setTypeOpen(!typeOpen);
-      if (type === "Employee"){
-         setDataValue({...dataValue, account_typeID: '66862cfe311b616ac697a2bb'});
-      }else if(type === "Politician"){
-         setDataValue({...dataValue, account_typeID: '66862e2e311b616ac697a2bc'});
-      }
-   };
-
-   const handleClick= () => {//Handle toggle the need too be closed
-      if (type !== "Employee")
-      {
-         setAssignNo(!assignNo);
-         setTypePolitician(false);
-         setToggleYes(false);
-         setAddNewRole(false);
-         setTypePoliticianEVR(false);
-      }
-   };
-
-   const handleClickNo = () => {//Close in employee type
-      setType('Type');
+  const handleClick = () => {
+    //Handle toggle the need too be closed
+    if (type !== "Employee") {
       setAssignNo(!assignNo);
       setTypePolitician(false);
       setToggleYes(false);
       setAddNewRole(false);
       setTypePoliticianEVR(false);
-   }
+    }
+  };
 
-   const submitNewRole = (role: string) => {//Submit new role that will be choose between superadmin, admin and secretary
-      setNewAddedRole(role);
-      setSelectRole(false);
-   };
+  const handleClickNo = () => {
+    //Close in employee type
+    setType("Type");
+    setAssignNo(!assignNo);
+    setTypePolitician(false);
+    setToggleYes(false);
+    setAddNewRole(false);
+    setTypePoliticianEVR(false);
+  };
 
-   const handleChoice= () => {
-      setVisibleChoices(!visibleChoices);
-   };
+  const submitNewRole = (role: string) => {
+    //Submit new role that will be choose between superadmin, admin and secretary
+    setNewAddedRole(role);
+    setSelectRole(false);
+  };
 
-   useEffect(() => {
-      if(serviceChoices.length=== 0){
-         setVisibleChoices(false);
-      }
-   },[serviceChoices]);
+  const handleChoice = () => {
+    setVisibleChoices(!visibleChoices);
+  };
 
-   //New roles that will be created
-   const handleRoleInput = (id: number, value: string) => {
-      setNewRoles((prevRoles) => 
-         prevRoles.map((role) => 
-            role.id === id ? { ...role, value: value } : role
-         ) 
-      );
-   };
+  useEffect(() => {
+    if (serviceChoices.length === 0) {
+      setVisibleChoices(false);
+    }
+  }, [serviceChoices]);
 
-   const handleInputFixed = (id: number) => {//Will set the data as uneditable
-   setNewRoles((prevRoles) => 
-      prevRoles.map((role) => 
-         role.id === id ? { ...role, status: true } : role
-      ) 
-   );
-   setAddButtonOpen(true);
-   };
+  //New roles that will be created
+  const handleRoleInput = (id: number, value: string) => {
+    setNewRoles((prevRoles) =>
+      prevRoles.map((role) =>
+        role.id === id ? { ...role, value: value } : role
+      )
+    );
+  };
 
-   const handleSubmitInput = () => {
-   setNewRoles((prevRoles) =>[
+  const handleInputFixed = (id: number) => {
+    //Will set the data as uneditable
+    setNewRoles((prevRoles) =>
+      prevRoles.map((role) =>
+        role.id === id ? { ...role, status: true } : role
+      )
+    );
+    setAddButtonOpen(true);
+  };
+
+  const handleSubmitInput = () => {
+    setNewRoles((prevRoles) => [
       ...prevRoles,
-      {id: prevRoles.length + 1, value: '', status: false},
-   ]);
-   setAddButtonOpen(false);
-   };
+      { id: prevRoles.length + 1, value: "", status: false },
+    ]);
+    setAddButtonOpen(false);
+  };
 
-   const removeChoice = (choice: string, index) => {//Remove service choice in politician side
-      setServiceChoices(serviceChoices.filter(item => item !== choice && item.index !== index))
-   }
+  const removeChoice = (choice: string, index) => {
+    //Remove service choice in politician side
+    setServiceChoices(
+      serviceChoices.filter((item) => item !== choice && item.index !== index)
+    );
+  };
 
-   const handleEmailSentClick = () => {//Email sent modal when you click add
-      setEmailSentOpen(true);
-      setTimeout(() => {
-         setEmailSentOpen(false);
-         addNewClick();
-      }, 1000);
-   };
+  const handleEmailSentClick = () => {
+    //Email sent modal when you click add
+    setEmailSentOpen(true);
+    setTimeout(() => {
+      setEmailSentOpen(false);
+      addNewClick();
+    }, 1000);
+  };
 
-   const handleNewRoleDelete = (role: any) => {
-      setDeleteDecision(true); 
-      setNewRoleOpen(false);
-      setDeleteRoleIndex(role);
-   };
+  const handleNewRoleDelete = (role: any) => {
+    setDeleteDecision(true);
+    setNewRoleOpen(false);
+    setDeleteRoleIndex(role);
+  };
 
-   const handleNewRoleSubmit = (newRole: string) => {
-      setNewRoleOpen(true); 
-      setAddNewRole(false); 
-      handleClick();
-      setAssignNo(false);
-      setAssignNewRole(newRole);
-      if (newRole === "Superadmin"){
-         setDataValue({...dataValue, roleID:'668015b03fef6a03ee9894b4'});
-      }else if(newRole === "Admin"){
-         setDataValue({...dataValue, roleID:'668015e23fef6a03ee9894b5'});
-      }else if(newRole === "Secreatary"){
-         setDataValue({...dataValue, roleID:'668015f93fef6a03ee9894b6'});
-      }else if (newRole === "Politician"){
-         setDataValue({...dataValue, roleID:'N/A'});
+  const handleNewRoleSubmit = (newRole: string) => {
+    setNewRoleOpen(true);
+    setAddNewRole(false);
+    handleClick();
+    setAssignNo(false);
+    setAssignNewRole(newRole);
+    if (newRole === "Superadmin") {
+      setDataValue({ ...dataValue, roleID: "668015b03fef6a03ee9894b4" });
+    } else if (newRole === "Admin") {
+      setDataValue({ ...dataValue, roleID: "668015e23fef6a03ee9894b5" });
+    } else if (newRole === "Secreatary") {
+      setDataValue({ ...dataValue, roleID: "668015f93fef6a03ee9894b6" });
+    } else if (newRole === "Politician") {
+      setDataValue({ ...dataValue, roleID: "N/A" });
+    }
+  };
+
+  const confirmDeleteRole = () => {
+    setNewRoles(newRoles.filter((role) => role !== deleteRoleIndex));
+    setDeleteDecision(false);
+  };
+
+  const selectedChoices = (choice: string) => {
+    //Add Services to the list in politician
+    if (!serviceChoices.includes(choice)) {
+      setServiceChoices([...serviceChoices, choice]);
+      if (!visibleChoices) {
+        handleChoice();
+        setVisibleChoices(true);
       }
-   }
+    }
+  };
 
-   const confirmDeleteRole = () => {
-      setNewRoles(newRoles.filter(role => role !== deleteRoleIndex))
-      setDeleteDecision(false);
-   }
+  //New services that will be added
+  const handleServiceInput = (id: number, value: string) => {
+    setNewServices((prevService) =>
+      prevService.map((service) =>
+        service.id === id ? { ...service, value: value } : service
+      )
+    );
+  };
 
-   const selectedChoices = (choice: string) => {//Add Services to the list in politician
-      if (!serviceChoices.includes(choice)){
-         setServiceChoices([...serviceChoices, choice]);
-         if(!visibleChoices){
-            handleChoice();
-            setVisibleChoices(true);
-         }
-      }
-   };
+  const handleServiceInputFixed = (id: number) => {
+    //Will set the data as uneditable
+    setNewServices((prevService) =>
+      prevService.map((service) =>
+        service.id === id ? { ...service, status: true } : service
+      )
+    );
+    setAddServiceButtonOpen(true);
+  };
 
-   //New services that will be added
-   const handleServiceInput = (id: number, value: string) => {
-      setNewServices((prevService) => 
-         prevService.map((service) => 
-            service.id === id ? { ...service, value: value } : service
-         ) 
-      );
-   };
-
-   const handleServiceInputFixed = (id: number) => {//Will set the data as uneditable
-   setNewServices((prevService) => 
-      prevService.map((service) => 
-         service.id === id ? { ...service, status: true } : service
-      ) 
-   );
-   setAddServiceButtonOpen(true);
-   };
-
-   const handleSubmitServiceInput = () => {
-   setNewServices((prevService) =>[
+  const handleSubmitServiceInput = () => {
+    setNewServices((prevService) => [
       ...prevService,
-      {id: prevService.length + 1, value: '', status: false},
-   ]);
-   setAddServiceButtonOpen(false);
-   };
+      { id: prevService.length + 1, value: "", status: false },
+    ]);
+    setAddServiceButtonOpen(false);
+  };
 
-   const handleNewServiceSubmit = (newService: string) => {
-      selectedChoices(newService);
-      setAddNewServices(false);
-      setTypePolitician(true);
-   }
+  const handleNewServiceSubmit = (newService: string) => {
+    selectedChoices(newService);
+    setAddNewServices(false);
+    setTypePolitician(true);
+  };
 
-   const handleNewServiceDelete = (newService: any) => {
-      setNewServices(newServices.filter(service => service !== newService))
-   };
+  const handleNewServiceDelete = (newService: any) => {
+    setNewServices(newServices.filter((service) => service !== newService));
+  };
 
-   
-   const submitNewUser = (event) => {
-      event.preventDefault();
-      const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`
-      const updatedData = {...dataValue, username: userName}
-      console.log({updatedData});
-      axios.instance.post('/users/addUser', updatedData, axios.authorization)
-      .then(res => {
-         console.log(res.data);
+  const submitNewUser = (event) => {
+    event.preventDefault();
+    const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`;
+    const updatedData = { ...dataValue, username: userName };
+    console.log({ updatedData });
+    axios.instance
+      .post("/users/addUser", updatedData, axios.authorization)
+      .then((res) => {
+        console.log(res.data);
       })
-      .catch(err => console.log(err))
-      setTimeout(() => {
-         handleEmailSentClick();
-         clearInput();
-         closeButton();
-      },500)
-   }
+      .catch((err) => console.log(err));
+    setTimeout(() => {
+      handleEmailSentClick();
+      clearInput();
+      closeButton();
+    }, 500);
+  };
 
-   const clearInput = () => {
-      setDataValue({
-         firstname: '',
-         middle_name: '',
-         lastname: '',
-         email: '',
-         username: '',
-         password:'',
-         home_address: {
-            city: 'Quezon City',
-            region: 'Metro Manila',
-            country: 'Philippines'
-         },
-         roleID: '',
-         status: 'active',
-         EVR_No: "N/A",
-         account_typeID: ''
-      })
-   }
-return (
-   <section>
-   {addNew &&
-      <section>
-         <div  onClick={() => {addNewClick(); closeButton();}} className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]'>
-         </div>
-         <div className='w-[557px] h-[100vh] bg-white flex flex-col justify-between absolute right-0 top-0 bottom-0 overflow-auto'>
+  const clearInput = () => {
+    setDataValue({
+      firstname: "",
+      middle_name: "",
+      lastname: "",
+      email: "",
+      username: "",
+      password: "",
+      home_address: {
+        city: "Quezon City",
+        region: "Metro Manila",
+        country: "Philippines",
+      },
+      roleID: "",
+      status: "active",
+      EVR_No: "N/A",
+      account_typeID: "",
+    });
+  };
+
+  return (
+    <section>
+      {addNew && (
+        <section>
+          <div
+            onClick={() => {
+              addNewClick();
+              closeButton();
+            }}
+            className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]"
+          ></div>
+          <div className="w-[557px] h-[100vh] bg-white flex flex-col justify-between absolute right-0 top-0 bottom-0 overflow-auto">
             <div>
-               <div className='flex flex-row justify-between px-[5%] w-full'>
-                  <div className='flex flex-col'>
-                     <h3 className='font-medium text-[15px] mt-[30px]'>User Registartion Form</h3>
-                     <p className='font-normal text-[13px] opacity-50 mt-1'>Please fill up the followinf Information</p>
+              <div className="flex flex-row justify-between px-[5%] w-full">
+                <div className="flex flex-col">
+                  <h3 className="font-medium text-[15px] mt-[30px]">
+                    User Registartion Form
+                  </h3>
+                  <p className="font-normal text-[13px] opacity-50 mt-1">
+                    Please fill up the followinf Information
+                  </p>
+                </div>
+                <div className="pl-[50px] pt-[30px] relative">
+                  <button
+                    onClick={() => setTypeOpen(!typeOpen)}
+                    className={`${
+                      type === "Type" ? "text-[#0000001a]" : "text-black"
+                    } py-[6px] font-normal text-[15px] relative border-[#0000001a] border-[1px] rounded-[10px] w-[150px] pl-[5px] pr-[10px] text-left`}
+                  >
+                    {type}
+                    <img
+                      className="w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10"
+                      src="/icon/dropdown.svg"
+                    />
+                  </button>
+                  {typeOpen && (
+                    <div className="w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]">
+                      <button
+                        onClick={() => {
+                          clickChoices("Employee");
+                          handleClick();
+                        }}
+                        className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
+                      >
+                        Employee
+                      </button>
+                      <button
+                        onClick={() => {
+                          clickChoices("Politician");
+                          clickPolitician();
+                        }}
+                        className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
+                      >
+                        Politician
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-row mt-[13px]">
+                <div className="w-[45%] flex flex-col ml-[5%] ">
+                  <p className="font-normal text-[13px] opacity-50">
+                    First Name
+                  </p>
+                  <input
+                    value={dataValue.firstname}
+                    onChange={(e) =>
+                      setDataValue({ ...dataValue, firstname: e.target.value })
+                    }
+                    className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                    type="text"
+                    placeholder="Juan"
+                  />
+                </div>
+                <div className="w-[45%] flex flex-col ml-[2%] ">
+                  <p className="font-normal text-[13px] opacity-50">
+                    Middle Name
+                  </p>
+                  <input
+                    value={dataValue.middle_name}
+                    onChange={(e) =>
+                      setDataValue({
+                        ...dataValue,
+                        middle_name: e.target.value,
+                      })
+                    }
+                    className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                    type="text"
+                    placeholder="Pablo"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row mt-[13px]">
+                <div className="w-[45%] flex flex-col ml-[5%] ">
+                  <p className="font-normal text-[13px] opacity-50">
+                    Last Name
+                  </p>
+                  <input
+                    value={dataValue.lastname}
+                    onChange={(e) =>
+                      setDataValue({ ...dataValue, lastname: e.target.value })
+                    }
+                    className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                    type="text"
+                    placeholder="Dela Cruz"
+                  />
+                </div>
+                <div className="w-[45%] flex flex-col ml-[2%] justify-end">
+                  <p className="font-normal text-[13px] opacity-50">
+                    Email Address
+                  </p>
+                  <input
+                    value={dataValue.email}
+                    onChange={(e) =>
+                      setDataValue({ ...dataValue, email: e.target.value })
+                    }
+                    className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                    type="text"
+                    placeholder="example@gmail.com"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row mt-[13px]">
+                <div className="w-[45%] flex flex-col ml-[5%] justify-end">
+                  <p className="font-normal text-[13px] opacity-50">
+                    Home Address
+                  </p>
+                  <input
+                    className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                    type="text"
+                    placeholder="Metro Manila, Philippines"
+                  />
+                </div>
+                <div className="w-[45%] flex flex-col ml-[2%] justify-end">
+                  <p className="font-normal text-[13px] opacity-50">
+                    Mobile Number
+                  </p>
+                  <div className="relative">
+                    <p className="font-normal text-[14px] absolute top-[12px] left-[10px] border-r pr-2 text-[#0000001a]">
+                      +63
+                    </p>
+                    <input
+                      className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[52px] placeholder-[#0000001a]"
+                      type="text"
+                      placeholder="0000000000"
+                    />
                   </div>
-                  <div className='pl-[50px] pt-[30px] relative'> 
-                     <button onClick={() => setTypeOpen(!typeOpen)} className={`${type === 'Type' ? 'text-[#0000001a]' : 'text-black'} py-[6px] font-normal text-[15px] relative border-[#0000001a] border-[1px] rounded-[10px] w-[150px] pl-[5px] pr-[10px] text-left`}>{type}<img className='w-[24px] h-[24px] absolute top-[8px] right-[3px] opacity-10' src="/icon/dropdown.svg"/></button>
-                     {typeOpen && 
-                        <div  className='w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]'>
-                           <button onClick={() => {clickChoices("Employee"); handleClick();}} className='h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white'>Employee</button>
-                           <button onClick={() => {clickChoices("Politician"); clickPolitician();}} className='h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white'>Politician</button>
+                </div>
+              </div>
+              {newRoleOpen && type === "Employee" && (
+                <div className="flex flex-row mt-[13px] transition duration-300 ease-in-out">
+                  <div className="w-[45%] flex flex-col ml-[5%] justify-end">
+                    <p className="font-normal text-[13px] opacity-50">Role</p>
+                    <button className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] text-left px-[17px]">
+                      {assignNewRole}
+                    </button>
+                  </div>
+                </div>
+              )}
+              {typePoliticianEVR && (
+                <>
+                  <div className="w-[45%] flex flex-col ml-[5%] justify-end mt-[13px] transition duration-300 ease-in-out">
+                    <p className="font-normal text-[13px] opacity-50">
+                      EVR No.
+                    </p>
+                    <input
+                      className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
+                      type="text"
+                      placeholder="0000-000-000"
+                    />
+                  </div>
+                  <hr className="border-t-[1px] border-[#0000001a] w-[90%] ml-[5%] mt-6" />
+                </>
+              )}
+              {assignNo && (
+                <div className="flex flex-col">
+                  <div className="flex flex-row items-center pl-[30px] mt-4 transition duration-300 ease-in-out">
+                    <img className="w-5 h-5" src="/icon/questionmark.svg" />
+                    <p className="font-normal text-[14px] ml-1">
+                      Do you wish to assign a role to this new user?
+                    </p>
+                    <button
+                      onClick={handleClickNo}
+                      className="bg-[#D9D9D9] w-[40px] h-[32px] rounded-[5px] text-white font-normal text-[13px] ml-4"
+                    >
+                      No
+                    </button>
+                    <button
+                      onClick={() => {
+                        setToggleYes(!toggleYes);
+                        setAddNewRole(false);
+                      }}
+                      className="bg-[#303079] transition duration-300 ease-in-out w-[40px] h-[32px] rounded-[5px] text-white font-normal text-xs ml-2"
+                    >
+                      Yes
+                    </button>
+                  </div>
+                  {toggleYes && (
+                    <div className="flex flex-col w-full mt-3 pl-[30px] pr-[20px] transition duration-300 ease-in-out">
+                      <p className="font-normal text-[14px] opacity-50">
+                        If yes, please select a role from the available options.
+                        If the desired role is not listed, you can create a new
+                        role for them.
+                      </p>
+                      <div className="flex flex-row items-center mt-2">
+                        <div className="relative">
+                          <input
+                            onChange={(e) =>
+                              handleNewRoleSubmit(e.target.value)
+                            }
+                            onClick={() => {
+                              newAddedRole
+                                ? handleNewRoleSubmit(newAddedRole)
+                                : null;
+                            }}
+                            className={`w-[240px] h-[40px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] cursor-pointer text pl-[15px] font-normal text-[14px] ${
+                              newAddedRole ? "text-black" : "text-[#0000001a]"
+                            }`}
+                            type="text"
+                            value={
+                              newAddedRole ? newAddedRole : "Select a role"
+                            }
+                          />
+                          <img
+                            onClick={() => setSelectRole(!selectRole)}
+                            className="absolute w-[24px] h-[24px] top-[12px] right-[10px] cursor-pointer"
+                            src="/icon/dropdown1.svg"
+                          />
+                          {selectRole && (
+                            <div className="w-[100%] absolute flex flex-col font-normal text-sm rounded-br-[10px] rounded-bl-[10px] bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] transition duration-300 ease-in-out">
+                              <button
+                                onClick={() => submitNewRole("Superadmin")}
+                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
+                              >
+                                Superadmin
+                              </button>
+                              <button
+                                onClick={() => submitNewRole("Admin")}
+                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
+                              >
+                                Admin
+                              </button>
+                              <button
+                                onClick={() => submitNewRole("Secretary")}
+                                className="text-left pl-[10px] rounded-br-[10px] rounded-bl-[10px] w-full py-2 hover:bg-[#D9D9D9]"
+                              >
+                                Secretary
+                              </button>
+                            </div>
+                          )}
                         </div>
-                     }
+                        <button
+                          onClick={() => {
+                            setAddNewRole(!addNewRole);
+                            setToggleYes(false);
+                          }}
+                          className="font-semibold text-[14px] text-[#23b2ff] pl-3 transition duration-300 ease-in-out cursor-pointer"
+                        >
+                          Add new role...
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {addNewRole && (
+                    <div className="flex flex-col w-full mt-3 pl-[60px] pr-[50px] transition duration-300 ease-in-out">
+                      <h3 className="font-medium text-lg">Roles</h3>
+                      <p className="font-normal text-sm opacity-50 mt-1">
+                        These role descriptions outline the core
+                        responsibilities and duties
+                      </p>
+                      <div className="w-full flex flex-wrap items-center mt-1">
+                        {newRoles.map((role) => (
+                          <div
+                            key={role.id}
+                            className="flex items-center align-middle mt-1"
+                          >
+                            {role.status ? (
+                              <div className="ml-1 relative">
+                                <button
+                                  onClick={() => {
+                                    handleNewRoleSubmit(role.value);
+                                  }}
+                                  className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                                >
+                                  {role.value}
+                                </button>
+                                <img
+                                  onClick={() => handleNewRoleDelete(role)}
+                                  className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                                  src="/icon/close.svg"
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex items-center ml-1">
+                                <input
+                                  value={role.value}
+                                  onChange={(e) =>
+                                    handleRoleInput(role.id, e.target.value)
+                                  }
+                                  className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                                  type="text"
+                                />
+                                <button
+                                  onClick={() => {
+                                    role.value
+                                      ? handleInputFixed(role.id)
+                                      : null;
+                                  }}
+                                  className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                                >
+                                  <img src="/icon/checkblue.svg" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                        {addButtonOpen && (
+                          <button
+                            onClick={handleSubmitInput}
+                            className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
+                          >
+                            <img
+                              className="h-[30px] w-[30px]"
+                              src="/icon/addblue.svg"
+                            />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {typePolitician && (
+                <div className="w-[90%] ml-[5%] h-[30%] pt-5 transition duration-300 ease-in-out">
+                  <h2 className="font-normal text-[15px] w-[10%]  border-l-[5px] border-[#303079] pl-[10px]">
+                    Services
+                  </h2>
+                  <p className="w-full pl-[15px] font-normal text-[13px] opacity-50">
+                    Please choose the services you provide from the following
+                    options, and feel free to add or specify any that are not
+                    listed.
+                  </p>
+                  <p className="pl-[15px] text-xs opacity-50 mt-3">
+                    Suggestion
+                  </p>
+                  <div className="flex flex-row justify-between mt-2">
+                    <button
+                      onClick={() => selectedChoices("Medical Assistance")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Medical Assistance
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Scholarship")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Scholarship
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Financial assistance")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Financial Assistance
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Legal Advice")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Legal Advise
+                    </button>
+                    <button
+                      onClick={() => {
+                        setAddNewServices(true);
+                        setTypePolitician(false);
+                      }}
+                      className="font-medium text-[#303079] text-[12px]"
+                    >
+                      Add more...
+                    </button>
                   </div>
-               </div>
-               <div className='flex flex-row mt-[13px]'>
-                  <div className='w-[45%] flex flex-col ml-[5%] '>
-                     <p className='font-normal text-[13px] opacity-50'>First Name</p>
-                     <input value={dataValue.firstname} onChange={(e) => setDataValue({...dataValue, firstname: e.target.value})}  className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Juan' />
-                  </div>
-                  <div className='w-[45%] flex flex-col ml-[2%] '>
-                     <p className='font-normal text-[13px] opacity-50'>Middle Name</p>
-                     <input value={dataValue.middle_name} onChange={(e) => setDataValue({...dataValue, middle_name: e.target.value})} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Pablo'/>
-                  </div>
-               </div>
-               <div className='flex flex-row mt-[13px]'>
-                  <div className='w-[45%] flex flex-col ml-[5%] '>
-                     <p className='font-normal text-[13px] opacity-50'>Last Name</p>
-                     <input value={dataValue.lastname} onChange={(e) => setDataValue({...dataValue, lastname: e.target.value})} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Dela Cruz'/>
-                  </div>
-                  <div className='w-[45%] flex flex-col ml-[2%] justify-end'>
-                     <p className='font-normal text-[13px] opacity-50'>Email Address</p>
-                     <input value={dataValue.email} onChange={(e) => setDataValue({...dataValue, email: e.target.value})} className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='example@gmail.com'/>
-                  </div>
-               </div>
-               <div className='flex flex-row mt-[13px]'>
-                  <div className='w-[45%] flex flex-col ml-[5%] justify-end'>
-                     <p className='font-normal text-[13px] opacity-50'>Home Address</p>
-                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='Metro Manila, Philippines'/>
-                  </div>
-                  <div className='w-[45%] flex flex-col ml-[2%] justify-end'>
-                     <p className='font-normal text-[13px] opacity-50'>Mobile Number</p>
-                     <div className='relative'>
-                        <p className='font-normal text-[14px] absolute top-[12px] left-[10px] border-r pr-2 text-[#0000001a]'>+63</p>
-                        <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] pl-[52px] placeholder-[#0000001a]' type="text" placeholder='0000000000'/>
-                     </div>
-                  </div>
-               </div>
-               {newRoleOpen && type === 'Employee' &&
-                  <div className='flex flex-row mt-[13px] transition duration-300 ease-in-out'>
-                     <div className='w-[45%] flex flex-col ml-[5%] justify-end'>
-                        <p className='font-normal text-[13px] opacity-50'>Role</p>
-                        <button className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] text-left px-[17px]'>{assignNewRole}</button>
-                     </div>
-                  </div>
-               }
-               {typePoliticianEVR && 
-               <>
-                  <div className='w-[45%] flex flex-col ml-[5%] justify-end mt-[13px] transition duration-300 ease-in-out'>
-                     <p className='font-normal text-[13px] opacity-50'>EVR No.</p>
-                     <input className='w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]' type="text" placeholder='0000-000-000'/>
-                  </div>
-                  <hr className='border-t-[1px] border-[#0000001a] w-[90%] ml-[5%] mt-6'/>
-               </>
-               }
-               {assignNo && 
-               <div className='flex flex-col'>
-                  <div className='flex flex-row items-center pl-[30px] mt-4 transition duration-300 ease-in-out'>
-                     <img className='w-5 h-5' src="/icon/questionmark.svg"/>
-                     <p className='font-normal text-[14px] ml-1'>Do you wish to assign a role to this new user?</p>
-                     <button onClick={handleClickNo} className='bg-[#D9D9D9] w-[40px] h-[32px] rounded-[5px] text-white font-normal text-[13px] ml-4'>No</button>
-                     <button onClick={() => {setToggleYes(!toggleYes); setAddNewRole(false);}} className='bg-[#303079] transition duration-300 ease-in-out w-[40px] h-[32px] rounded-[5px] text-white font-normal text-xs ml-2'>Yes</button>
-                  </div>
-                  {toggleYes && 
-                     <div className='flex flex-col w-full mt-3 pl-[30px] pr-[20px] transition duration-300 ease-in-out'>
-                        <p className='font-normal text-[14px] opacity-50'>If yes, please select a role from the available options. If the desired role is not listed, you can create a new role for them.</p>
-                        <div className='flex flex-row items-center mt-2'>
-                           <div className='relative'>
-                              <input onChange={(e) => handleNewRoleSubmit(e.target.value)} onClick={() => {newAddedRole ? handleNewRoleSubmit(newAddedRole) : null}} className={`w-[240px] h-[40px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] cursor-pointer text pl-[15px] font-normal text-[14px] ${newAddedRole ? 'text-black' : 'text-[#0000001a]'}`} type="text" value={newAddedRole ? newAddedRole : 'Select a role'}/>
-                              <img onClick={() => setSelectRole(!selectRole)} className='absolute w-[24px] h-[24px] top-[12px] right-[10px] cursor-pointer' src="/icon/dropdown1.svg" />
-                              {selectRole && <div className='w-[100%] absolute flex flex-col font-normal text-sm rounded-br-[10px] rounded-bl-[10px] bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] transition duration-300 ease-in-out'>
-                                 <button onClick={() => submitNewRole('Superadmin')} className='text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]'>Superadmin</button>
-                                 <button onClick={() => submitNewRole('Admin')} className='text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]'>Admin</button>
-                                 <button onClick={() => submitNewRole('Secretary')} className='text-left pl-[10px] rounded-br-[10px] rounded-bl-[10px] w-full py-2 hover:bg-[#D9D9D9]'>Secretary</button>
-                              </div>}
-                           </div>
-                           <button onClick={() => {setAddNewRole(!addNewRole); setToggleYes(false);}} className='font-semibold text-[14px] text-[#23b2ff] pl-3 transition duration-300 ease-in-out cursor-pointer'>Add new role...</button>
+                  {visibleChoices && (
+                    <div className="mt-3 pl-1">
+                      <p className="font-normal text-xs opacity-50 mb-[2px]">
+                        List you added
+                      </p>
+                      <div className="border border-[#eeeeee] w-full min-h-[100px]">
+                        <div className="flex flex-wrap items-center gap-1 rounded-[10px] p-1 py-1">
+                          {serviceChoices.map((choice, index) => (
+                            <button
+                              key={index}
+                              className="px-[5px] text-white bg-[#303179] py-[3px] pr-[20px] border-[1px] border-[#303079] rounded-full font-normal text-[12px] relative"
+                            >
+                              {choice}
+                              <img
+                                onClick={() => removeChoice(choice, index)}
+                                src="/icon/cancel.svg"
+                                alt="cancel"
+                                className="absolute w-[15px] h-[15px] top-[5px] right-[4px]"
+                              />
+                            </button>
+                          ))}
                         </div>
-                     </div>
-                  }
-                  {addNewRole && 
-                     <div className='flex flex-col w-full mt-3 pl-[60px] pr-[50px] transition duration-300 ease-in-out'>
-                           <h3 className='font-medium text-lg'>Roles</h3>
-                           <p className='font-normal text-sm opacity-50 mt-1'>These role descriptions outline the core responsibilities and duties</p>
-                           <div className='w-full flex flex-wrap items-center mt-1'>
-                              {
-                                 newRoles.map((role) => (
-                                    <div key={role.id} className='flex items-center align-middle mt-1'>
-                                       {
-                                          role.status ? (
-                                             <div className='ml-1 relative'>
-                                                <button onClick={() => {handleNewRoleSubmit(role.value);}} className='px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white'>{role.value}</button>
-                                                <img onClick={() => handleNewRoleDelete(role)} className='w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer' src="/icon/close.svg"/>
-                                             </div>
-                                          ) : (
-                                             <div className='flex items-center ml-1'>
-                                                <input value={role.value}  onChange={(e) => handleRoleInput(role.id, e.target.value)} className='border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2' type="text" />
-                                                <button onClick={() => {role.value ? handleInputFixed(role.id) : null}} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]'><img src="/icon/checkblue.svg"/></button>
-                                             </div>
-                                          )
-                                       }
-                                    </div>
-                                 ))
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {addNewServices && (
+                <div className="flex flex-col w-full mt-3 pl-[40px] pr-[50px] transition duration-300 ease-in-out">
+                  <h3 className="font-medium text-lg">Services</h3>
+                  <p className="font-normal text-sm opacity-50 mt-1">
+                    These services descriptions outline the core
+                    responsibilities and duties
+                  </p>
+                  <div className="w-full flex flex-wrap items-center mt-1">
+                    {newServices.map((service) => (
+                      <div
+                        key={service.id}
+                        className="flex items-center align-middle mt-1"
+                      >
+                        {service.status ? (
+                          <div className="ml-1 relative">
+                            <button
+                              onClick={() =>
+                                handleNewServiceSubmit(service.value)
                               }
-                              {addButtonOpen &&
-                                 <button onClick={handleSubmitInput} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center'><img className='h-[30px] w-[30px]' src="/icon/addblue.svg"/></button>
+                              className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                            >
+                              {service.value}
+                            </button>
+                            <img
+                              onClick={() => {
+                                handleNewServiceDelete(service);
+                              }}
+                              className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                              src="/icon/close.svg"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex items-center ml-1">
+                            <input
+                              value={service.value}
+                              onChange={(e) =>
+                                handleServiceInput(service.id, e.target.value)
                               }
-                           </div>
-                     </div>
-                  }
-               </div>
-               }
-               {typePolitician && 
-                  <div className='w-[90%] ml-[5%] h-[30%] pt-5 transition duration-300 ease-in-out'>
-                     <h2 className='font-normal text-[15px] w-[10%]  border-l-[5px] border-[#303079] pl-[10px]'>Services</h2>
-                     <p className='w-full pl-[15px] font-normal text-[13px] opacity-50'>
-                        Please choose the services you provide from the following options, and feel free to add or specify any that are not listed.
-                     </p>
-                     <p className='pl-[15px] text-xs opacity-50 mt-3'>
-                        Suggestion
-                     </p>
-                     <div className='flex flex-row justify-between mt-2'> 
-                        <button onClick={() => selectedChoices('Medical Assistance')} className='px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white'>Medical Assistance</button>
-                        <button onClick={() => selectedChoices('Scholarship')} className='px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white'>Scholarship</button>
-                        <button onClick={() => selectedChoices('Financial assistance')} className='px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white'>Financial Assistance</button>
-                        <button onClick={() => selectedChoices('Legal Advice')} className='px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white'>Legal Advise</button>
-                        <button onClick={() => {setAddNewServices(true); setTypePolitician(false);}} className='font-medium text-[#303079] text-[12px]'>Add more...</button>
-                     </div>
-                     {visibleChoices && 
-                        <div className='mt-3 pl-1'>
-                           <p className='font-normal text-xs opacity-50 mb-[2px]'>List you added</p>
-                           <div className='border border-[#eeeeee] w-full min-h-[100px]'>
-                           <div className='flex flex-wrap items-center gap-1 rounded-[10px] p-1 py-1'>
-                              {serviceChoices.map((choice, index) => (   
-                                 <button
-                                 key={index}
-                                 className='px-[5px] text-white bg-[#303179] py-[3px] pr-[20px] border-[1px] border-[#303079] rounded-full font-normal text-[12px] relative'>{choice}<img onClick={() => removeChoice(choice, index)} src="/icon/cancel.svg" alt="cancel" className='absolute w-[15px] h-[15px] top-[5px] right-[4px]'/></button> 
-                              ))}
-                           </div>
-                           </div>
-                        </div>
-                     }
+                              className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                              type="text"
+                            />
+                            <button
+                              onClick={() => {
+                                handleServiceInputFixed(service.id);
+                              }}
+                              className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                            >
+                              <img src="/icon/checkblue.svg" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {addServiceButtonOpen && (
+                      <button
+                        onClick={handleSubmitServiceInput}
+                        className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
+                      >
+                        <img
+                          className="h-[30px] w-[30px]"
+                          src="/icon/addblue.svg"
+                        />
+                      </button>
+                    )}
                   </div>
-               } 
-               {addNewServices &&
-                  <div className='flex flex-col w-full mt-3 pl-[40px] pr-[50px] transition duration-300 ease-in-out'>
-                        <h3 className='font-medium text-lg'>Services</h3>
-                        <p className='font-normal text-sm opacity-50 mt-1'>These services descriptions outline the core responsibilities and duties</p>
-                        <div className='w-full flex flex-wrap items-center mt-1'>
-                           {
-                              newServices.map((service) => (
-                                 <div key={service.id} className='flex items-center align-middle mt-1'>
-                                    {
-                                       service.status ? (
-                                          <div className='ml-1 relative'>
-                                             <button onClick={() => handleNewServiceSubmit(service.value)} className='px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white'>{service.value}</button>
-                                             <img onClick={() => {handleNewServiceDelete(service)}} className='w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer' src="/icon/close.svg"/>
-                                          </div>
-                                       ) : (
-                                          <div className='flex items-center ml-1'>
-                                             <input value={service.value} onChange={(e) => handleServiceInput(service.id, e.target.value)} className='border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2' type="text" />
-                                             <button onClick={() => {handleServiceInputFixed(service.id)}} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]'><img src="/icon/checkblue.svg"/></button>
-                                          </div>
-                                       )
-                                    }
-                                 </div>
-                              ))
-                           }
-                           {addServiceButtonOpen &&
-                              <button onClick={handleSubmitServiceInput} className='h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center'><img className='h-[30px] w-[30px]' src="/icon/addblue.svg"/></button>
-                           }
-                        </div>
-                  </div>
-               } 
+                </div>
+              )}
             </div>
-            <div className='ml-[370px] mb-[15px] mt-[20px]'>
-               <div className='flex flex-row justify-between w-[160px]'>
-                  <button onClick={() => {addNewClick(); closeButton();}} className='w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-sm text-white'>Cancel</button>
-                  <button onClick={submitNewUser} className='w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white'>Add</button>
-               </div>
+            <div className="ml-[65%] mb-[15px] mt-[20px]">
+              <div className="flex flex-row justify-between w-[160px] ">
+                <button
+                  onClick={() => {
+                    addNewClick();
+                    closeButton();
+                  }}
+                  className="w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-sm text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={submitNewUser}
+                  className="w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white"
+                >
+                  Add
+                </button>
+              </div>
             </div>
-         </div>
-         {deleteDecision && 
-            <div className='absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out'>
-               <div className='flex justify-center items-center w-full h-full'>
-                  <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
+          </div>
+          {deleteDecision && (
+            <div className="absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out">
+              <div className="flex justify-center items-center w-full h-full">
+                <div className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]"></div>
+                <div className="w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+                  <img
+                    className="h-[82px] w-[82px]"
+                    src="/icon/deleteWarning.svg"
+                    alt=""
+                  />
+                  <p className="font-medium text-center text-base">
+                    You’re going to delete this role. <br />
+                    Are you sure?
+                  </p>
+                  <div className="mt-5">
+                    <button
+                      onClick={() => setDeleteDecision(!deleteDecision)}
+                      className="w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white"
+                    >
+                      No
+                    </button>
+                    <button
+                      onClick={() => confirmDeleteRole()}
+                      className="w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white"
+                    >
+                      Yes
+                    </button>
                   </div>
-                  <div className='w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'>
-                     <img className='h-[82px] w-[82px]' src="/icon/deleteWarning.svg" alt="" />
-                     <p className='font-medium text-center text-base'>You’re going to delete this role. <br/>Are you sure?</p>
-                     <div className='mt-5'>
-                        <button onClick={() => setDeleteDecision(!deleteDecision)} className='w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white'>No</button>
-                        <button onClick={() => confirmDeleteRole()} className='w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white'>Yes</button>
-                  </div>
-                  </div>
-               </div>
+                </div>
+              </div>
             </div>
-         }
-         {emailSentOpen &&
-            <div className='absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out'>
-               <div className='flex justify-center items-center w-full h-full'>
-                  <div className='absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]'>
-                  </div>
-                  <div className='h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'>
-                     <img src="/icon/checkall.svg" alt="" />
-                     <p className='fonr-medium text-[15px] text-white ml-2'>Email sent to juandelacruz@gmail.com</p>
-                  </div>
-               </div>
+          )}
+          {emailSentOpen && (
+            <div className="absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out">
+              <div className="flex justify-center items-center w-full h-full">
+                <div className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]"></div>
+                <div className="h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+                  <img src="/icon/checkall.svg" alt="" />
+                  <p className="fonr-medium text-[15px] text-white ml-2">
+                    Email sent to juandelacruz@gmail.com
+                  </p>
+                </div>
+              </div>
             </div>
-         }
-      </section>
-   }
-</section>
-)
-}
-export default addUserModal
+          )}
+        </section>
+      )}
+    </section>
+  );
+};
+export default addUserModal;

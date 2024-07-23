@@ -33,6 +33,7 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
         email: item.email, //This will access by the accessor
         status: item.status, //This will access by the accessor
       }));
+      console.log(response.data);
       setDataValue(processedData);
       setDataNumber(processedData.length);
       setTotalNumber(response.data.total_users);
@@ -51,7 +52,6 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
       index = pageNumber ? pageNumber - dataNumber : pageNumber;
     }
 
-    console.log(index);
     axios.instance
       .get("/users", {
         params: {
@@ -77,7 +77,6 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
       });
   };
 
-
   return (
     <div className="w-[100%] h-[100%] grow pt-5 pl-[3%] pr-[2.5%]">
       <div className="relative max-h-[100%] min-h-[80vh] bg-white rounded-[10px] shadow-[0_0_1px_2.9px_rgba(0,0,0,0.03)]">
@@ -94,9 +93,9 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
             </div>
             <div className="relative ">
               <input
+                onChange={(e) => setSearch(e.target.value.toLowerCase())}
                 className="border-[#0000001a] border-[1px] h-[40px] w-[240px] rounded-[10px] font-normal text-[12px] pl-[30px]"
                 type="text"
-                onChange={(e) => setSearch(e.target.value.toLowerCase())}
                 placeholder="Who are you looking for?"
               />
               <img
@@ -154,10 +153,10 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
                             setEditProfileOpen(true);
                             {
                               dataValue.map((data) => {
-                                if(data.id === user.id){
-                                  setUserID(user.id)
+                                if (data.id === user.id) {
+                                  setUserID(user.id);
                                 }
-                              })
+                              });
                             }
                           }}
                           className="font-semibold text-[15px] text-[#daa318]"
