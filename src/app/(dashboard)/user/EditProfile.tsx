@@ -34,7 +34,9 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
     const updatedData = { ...newData, id: `${userID}`, status: newStatus };
     axios.instance
       .put(`/users?_id=${userID}`, updatedData, axios.authorization)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+      })
       .catch((error) => console.log(error));
   };
 
@@ -78,15 +80,11 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
     };
     axios.instance
       .put(`/users?_id=${userID}`, updatedData, axios.authorization)
-      .then((response) => {
-        console.log(response.data);
-        console.log(updatedData);
-      })
+      .then((response) => console.log(response.data))
       .catch((error) => console.log(error));
   };
 
   return (
-    <section>
     <section>
       {editProfileOpen && (
         <>
@@ -158,22 +156,10 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       onChange={(e) =>
                         setNewData({ ...newData, firstname: e.target.value })
                       }
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm"
-                      type="text"
-                    />
-                  </div>
-                  <div className="flex flex-col ml-[2%] ">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Middle Name
-                    </p>
-                    <input
-                      value={newData.middle_name}
-                      onChange={(e) =>
-                        setNewData({ ...newData, middle_name: e.target.value })
-                      }
                       className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
                       type="text"
                     />
+                  </div>
                   <div className="flex flex-col ml-[2%] ">
                     <p className="font-normal text-[13px] opacity-50">
                       Middle Name
@@ -198,7 +184,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       onChange={(e) =>
                         setNewData({ ...newData, lastname: e.target.value })
                       }
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm"
+                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
                       type="text"
                     />
                   </div>
@@ -209,32 +195,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       type="text"
                       placeholder="48"
                     />
-                  <div className="flex flex-col ml-[2%] justify-end">
-                    <p className="font-normal text-[13px] opacity-50">Age</p>
-                    <input
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
-                      type="text"
-                      placeholder="48"
-                    />
                   </div>
-                </div>
-                <div className="flex flex-row mt-[13px] w-[96%] relative">
-                  <div className="w-[100%] flex flex-col ml-[5%]">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Address
-                    </p>
-                    <div className="relative">
-                      <input
-                        className="transition duration-300 ease-in-out w-[100%] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
-                        type="text"
-                        placeholder="Wext City Plaza, West Avenue, Quezon City, Metro Manila, Philippines"
-                      />
-                      <img
-                        onClick={() => setAddressButton(!addressButton)}
-                        className="absolute w-[24px] h-[24px] top-[12px] right-[10px]"
-                        src="/icon/dropdown1.svg"
-                      />
-                    </div>
                 </div>
                 <div className="flex flex-row mt-[13px] w-[96%] relative">
                   <div className="w-[100%] flex flex-col ml-[5%]">
@@ -270,21 +231,6 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                         </p>
                       </li>
                     </ul>
-                    <ul
-                      className={
-                        "w-[95%] h-[78px] absolute rounded-br-[5px] rounded-bl-[5px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mx-[5%] flex items-center pl-[20px] top-[95%] transition duration-300 ease-in-out z-10 "
-                      }
-                    >
-                      <li>
-                        <h3 className="font-semibold text-[13px]">
-                          West City Plaza
-                        </h3>
-                        <p className="font-medium text-[13px] opacity-50 mt-1">
-                          West City Plaza, West Avenue, Quezon City, Metro
-                          Manila, Philippines
-                        </p>
-                      </li>
-                    </ul>
                   )}
                 </div>
                 <div className="flex flex-row mt-[13px] w-[96%] justify-between">
@@ -297,27 +243,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       type="text"
                       placeholder="12/26/1990"
                     />
-                </div>
-                <div className="flex flex-row mt-[13px] w-[96%] justify-between">
-                  <div className="flex flex-col ml-[5%] justify-end">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Birthdate
-                    </p>
-                    <input
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
-                      type="text"
-                      placeholder="12/26/1990"
-                    />
                   </div>
-                  <div className="flex flex-col ml-[2%] justify-end">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Marital Status
-                    </p>
-                    <input
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] font-normal text-[15px] pl-[15px]"
-                      type="text"
-                      placeholder="Married"
-                    />
                   <div className="flex flex-col ml-[2%] justify-end">
                     <p className="font-normal text-[13px] opacity-50">
                       Marital Status
@@ -338,58 +264,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] pl-[15px]"
                       type="text"
                     />
-                </div>
-                <div className="flex flex-row mt-[13px] w-[96%] justify-between">
-                  <div className="flex flex-col ml-[5%] ">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Occupation
-                    </p>
-                    <input
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] pl-[15px]"
-                      type="text"
-                    />
                   </div>
-                  <div className="flex flex-col ml-[2%] justify-end relative">
-                    <p className="font-normal text-[13px] opacity-50">
-                      Services
-                    </p>
-                    <div className="relative">
-                      <input
-                        className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] pl-[15px]"
-                        type="text"
-                      />
-                      <img
-                        onClick={() => setServiceButton(!serviceButton)}
-                        className="absolute w-[24px] h-[24px] top-[12px] right-[10px]"
-                        src="/icon/dropdown1.svg"
-                      />
-                    </div>
-                    {serviceButton && (
-                      <ul
-                        className={
-                          "w-[100%] h-[180px] absolute bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex flex-col top-[95%] z-10 rounded-br-[10px] rounded-bl-[10px]"
-                        }
-                      >
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Medical Assistance
-                        </li>
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Legal Consultation
-                        </li>
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Livelyhood
-                        </li>
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Donation
-                        </li>
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Scholarship
-                        </li>
-                        <li className="font-medium text-[13px] py-[5px] px-[15px] hover:bg-[#3030791a] cursor-pointer">
-                          Solicitation
-                        </li>
-                      </ul>
-                    )}
                   <div className="flex flex-col ml-[2%] justify-end relative">
                     <p className="font-normal text-[13px] opacity-50">
                       Services
@@ -450,92 +325,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                   Confirm
                 </button>
               </div>
-                </div>
-              </div>
             </div>
-            <div className="ml-[65%] mb-[15px] mt-[26%]">
-              <div className="flex flex-row justify-between w-[160px] ">
-                <button
-                  onClick={() => setEditProfileOpen(false)}
-                  className="w-[73px] h-[42px] rounded-[10px] bg-[#ec7965] font-medium text-sm text-white"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white"
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-          {deactivateChoice && (
-            <div className="absolute w-full h-full flex items-center justify-center top-0 right-0 left-0 bottom-0 z-10 transition duration-300 ease-in-out">
-              <div className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]"></div>
-              <div className="w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-                <img
-                  className="h-[82px] w-[82px]"
-                  src="/icon/deleteWarning.svg"
-                  alt=""
-                />
-                <p className="font-medium text-center text-base">
-                  Are you sure you want to{" "}
-                  <span className="text-[#FFA500]">{`${
-                    newStatus === "active" ? "deactivate" : "activate"
-                  }`}</span>{" "}
-                  <br />
-                  this account?
-                </p>
-                <div className="mt-5">
-                  <button
-                    onClick={() => setDeactivateChoice(false)}
-                    className="w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white"
-                  >
-                    No
-                  </button>
-                  <button
-                    onClick={handleSubmitNewStatus}
-                    className="w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white"
-                  >
-                    Yes
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {deleteChoice && (
-            <div className="absolute w-full h-full flex items-center justify-center top-0 right-0 left-0 bottom-0 z-10 transition duration-300 ease-in-out">
-              <div className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000004d]"></div>
-              <div className="w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-                <img
-                  className="h-[82px] w-[82px]"
-                  src="/icon/deleteWarning.svg"
-                  alt=""
-                />
-                <p className="font-medium text-center text-base">
-                  Are you sure you want to{" "}
-                  <span className="text-[#FF0000]">delete</span> <br />
-                  this account?
-                </p>
-                <div className="mt-5">
-                  <button
-                    onClick={() => setDeleteChoice(false)}
-                    className="w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white"
-                  >
-                    No
-                  </button>
-                  <button
-                    onClick={handleDelete}
-                    className="w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white"
-                  >
-                    Yes
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
           </div>
           {deactivateChoice && (
             <div className="absolute w-full h-full flex items-center justify-center top-0 right-0 left-0 bottom-0 z-10 transition duration-300 ease-in-out">
@@ -607,9 +397,5 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
     </section>
   );
 };
-  );
-};
-
-export default EditProfile;
 
 export default EditProfile;
