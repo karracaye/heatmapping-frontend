@@ -1,7 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import Template from "@/components/Template";
-import axios from "@/lib/axios";
+'use client';
+import { useEffect, useState } from 'react';
+import Template from '@/components/Template';
+import axiosInstance from '@/lib/axios';
+
 
 import ImportModal from "@/components/importModal";
 import AddNewModal from "./AddNewModal";
@@ -35,42 +36,37 @@ const Transaction = () => {
   const [totalBeneficiaries, setTotalBeneficiaries] = useState<number>(0);
   const [tableData, setTableData] = useState<Array<tableDataType>>();
   useEffect(() => {
-    axios.instance
-      .get("/beneficiaries-services", axios.authorization)
-      .then((response) => {
-        setTotalBeneficiaries(response.data.total_beneficiaries);
-        setTableData(response.data.result);
-      });
-  }, []);
+    axiosInstance.get('/beneficiaries-services')
+    .then((response) => {
+      setTotalBeneficiaries(response.data.total_beneficiaries);
+      setTableData(response.data.result);
+    })
+  }, [])
 
   const [pageIndex, setPageIndex] = useState<number>(0);
   const pagination = (action) => {
-    if (action == "prev") {
-      axios.instance
-        .get("/beneficiaries-services", {
-          params: {
-            index: pageIndex - 20,
-          },
-          headers: axios.authorization.headers,
-        })
-        .then((response) => {
-          setTableData(response.data.result);
-          setPageIndex(pageIndex - 20);
-        });
+    if (action == 'prev') {
+      axiosInstance.get('/beneficiaries-services', {
+        params: {
+          index: pageIndex - 20,
+        },
+      })
+      .then((response) => {
+        setTableData(response.data.result);
+        setPageIndex(pageIndex - 20);
+      })
     }
 
-    if (action == "next") {
-      axios.instance
-        .get("/beneficiaries-services", {
-          params: {
-            index: pageIndex + 20,
-          },
-          headers: axios.authorization.headers,
-        })
-        .then((response) => {
-          setTableData(response.data.result);
-          setPageIndex(pageIndex + 20);
-        });
+    if (action == 'next') {
+      axiosInstance.get('/beneficiaries-services', {
+        params: {
+          index: pageIndex + 20,
+        },
+      })
+      .then((response) => {
+        setTableData(response.data.result);
+        setPageIndex(pageIndex + 20);
+      })
     }
   };
 

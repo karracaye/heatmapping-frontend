@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import axios from '@/lib/axios';
+import axiosInstance from '@/lib/axios';
 import Filter from '@/components/Filter';
 
-const DashboardAdmin = () => {
+const Dashboard = () => {
   const [ hover, setHover ] = useState<boolean>();
 
   const [ barangay, setBarangay ] = useState([{
@@ -11,7 +11,7 @@ const DashboardAdmin = () => {
   }]);
 
   useEffect(() => {
-    axios.instance.get('/barangays', axios.authorization)
+    axiosInstance.get('/barangays')
     .then((response) => {
       setBarangay(response.data);
     })
@@ -24,7 +24,7 @@ const DashboardAdmin = () => {
 
   const [ service, setService ] = useState< Array<serviceDataType> >();
   useEffect(() => {
-    axios.instance.get('/services', axios.authorization)
+    axiosInstance.get('/services')
     .then((response) => {
       setService(response.data);
     })
@@ -33,18 +33,17 @@ const DashboardAdmin = () => {
   const [ filter, setFilter ] = useState<string>();
   const entry = (service_id, service_type) => {
     if (service_id && service_type != 'None') {
-      axios.instance.get('/beneficiaries-services/perBrgy', {
+      axiosInstance.get('/beneficiaries-services/perBrgy', {
         params: {
           service: service_id,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         setFilter(service_type);
         setBarangay(response.data);
       })
     } else {
-      axios.instance.get('/barangays', axios.authorization)
+      axiosInstance.get('/barangays')
       .then((response) => {
         setFilter('');
         setBarangay(response.data);
@@ -243,4 +242,4 @@ const DashboardAdmin = () => {
   )
 }
 
-export default DashboardAdmin;
+export default Dashboard;
