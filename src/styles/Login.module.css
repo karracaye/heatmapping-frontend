@@ -1,0 +1,21 @@
+.container {
+  width: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background-color: #F8E4E1;
+  z-index: 1;
+  transition: width 0.5s ease-in;
+}
+
+.wipe_left {
+  left: 0;
+}
+
+.wipe_right {
+  right: 0;
+}
+
+.cover {
+  width: 100%;
+}

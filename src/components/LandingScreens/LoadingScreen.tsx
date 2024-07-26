@@ -19,7 +19,7 @@ const LoadingScreen = ({ finish }) => {
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center gap-2">
       <img src="/logos/undraw-world.svg" alt="" 
-        className='h-3/5'
+        className='w-[30%]'
       />
 
       <div className="w-[30%]">

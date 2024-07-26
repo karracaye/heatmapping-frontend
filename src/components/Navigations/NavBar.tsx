@@ -2,7 +2,6 @@
 import Link from "next/link";
 import EditProfile from "../EditProfile";
 import { useEffect, useState } from "react";
-import { useIndexedDB } from "react-indexed-db-hook";
 
 const Navbar = () => {
   const logNotification = [
@@ -31,12 +30,30 @@ const Navbar = () => {
     setEditProfileOpen(false);
   };
 
-  const { getByID } = useIndexedDB('user');
   const [ accountRole, setAccountRole ] = useState<string>();
   useEffect(() => {
-    getByID(1).then((response) => {
-      setAccountRole(response.role);
-    })
+    const request = indexedDB.open('heatmap_db', 1);
+
+    request.onsuccess = () => {
+      const database = request.result;
+      const transaction = database.transaction(['user'], 'readonly');
+      const objectStore = transaction.objectStore('user');  
+      const getUser = objectStore.getAll(); 
+
+      getUser.onsuccess = () => {
+        getUser.result.map((item) => {
+          if (item._id == getUser.result.length) setAccountRole(item.role);
+        })
+      }
+
+      // getUser.onerror = (event) => {
+      //   console.error(event.target.error);
+      // }
+    }
+
+    // request.onerror = (event) => {
+    //   console.error(event.target.error);
+    // }
   }, [])
   
   return (
