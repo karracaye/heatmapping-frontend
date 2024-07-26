@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Template from '@/components/Template';
-import axios from '@/lib/axios';
+import axiosInstance from '@/lib/axios';
 
 
 import ImportModal from '@/components/importModal';
@@ -37,7 +37,7 @@ const Transaction = () => {
   const [ totalBeneficiaries, setTotalBeneficiaries ] = useState<number>(0);
   const [ tableData, setTableData ] = useState< Array<tableDataType> >();
   useEffect(() => {
-    axios.instance.get('/beneficiaries-services', axios.authorization)
+    axiosInstance.get('/beneficiaries-services')
     .then((response) => {
       setTotalBeneficiaries(response.data.total_beneficiaries);
       setTableData(response.data.result);
@@ -47,11 +47,10 @@ const Transaction = () => {
   const [ pageIndex, setPageIndex ] = useState<number>(0);
   const pagination = (action) => {
     if (action == 'prev') {
-      axios.instance.get('/beneficiaries-services', {
+      axiosInstance.get('/beneficiaries-services', {
         params: {
           index: pageIndex - 20,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         setTableData(response.data.result);
@@ -60,11 +59,10 @@ const Transaction = () => {
     }
 
     if (action == 'next') {
-      axios.instance.get('/beneficiaries-services', {
+      axiosInstance.get('/beneficiaries-services', {
         params: {
           index: pageIndex + 20,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         setTableData(response.data.result);

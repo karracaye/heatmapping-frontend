@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
-import SplashScreen from '@/components/LandingScreen/SplashScreen';
-import LoadingScreen from '@/components/LandingScreen/LoadingScreen';
+import SplashScreen from '@/components/LandingScreens/SplashScreen';
+import LoadingScreen from '@/components/LandingScreens/LoadingScreen';
 import Login from './(auth)/login/page';
 
 function Home() {

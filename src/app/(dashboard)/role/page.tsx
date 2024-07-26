@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import axios from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import Popup from "@/components/PopUp";
 import Template from "@/components/Template";
 import Alert from "@/components/Alert";
@@ -22,7 +22,7 @@ const Role = () => {
   const [ totalRoleUser, setTotalRoleUser ] = useState<number>(0);
   const [ tableData, setTableData ] = useState< Array<tableDataType> >();
   useEffect(() => {
-    axios.instance.get('/users/roles', axios.authorization)
+    axiosInstance.get('/users/roles')
     .then((response) => {
       setTotalRoleUser(response.data.total_users);
       setTableData(response.data.userRoles);
@@ -32,11 +32,10 @@ const Role = () => {
   const [ pageIndex, setPageIndex ] = useState<number>(0);
   const pagination = (action) => {
     if (action == 'prev') {
-      axios.instance.get('/users/roles', {
+      axiosInstance.get('/users/roles', {
         params: {
           index: pageIndex - 20,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         setTableData(response.data.userRoles);
@@ -45,11 +44,10 @@ const Role = () => {
     }
 
     if (action == 'next') {
-      axios.instance.get('/users/roles', {
+      axiosInstance.get('/users/roles', {
         params: {
           index: pageIndex + 20,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         setTableData(response.data.userRoles);
@@ -68,7 +66,7 @@ const Role = () => {
 
   const [ role, setRole ] = useState< Array<roleDataType> >()
   useEffect(() => {
-    axios.instance.get('/roles', axios.authorization)
+    axiosInstance.get('/roles')
     .then((response) => {
       setRole(response.data);
     })
@@ -80,12 +78,12 @@ const Role = () => {
   }
 
   const submitNewRole = () => {
-    axios.instance.post('/roles', {
+    axiosInstance.post('/roles', {
       role_type: newRole,
-    }, axios.authorization)
+    })
     .then((response) => {
       if (response.data.success) {
-        axios.instance.get('/roles', axios.authorization)
+        axiosInstance.get('/roles')
         .then((response) => {
           setRole(response.data);
         })
@@ -95,15 +93,14 @@ const Role = () => {
 
   const confirm = (bool, id) => {
     if (bool) {
-      axios.instance.delete('/roles', {
+      axiosInstance.delete('/roles', {
         data: {
           _id: id,
         },
-        headers: axios.authorization.headers,
       })
       .then((response) => {
         if (response.data.success) {
-          axios.instance.get('/roles', axios.authorization)
+          axiosInstance.get('/roles')
           .then((response) => {
             setRole(response.data);
           })
