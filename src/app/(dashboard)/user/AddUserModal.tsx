@@ -1,4 +1,5 @@
 "use client";
+<<<<<<< HEAD
 import { useState, useEffect, use } from "react";
 import axios from "@/lib/axios";
 
@@ -29,6 +30,11 @@ type user = {
   account_typeID: string;
 };
 
+=======
+import { useState, useEffect } from "react";
+import axios from "@/lib/axios";
+
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
 const addUserModal = ({ addNew, addNewClick }) => {
   const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
   const [type, setType] = useState("Type"); //It`s the initial state in the dropdown menun that you can choose between employee and politician. this can also be changed
@@ -42,6 +48,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const [deleteDecision, setDeleteDecision] = useState(false); //For deleting the new role in decision in Frame 17
   const [visibleChoices, setVisibleChoices] = useState(false); //This will show the new role
   const [newAddedRole, setNewAddedRole] = useState(""); //This help to appear the value of new role
+<<<<<<< HEAD
   const [newSubmittedRole, setNewSubmittedRole] = useState({
     role_type: "",
   });
@@ -59,6 +66,55 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const [email, setEmail] = useState("");
   const [accountId, setAccountId] = useState("");
   const [dataValue, setDataValue] = useState<user>({
+=======
+  const [newRoles, setNewRoles] = useState([
+    {
+      id: 1,
+      value: "Superadmin",
+      status: true,
+    },
+    {
+      id: 2,
+      value: "Admin",
+      status: true,
+    },
+    {
+      id: 3,
+      value: "Secretary",
+      status: true,
+    },
+  ]);
+  const [newServices, setNewServices] = useState([
+    {
+      id: 1,
+      value: "Medical assistance",
+      status: true,
+    },
+    {
+      id: 2,
+      value: "Financial assistance",
+      status: true,
+    },
+    {
+      id: 3,
+      value: "Scholarship",
+      status: true,
+    },
+    {
+      id: 4,
+      value: "Legal advise",
+      status: true,
+    },
+  ]);
+  const [addNewServices, setAddNewServices] = useState(false);
+  const [addServiceButtonOpen, setAddServiceButtonOpen] = useState(true);
+  const [addButtonOpen, setAddButtonOpen] = useState(true);
+  const [newRoleOpen, setNewRoleOpen] = useState(false);
+  const [assignNewRole, setAssignNewRole] = useState("");
+  const [emailSentOpen, setEmailSentOpen] = useState(false);
+  const [deleteRoleIndex, setDeleteRoleIndex] = useState(null);
+  const [dataValue, setDataValue] = useState({
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     firstname: "",
     middle_name: "",
     lastname: "",
@@ -72,13 +128,20 @@ const addUserModal = ({ addNew, addNewClick }) => {
     },
     roleID: "",
     status: "active",
+<<<<<<< HEAD
     EVR_No: "",
+=======
+    EVR_No: "N/A",
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     account_typeID: "",
   });
 
   const closeButton = () => {
     setType("Type");
+<<<<<<< HEAD
     setTypeOpen(false);
+=======
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     setAssignNo(false);
     setTypePolitician(false);
     setServiceChoices([]);
@@ -90,18 +153,26 @@ const addUserModal = ({ addNew, addNewClick }) => {
     setNewRoles(newRoles);
     setSelectRole(false);
     setTypePoliticianEVR(false);
+<<<<<<< HEAD
     setAddNewServices(false);
+=======
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
   };
 
   //Function for choosing the type of user(Politician or Employee).
   const clickPolitician = () => {
+<<<<<<< HEAD
     //This will trigger components that need when you select politician
+=======
+    //This will trigger components that ned when you select politician
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     if (type !== "Politician") {
       setTypePolitician(!typePolitician);
       setAssignNo(false);
       setAssignNewRole("");
       setNewRoleOpen(false);
       setTypePoliticianEVR(true);
+<<<<<<< HEAD
       clearInput();
     }
   };
@@ -117,11 +188,33 @@ const addUserModal = ({ addNew, addNewClick }) => {
           ...data,
           roleID: undefined,
         };
+=======
+    }
+  };
+
+  const clickChoices = (type: string) => {
+    //Choice for employee or politician
+    setType(type);
+    setTypeOpen(!typeOpen);
+    if (type === "Employee") {
+      setDataValue({
+        ...dataValue,
+        account_typeID: "66862cfe311b616ac697a2bb",
+      });
+    } else if (type === "Politician") {
+      setDataValue({
+        ...dataValue,
+        account_typeID: "66862e2e311b616ac697a2bc",
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
       });
     }
   };
 
+<<<<<<< HEAD
   const clickEmployee = () => {
+=======
+  const handleClick = () => {
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     //Handle toggle the need too be closed
     if (type !== "Employee") {
       setAssignNo(!assignNo);
@@ -129,8 +222,11 @@ const addUserModal = ({ addNew, addNewClick }) => {
       setToggleYes(false);
       setAddNewRole(false);
       setTypePoliticianEVR(false);
+<<<<<<< HEAD
       setAddNewServices(false);
       clearInput();
+=======
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     }
   };
 
@@ -145,19 +241,61 @@ const addUserModal = ({ addNew, addNewClick }) => {
   };
 
   const submitNewRole = (role: string) => {
+<<<<<<< HEAD
     //Submit new role that will be choose between roles like superadmin, admin and secretary
+=======
+    //Submit new role that will be choose between superadmin, admin and secretary
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     setNewAddedRole(role);
     setSelectRole(false);
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     //Will close the serviceChoice if there are no value that is selected
+=======
+  const handleChoice = () => {
+    setVisibleChoices(!visibleChoices);
+  };
+
+  useEffect(() => {
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
     if (serviceChoices.length === 0) {
       setVisibleChoices(false);
     }
   }, [serviceChoices]);
 
+<<<<<<< HEAD
   // //New roles that will be created
+=======
+  //New roles that will be created
+  const handleRoleInput = (id: number, value: string) => {
+    setNewRoles((prevRoles) =>
+      prevRoles.map((role) =>
+        role.id === id ? { ...role, value: value } : role
+      )
+    );
+  };
+
+  const handleInputFixed = (id: number) => {
+    //Will set the data as uneditable
+    setNewRoles((prevRoles) =>
+      prevRoles.map((role) =>
+        role.id === id ? { ...role, status: true } : role
+      )
+    );
+    setAddButtonOpen(true);
+  };
+
+  const handleSubmitInput = () => {
+    setNewRoles((prevRoles) => [
+      ...prevRoles,
+      { id: prevRoles.length + 1, value: "", status: false },
+    ]);
+    setAddButtonOpen(false);
+  };
+
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
   const removeChoice = (choice: string, index) => {
     //Remove service choice in politician side
     setServiceChoices(
@@ -165,6 +303,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
     );
   };
 
+<<<<<<< HEAD
   const handleNewRoleSubmit = (newRole: string) => {
     setNewRoleOpen(true);
     setAddNewRole(false);
@@ -180,17 +319,61 @@ const addUserModal = ({ addNew, addNewClick }) => {
     }
   };
 
+=======
+  const handleEmailSentClick = () => {
+    //Email sent modal when you click add
+    setEmailSentOpen(true);
+    setTimeout(() => {
+      setEmailSentOpen(false);
+      addNewClick();
+    }, 1000);
+  };
+
+  const handleNewRoleDelete = (role: any) => {
+    setDeleteDecision(true);
+    setNewRoleOpen(false);
+    setDeleteRoleIndex(role);
+  };
+
+  const handleNewRoleSubmit = (newRole: string) => {
+    setNewRoleOpen(true);
+    setAddNewRole(false);
+    handleClick();
+    setAssignNo(false);
+    setAssignNewRole(newRole);
+    if (newRole === "Superadmin") {
+      setDataValue({ ...dataValue, roleID: "668015b03fef6a03ee9894b4" });
+    } else if (newRole === "Admin") {
+      setDataValue({ ...dataValue, roleID: "668015e23fef6a03ee9894b5" });
+    } else if (newRole === "Secreatary") {
+      setDataValue({ ...dataValue, roleID: "668015f93fef6a03ee9894b6" });
+    } else if (newRole === "Politician") {
+      setDataValue({ ...dataValue, roleID: "N/A" });
+    }
+  };
+
+  const confirmDeleteRole = () => {
+    setNewRoles(newRoles.filter((role) => role !== deleteRoleIndex));
+    setDeleteDecision(false);
+  };
+
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
   const selectedChoices = (choice: string) => {
     //Add Services to the list in politician
     if (!serviceChoices.includes(choice)) {
       setServiceChoices([...serviceChoices, choice]);
       if (!visibleChoices) {
+<<<<<<< HEAD
         setVisibleChoices(!visibleChoices);
+=======
+        handleChoice();
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
         setVisibleChoices(true);
       }
     }
   };
 
+<<<<<<< HEAD
   const handleNewServiceSubmit = (newService: string) => {
     selectedChoices(newService);
     setAddNewServices(false);
@@ -230,6 +413,63 @@ const addUserModal = ({ addNew, addNewClick }) => {
     }, 1000);
   };
 
+=======
+  //New services that will be added
+  const handleServiceInput = (id: number, value: string) => {
+    setNewServices((prevService) =>
+      prevService.map((service) =>
+        service.id === id ? { ...service, value: value } : service
+      )
+    );
+  };
+
+  const handleServiceInputFixed = (id: number) => {
+    //Will set the data as uneditable
+    setNewServices((prevService) =>
+      prevService.map((service) =>
+        service.id === id ? { ...service, status: true } : service
+      )
+    );
+    setAddServiceButtonOpen(true);
+  };
+
+  const handleSubmitServiceInput = () => {
+    setNewServices((prevService) => [
+      ...prevService,
+      { id: prevService.length + 1, value: "", status: false },
+    ]);
+    setAddServiceButtonOpen(false);
+  };
+
+  const handleNewServiceSubmit = (newService: string) => {
+    selectedChoices(newService);
+    setAddNewServices(false);
+    setTypePolitician(true);
+  };
+
+  const handleNewServiceDelete = (newService: any) => {
+    setNewServices(newServices.filter((service) => service !== newService));
+  };
+
+  const submitNewUser = (event) => {
+    event.preventDefault();
+    const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`;
+    const updatedData = { ...dataValue, username: userName };
+    console.log({ updatedData });
+    axios.instance
+      .post("/users/addUser", updatedData, axios.authorization)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+    setTimeout(() => {
+      handleEmailSentClick();
+      clearInput();
+      closeButton();
+    }, 500);
+  };
+
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
   const clearInput = () => {
     setDataValue({
       firstname: "",
@@ -245,11 +485,16 @@ const addUserModal = ({ addNew, addNewClick }) => {
       },
       roleID: "",
       status: "active",
+<<<<<<< HEAD
       EVR_No: "",
+=======
+      EVR_No: "N/A",
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
       account_typeID: "",
     });
   };
 
+<<<<<<< HEAD
   //New Role
   useEffect(() => {
     axios.instance
@@ -324,6 +569,8 @@ const addUserModal = ({ addNew, addNewClick }) => {
       .catch((err) => console.log(err));
   };
 
+=======
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
   return (
     <section>
       {addNew && (
@@ -363,9 +610,14 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     <div className="w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]">
                       <button
                         onClick={() => {
+<<<<<<< HEAD
                           setAccountId("66862cfe311b616ac697a2bb");
                           dataForm("Employee");
                           clickEmployee();
+=======
+                          clickChoices("Employee");
+                          handleClick();
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                         }}
                         className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
                       >
@@ -373,8 +625,12 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       </button>
                       <button
                         onClick={() => {
+<<<<<<< HEAD
                           setAccountId("66862e2e311b616ac697a2bc");
                           dataForm("Politician");
+=======
+                          clickChoices("Politician");
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                           clickPolitician();
                         }}
                         className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
@@ -439,10 +695,16 @@ const addUserModal = ({ addNew, addNewClick }) => {
                   </p>
                   <input
                     value={dataValue.email}
+<<<<<<< HEAD
                     onChange={(e) => {
                       setDataValue({ ...dataValue, email: e.target.value });
                       setEmail(e.target.value);
                     }}
+=======
+                    onChange={(e) =>
+                      setDataValue({ ...dataValue, email: e.target.value })
+                    }
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                     className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
                     type="text"
                     placeholder="example@gmail.com"
@@ -493,10 +755,13 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       EVR No.
                     </p>
                     <input
+<<<<<<< HEAD
                       value={dataValue.EVR_No}
                       onChange={(e) =>
                         setDataValue({ ...dataValue, EVR_No: e.target.value })
                       }
+=======
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                       className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
                       type="text"
                       placeholder="0000-000-000"
@@ -561,6 +826,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                           />
                           {selectRole && (
                             <div className="w-[100%] absolute flex flex-col font-normal text-sm rounded-br-[10px] rounded-bl-[10px] bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] transition duration-300 ease-in-out">
+<<<<<<< HEAD
                               {newRoles.map((role, index) => (
                                 <button
                                   key={index}
@@ -573,6 +839,26 @@ const addUserModal = ({ addNew, addNewClick }) => {
                                   {role.role_type}
                                 </button>
                               ))}
+=======
+                              <button
+                                onClick={() => submitNewRole("Superadmin")}
+                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
+                              >
+                                Superadmin
+                              </button>
+                              <button
+                                onClick={() => submitNewRole("Admin")}
+                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
+                              >
+                                Admin
+                              </button>
+                              <button
+                                onClick={() => submitNewRole("Secretary")}
+                                className="text-left pl-[10px] rounded-br-[10px] rounded-bl-[10px] w-full py-2 hover:bg-[#D9D9D9]"
+                              >
+                                Secretary
+                              </button>
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                             </div>
                           )}
                         </div>
@@ -596,6 +882,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                         responsibilities and duties
                       </p>
                       <div className="w-full flex flex-wrap items-center mt-1">
+<<<<<<< HEAD
                         {newRoles.map((role, index) => (
                           <div
                             key={index}
@@ -645,6 +932,56 @@ const addUserModal = ({ addNew, addNewClick }) => {
                         ) : (
                           <button
                             onClick={() => setInputNewRoleOpen(true)}
+=======
+                        {newRoles.map((role) => (
+                          <div
+                            key={role.id}
+                            className="flex items-center align-middle mt-1"
+                          >
+                            {role.status ? (
+                              <div className="ml-1 relative">
+                                <button
+                                  onClick={() => {
+                                    handleNewRoleSubmit(role.value);
+                                  }}
+                                  className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                                >
+                                  {role.value}
+                                </button>
+                                <img
+                                  onClick={() => handleNewRoleDelete(role)}
+                                  className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                                  src="/icon/close.svg"
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex items-center ml-1">
+                                <input
+                                  value={role.value}
+                                  onChange={(e) =>
+                                    handleRoleInput(role.id, e.target.value)
+                                  }
+                                  className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                                  type="text"
+                                />
+                                <button
+                                  onClick={() => {
+                                    role.value
+                                      ? handleInputFixed(role.id)
+                                      : null;
+                                  }}
+                                  className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                                >
+                                  <img src="/icon/checkblue.svg" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                        {addButtonOpen && (
+                          <button
+                            onClick={handleSubmitInput}
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                             className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
                           >
                             <img
@@ -672,6 +1009,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     Suggestion
                   </p>
                   <div className="flex flex-row justify-between mt-2">
+<<<<<<< HEAD
                     {newServices.map(
                       (service, index) =>
                         index < 4 && (
@@ -686,6 +1024,32 @@ const addUserModal = ({ addNew, addNewClick }) => {
                           </button>
                         )
                     )}
+=======
+                    <button
+                      onClick={() => selectedChoices("Medical Assistance")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Medical Assistance
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Scholarship")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Scholarship
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Financial assistance")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Financial Assistance
+                    </button>
+                    <button
+                      onClick={() => selectedChoices("Legal Advice")}
+                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                    >
+                      Legal Advise
+                    </button>
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                     <button
                       onClick={() => {
                         setAddNewServices(true);
@@ -733,6 +1097,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                   <div className="w-full flex flex-wrap items-center mt-1">
                     {newServices.map((service) => (
                       <div
+<<<<<<< HEAD
                         key={service._id}
                         className="flex items-center align-middle mt-1"
                       >
@@ -778,6 +1143,54 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     ) : (
                       <button
                         onClick={() => setInputNewServiceOpen(true)}
+=======
+                        key={service.id}
+                        className="flex items-center align-middle mt-1"
+                      >
+                        {service.status ? (
+                          <div className="ml-1 relative">
+                            <button
+                              onClick={() =>
+                                handleNewServiceSubmit(service.value)
+                              }
+                              className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                            >
+                              {service.value}
+                            </button>
+                            <img
+                              onClick={() => {
+                                handleNewServiceDelete(service);
+                              }}
+                              className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                              src="/icon/close.svg"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex items-center ml-1">
+                            <input
+                              value={service.value}
+                              onChange={(e) =>
+                                handleServiceInput(service.id, e.target.value)
+                              }
+                              className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                              type="text"
+                            />
+                            <button
+                              onClick={() => {
+                                handleServiceInputFixed(service.id);
+                              }}
+                              className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                            >
+                              <img src="/icon/checkblue.svg" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {addServiceButtonOpen && (
+                      <button
+                        onClick={handleSubmitServiceInput}
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                         className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
                       >
                         <img
@@ -786,6 +1199,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                         />
                       </button>
                     )}
+<<<<<<< HEAD
                   </div>
                 </div>
               )}
@@ -841,6 +1255,63 @@ const addUserModal = ({ addNew, addNewClick }) => {
                 </div>
               </div>
             </div>
+=======
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="ml-[65%] mb-[15px] mt-[20px]">
+              <div className="flex flex-row justify-between w-[160px] ">
+                <button
+                  onClick={() => {
+                    addNewClick();
+                    closeButton();
+                  }}
+                  className="w-[73px] h-[42px] rounded-[10px] bg-[#e7e7e7] font-medium text-sm text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={submitNewUser}
+                  className="w-[73px] h-[42px] rounded-[10px] bg-[#303079] font-medium text-sm text-white"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+          {deleteDecision && (
+            <div className="absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out">
+              <div className="flex justify-center items-center w-full h-full">
+                <div className="absolute top-0 right-0 bottom-0 left-0 bg-[#0000001a]"></div>
+                <div className="w-[380px] h-[260px] bg-white rounded-[10px] z-10 flex flex-col justify-center items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+                  <img
+                    className="h-[82px] w-[82px]"
+                    src="/icon/deleteWarning.svg"
+                    alt=""
+                  />
+                  <p className="font-medium text-center text-base">
+                    You’re going to delete this role. <br />
+                    Are you sure?
+                  </p>
+                  <div className="mt-5">
+                    <button
+                      onClick={() => setDeleteDecision(!deleteDecision)}
+                      className="w-[90px] h-[45px] rounded-[10px] bg-[#F5C8C1] font-medium text-sm text-white"
+                    >
+                      No
+                    </button>
+                    <button
+                      onClick={() => confirmDeleteRole()}
+                      className="w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white"
+                    >
+                      Yes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
           )}
           {emailSentOpen && (
             <div className="absolute top-0 right-0 left-0 bottom-0 transition duration-300 ease-in-out">
@@ -849,7 +1320,11 @@ const addUserModal = ({ addNew, addNewClick }) => {
                 <div className="h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
                   <img src="/icon/checkall.svg" alt="" />
                   <p className="fonr-medium text-[15px] text-white ml-2">
+<<<<<<< HEAD
                     {`Email sent to ${email}`}
+=======
+                    Email sent to juandelacruz@gmail.com
+>>>>>>> 50f2fb0c291461f927711560957c97f0a49b2547
                   </p>
                 </div>
               </div>

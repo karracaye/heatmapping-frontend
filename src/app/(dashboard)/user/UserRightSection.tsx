@@ -4,19 +4,31 @@ import axios from "@/lib/axios";
 import { useState, useEffect } from "react";
 import EditProfile from "./EditProfile";
 
+import Link from "next/link";
+import axios from "@/lib/axios";
+import { useState, useEffect } from "react";
+import EditProfile from "./EditProfile";
+
 type PropsUser = {
   addNewClick: () => void;
 };
+  addNewClick: () => void;
+};
 type processedData = {
+  id: string;
   id: string;
   fullname: string;
   email: string;
   status: string;
 };
+  status: string;
+};
 
+const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
 const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
   const [dataValue, setDataValue] = useState<processedData[]>([]);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
   const [pageNumber, setPageNumber] = useState(0);
   const [totalNumber, setTotalNumber] = useState(0);
   const [search, setSearch] = useState("");
@@ -32,9 +44,64 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
         }${item.lastname}`.trim(), //This will access by the accessor
         email: item.email, //This will access by the accessor
         status: item.status, //This will access by the accessor
+  const [search, setSearch] = useState("");
+  const [dataNumber, setDataNumber] = useState(0);
+  const [userID, setUserID] = useState("");
+
+  useEffect(() => {
+    axios.instance.get("/users", axios.authorization).then((response) => {
+      const processedData = response.data.result.map((item: any) => ({
+        id: item._id,
+        fullname: `${item.firstname} ${
+          item.middle_name ? item.middle_name + " " : ""
+        }${item.lastname}`.trim(), //This will access by the accessor
+        email: item.email, //This will access by the accessor
+        status: item.status, //This will access by the accessor
       }));
       console.log(response.data);
+      console.log(response.data);
       setDataValue(processedData);
+      setDataNumber(processedData.length);
+      setTotalNumber(response.data.total_users);
+    });
+  }, []);
+
+  const pagination = (action) => {
+    if (!dataValue) return;
+    let index = pageNumber;
+    if (action === "next") {
+      index =
+        totalNumber < pageNumber + dataNumber
+          ? pageNumber
+          : pageNumber + dataNumber;
+    } else if (action === "prev") {
+      index = pageNumber ? pageNumber - dataNumber : pageNumber;
+    }
+
+    axios.instance
+      .get("/users", {
+        params: {
+          index: index,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((response) => {
+        const processedData = response.data.result.map((item: any) => ({
+          id: item._id,
+          fullname: `${item.firstname} ${
+            item.middle_name ? item.middle_name + " " : ""
+          }${item.lastname}`.trim(), //This will access by the accessor
+          email: item.email, //This will access by the accessor
+          status: item.status, //This will access by the accessor
+        }));
+        if (action === "next" && index !== pageNumber) {
+          setPageNumber(index);
+        } else if (action === "prev" && pageNumber) {
+          setPageNumber(index);
+        }
+        setDataValue(processedData);
+      });
+  };
       setDataNumber(processedData.length);
       setTotalNumber(response.data.total_users);
     });
@@ -147,6 +214,9 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
                           <button className="font-semibold text-[15px] text-[#0500e8]">
                             View
                           </button>
+                          <button className="font-semibold text-[15px] text-[#0500e8]">
+                            View
+                          </button>
                         </Link>
                         <button
                           onClick={() => {
@@ -163,7 +233,23 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
                         >
                           Edit
                         </button>
+                        <button
+                          onClick={() => {
+                            setEditProfileOpen(true);
+                            {
+                              dataValue.map((data) => {
+                                if (data.id === user.id) {
+                                  setUserID(user.id);
+                                }
+                              });
+                            }
+                          }}
+                          className="font-semibold text-[15px] text-[#daa318]"
+                        >
+                          Edit
+                        </button>
                       </div>
+                    </td>
                     </td>
                   </tr>
                 ))}
@@ -201,6 +287,13 @@ const UserRightSection: React.FC<PropsUser> = ({ addNewClick }) => {
       />
     </div>
   );
+        setEditProfileOpen={setEditProfileOpen}
+        userID={userID}
+      />
+    </div>
+  );
 };
+
+export default UserRightSection;
 
 export default UserRightSection;
