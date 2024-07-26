@@ -77,7 +77,7 @@ function Login() {
 
     setLoginData((prevState) => ({
       ...prevState,
-      [ name ]: value,
+      [name]: value,
     }));
   }
 
