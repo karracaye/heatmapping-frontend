@@ -17,7 +17,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
     lastname: "",
   });
   const [newDataStatus, setNewDataStatus] = useState({
-    id: "",
+    _id: "",
     status: "",
   });
 
@@ -43,6 +43,7 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
       .get(`/users?_id=${userID}`, axios.authorization)
       .then((res) => {
         setNewStatus(res.data.result[0].status);
+        setNewData(res.data.result[0]);
       })
       .catch((err) => console.log(err));
   }, [userID]);
@@ -72,12 +73,15 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
     setEditProfileOpen(false);
     const updatedData = {
       ...newDataStatus,
-      id: `${userID}`,
+      _id: `${userID}`,
       status: newDataStatus.status,
     };
     axios.instance
       .put(`/users?_id=${userID}`, updatedData, axios.authorization)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        console.log(updatedData);
+      })
       .catch((error) => console.log(error));
   };
 
@@ -153,9 +157,8 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       onChange={(e) =>
                         setNewData({ ...newData, firstname: e.target.value })
                       }
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
+                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm"
                       type="text"
-                      placeholder="Juan"
                     />
                   </div>
                   <div className="flex flex-col ml-[2%] ">
@@ -182,9 +185,8 @@ const EditProfile = ({ editProfileOpen, setEditProfileOpen, userID }) => {
                       onChange={(e) =>
                         setNewData({ ...newData, lastname: e.target.value })
                       }
-                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm placeholder:text-[#00000040]"
+                      className="w-[240px] h-[35px] rounded-[10px] border-[1px] border-[#0000001a] mt-[5px] px-[15px] font-normal text-sm"
                       type="text"
-                      placeholder="Dela Cruz"
                     />
                   </div>
                   <div className="flex flex-col ml-[2%] justify-end">

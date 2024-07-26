@@ -30,12 +30,6 @@ const AddNewModal = ({ addNew, setAddNew }) => {
     occupation: "",
     service: "",
   });
-  const handleClick = () => {
-    setOccupationOpen(false);
-    setAddressButton(false);
-    setServiceButton(false);
-    setAddNew(false);
-  };
 
   const submitNewBeneficiary = (event) => {
     event.preventDefault();

@@ -11,7 +11,7 @@ type newServices = {
   service_name: string;
 };
 
-interface user {
+type user = {
   firstname: string;
   middle_name: string;
   lastname: string;
@@ -27,7 +27,7 @@ interface user {
   status: string;
   EVR_No: string;
   account_typeID: string;
-}
+};
 
 const addUserModal = ({ addNew, addNewClick }) => {
   const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
@@ -57,6 +57,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const [assignNewRole, setAssignNewRole] = useState("");
   const [emailSentOpen, setEmailSentOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [accountId, setAccountId] = useState("");
   const [dataValue, setDataValue] = useState<user>({
     firstname: "",
     middle_name: "",
@@ -101,20 +102,15 @@ const addUserModal = ({ addNew, addNewClick }) => {
       setAssignNewRole("");
       setNewRoleOpen(false);
       setTypePoliticianEVR(true);
+      clearInput();
     }
   };
 
   const dataForm = (choice) => {
+    setType(choice);
+    setTypeOpen(!typeOpen);
     //Will set the dataValue for the data needed when the employee or politician is submitted.
-    if (choice === "Employee") {
-      setDataValue((prevState) => {
-        const { roleID, ...data } = prevState;
-        return {
-          ...data,
-          roleID: "",
-        };
-      });
-    } else if (choice === "Politician") {
+    if (choice === "Politician") {
       setDataValue((prevState) => {
         const { roleID, ...data } = prevState;
         return {
@@ -125,24 +121,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
     }
   };
 
-  const clickChoices = (type: string) => {
-    //Choice for employee or politician
-    setType(type);
-    setTypeOpen(!typeOpen);
-    if (type === "Employee") {
-      setDataValue({
-        ...dataValue,
-        account_typeID: "66862cfe311b616ac697a2bb",
-      });
-    } else if (type === "Politician") {
-      setDataValue({
-        ...dataValue,
-        account_typeID: "66862e2e311b616ac697a2bc",
-      });
-    }
-  };
-
-  const handleClick = () => {
+  const clickEmployee = () => {
     //Handle toggle the need too be closed
     if (type !== "Employee") {
       setAssignNo(!assignNo);
@@ -151,6 +130,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
       setAddNewRole(false);
       setTypePoliticianEVR(false);
       setAddNewServices(false);
+      clearInput();
     }
   };
 
@@ -188,7 +168,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const handleNewRoleSubmit = (newRole: string) => {
     setNewRoleOpen(true);
     setAddNewRole(false);
-    handleClick();
+    clickEmployee();
     setAssignNo(false);
     setAssignNewRole(newRole);
     {
@@ -196,8 +176,6 @@ const addUserModal = ({ addNew, addNewClick }) => {
         if (newRole === role.role_type) {
           setDataValue({ ...dataValue, roleID: role._id });
         }
-        console.log(role._id);
-        console.log(role.role_type);
       });
     }
   };
@@ -223,7 +201,12 @@ const addUserModal = ({ addNew, addNewClick }) => {
     event.preventDefault();
     const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`;
     const EVR = "N/A";
-    const updatedData = { ...dataValue, username: userName, EVR_No: EVR };
+    const updatedData = {
+      ...dataValue,
+      account_typeID: accountId,
+      username: userName,
+      EVR_No: EVR,
+    };
     console.log({ updatedData });
     axios.instance
       .post("/users/addUser", updatedData, axios.authorization)
@@ -380,9 +363,9 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     <div className="w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]">
                       <button
                         onClick={() => {
-                          clickChoices("Employee");
+                          setAccountId("66862cfe311b616ac697a2bb");
                           dataForm("Employee");
-                          handleClick();
+                          clickEmployee();
                         }}
                         className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
                       >
@@ -390,7 +373,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       </button>
                       <button
                         onClick={() => {
-                          clickChoices("Politician");
+                          setAccountId("66862e2e311b616ac697a2bc");
                           dataForm("Politician");
                           clickPolitician();
                         }}

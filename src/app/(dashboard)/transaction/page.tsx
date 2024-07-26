@@ -89,8 +89,7 @@ const Transaction = () => {
             <input type="checkbox" />
             <p className="text-base font-semibold">List of Data</p>
           </div>
-
-          <div className="w-[30%] flex gap-3">
+          <div className="w-[25%] flex gap-3">
             <div className="flex flex-row justify-between h-[35px] gap-2">
               <button className="flex flex-row items-center justify-center font-medium text-xs rounded-[10px] px-[15px] border border-[#000000] opacity-25 py-[20px] cursor-pointer">
                 <img
@@ -99,14 +98,12 @@ const Transaction = () => {
                 />
                 Filter
               </button>
-
               <button
                 onClick={() => setImportModalOpen(true)}
                 className="flex flex-row items-center justify-center font-medium text-xs text-white rounded-[10px] px-[15px] bg-[#303079] py-[20px] cursor-pointer transition duration-300 ease-in-out"
               >
                 Import
               </button>
-
               <button
                 onClick={() => setAddNew(true)}
                 className="flex flex-row items-center justify-center font-medium text-xs text-white bg-[#ec7965] rounded-[10px] px-[15px] py-[20px] cursor-pointer transition duration-300 ease-in-out"
@@ -120,7 +117,6 @@ const Transaction = () => {
             </div>
           </div>
         </div>
-
         <div id="table" className="w-full absolute">
           <div className="overflow-y-auto h-full rounded-b-[10px]">
             <table className="w-full text-sm">
@@ -160,7 +156,6 @@ const Transaction = () => {
             </table>
           </div>
         </div>
-
         <div className="w-full h-8 absolute bottom-0 flex items-center justify-center gap-3 rounded-b-[10px]">
           <p className="text-xs font-normal">
             {totalBeneficiaries

@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 const axios = require('axios');
 
 const instance = axios.create({
-  baseURL: 'https://b7ce-103-252-35-202.ngrok-free.app',
+  baseURL: 'https://84e0-112-200-198-95.ngrok-free.app',
   headers: {
     'ngrok-skip-browser-warning': true,
   }
