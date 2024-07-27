@@ -1,6 +1,33 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import axios from "@/lib/axios";
+
+type newRole = {
+  _id: string;
+  role_type: string;
+};
+type newServices = {
+  _id: string;
+  service_name: string;
+};
+
+type user = {
+  firstname: string;
+  middle_name: string;
+  lastname: string;
+  email: string;
+  username: string;
+  password: string;
+  home_address: {
+    city: string;
+    region: string;
+    country: string;
+  };
+  roleID?: string;
+  status: string;
+  EVR_No: string;
+  account_typeID: string;
+};
 
 const addUserModal = ({ addNew, addNewClick }) => {
   const [assignNo, setAssignNo] = useState(false); //To toggle the assigning role of the employee when you click No
@@ -15,53 +42,23 @@ const addUserModal = ({ addNew, addNewClick }) => {
   const [deleteDecision, setDeleteDecision] = useState(false); //For deleting the new role in decision in Frame 17
   const [visibleChoices, setVisibleChoices] = useState(false); //This will show the new role
   const [newAddedRole, setNewAddedRole] = useState(""); //This help to appear the value of new role
-  const [newRoles, setNewRoles] = useState([
-    {
-      id: 1,
-      value: "Superadmin",
-      status: true,
-    },
-    {
-      id: 2,
-      value: "Admin",
-      status: true,
-    },
-    {
-      id: 3,
-      value: "Secretary",
-      status: true,
-    },
-  ]);
-  const [newServices, setNewServices] = useState([
-    {
-      id: 1,
-      value: "Medical assistance",
-      status: true,
-    },
-    {
-      id: 2,
-      value: "Financial assistance",
-      status: true,
-    },
-    {
-      id: 3,
-      value: "Scholarship",
-      status: true,
-    },
-    {
-      id: 4,
-      value: "Legal advise",
-      status: true,
-    },
-  ]);
+  const [newSubmittedRole, setNewSubmittedRole] = useState({
+    role_type: "",
+  });
+  const [newSubmittedService, setNewSubmittedService] = useState({
+    service_name: "",
+  });
+  const [inputNewRoleOpen, setInputNewRoleOpen] = useState(false);
+  const [inputNewServiceOpen, setInputNewServiceOpen] = useState(false);
+  const [newRoles, setNewRoles] = useState<newRole[]>([]);
+  const [newServices, setNewServices] = useState<newServices[]>([]);
   const [addNewServices, setAddNewServices] = useState(false);
-  const [addServiceButtonOpen, setAddServiceButtonOpen] = useState(true);
-  const [addButtonOpen, setAddButtonOpen] = useState(true);
   const [newRoleOpen, setNewRoleOpen] = useState(false);
   const [assignNewRole, setAssignNewRole] = useState("");
   const [emailSentOpen, setEmailSentOpen] = useState(false);
-  const [deleteRoleIndex, setDeleteRoleIndex] = useState(null);
-  const [dataValue, setDataValue] = useState({
+  const [email, setEmail] = useState("");
+  const [accountId, setAccountId] = useState("");
+  const [dataValue, setDataValue] = useState<user>({
     firstname: "",
     middle_name: "",
     lastname: "",
@@ -75,12 +72,13 @@ const addUserModal = ({ addNew, addNewClick }) => {
     },
     roleID: "",
     status: "active",
-    EVR_No: "N/A",
+    EVR_No: "",
     account_typeID: "",
   });
 
   const closeButton = () => {
     setType("Type");
+    setTypeOpen(false);
     setAssignNo(false);
     setTypePolitician(false);
     setServiceChoices([]);
@@ -92,38 +90,36 @@ const addUserModal = ({ addNew, addNewClick }) => {
     setNewRoles(newRoles);
     setSelectRole(false);
     setTypePoliticianEVR(false);
+    setAddNewServices(false);
   };
 
   //Function for choosing the type of user(Politician or Employee).
   const clickPolitician = () => {
-    //This will trigger components that ned when you select politician
+    //This will trigger components that need when you select politician
     if (type !== "Politician") {
       setTypePolitician(!typePolitician);
       setAssignNo(false);
       setAssignNewRole("");
       setNewRoleOpen(false);
       setTypePoliticianEVR(true);
+      clearInput();
     }
+    //Will set the dataValue for the data needed when the employee or politician is submitted.
+    setDataValue((prevState) => {
+      const { roleID, ...data } = prevState;
+      return {
+        ...data,
+        roleID: undefined,
+      };
+    });
   };
 
-  const clickChoices = (type: string) => {
-    //Choice for employee or politician
-    setType(type);
+  const dataForm = (choice) => {
+    setType(choice);
     setTypeOpen(!typeOpen);
-    if (type === "Employee") {
-      setDataValue({
-        ...dataValue,
-        account_typeID: "66862cfe311b616ac697a2bb",
-      });
-    } else if (type === "Politician") {
-      setDataValue({
-        ...dataValue,
-        account_typeID: "66862e2e311b616ac697a2bc",
-      });
-    }
   };
 
-  const handleClick = () => {
+  const clickEmployee = () => {
     //Handle toggle the need too be closed
     if (type !== "Employee") {
       setAssignNo(!assignNo);
@@ -131,6 +127,8 @@ const addUserModal = ({ addNew, addNewClick }) => {
       setToggleYes(false);
       setAddNewRole(false);
       setTypePoliticianEVR(false);
+      setAddNewServices(false);
+      clearInput();
     }
   };
 
@@ -145,48 +143,19 @@ const addUserModal = ({ addNew, addNewClick }) => {
   };
 
   const submitNewRole = (role: string) => {
-    //Submit new role that will be choose between superadmin, admin and secretary
+    //Submit new role that will be choose between roles like superadmin, admin and secretary
     setNewAddedRole(role);
     setSelectRole(false);
   };
 
-  const handleChoice = () => {
-    setVisibleChoices(!visibleChoices);
-  };
-
   useEffect(() => {
+    //Will close the serviceChoice if there are no value that is selected
     if (serviceChoices.length === 0) {
       setVisibleChoices(false);
     }
   }, [serviceChoices]);
 
-  //New roles that will be created
-  const handleRoleInput = (id: number, value: string) => {
-    setNewRoles((prevRoles) =>
-      prevRoles.map((role) =>
-        role.id === id ? { ...role, value: value } : role
-      )
-    );
-  };
-
-  const handleInputFixed = (id: number) => {
-    //Will set the data as uneditable
-    setNewRoles((prevRoles) =>
-      prevRoles.map((role) =>
-        role.id === id ? { ...role, status: true } : role
-      )
-    );
-    setAddButtonOpen(true);
-  };
-
-  const handleSubmitInput = () => {
-    setNewRoles((prevRoles) => [
-      ...prevRoles,
-      { id: prevRoles.length + 1, value: "", status: false },
-    ]);
-    setAddButtonOpen(false);
-  };
-
+  // //New roles that will be created
   const removeChoice = (choice: string, index) => {
     //Remove service choice in politician side
     setServiceChoices(
@@ -194,41 +163,19 @@ const addUserModal = ({ addNew, addNewClick }) => {
     );
   };
 
-  const handleEmailSentClick = () => {
-    //Email sent modal when you click add
-    setEmailSentOpen(true);
-    setTimeout(() => {
-      setEmailSentOpen(false);
-      addNewClick();
-    }, 1000);
-  };
-
-  const handleNewRoleDelete = (role: any) => {
-    setDeleteDecision(true);
-    setNewRoleOpen(false);
-    setDeleteRoleIndex(role);
-  };
-
   const handleNewRoleSubmit = (newRole: string) => {
     setNewRoleOpen(true);
     setAddNewRole(false);
-    handleClick();
+    clickEmployee();
     setAssignNo(false);
     setAssignNewRole(newRole);
-    if (newRole === "Superadmin") {
-      setDataValue({ ...dataValue, roleID: "668015b03fef6a03ee9894b4" });
-    } else if (newRole === "Admin") {
-      setDataValue({ ...dataValue, roleID: "668015e23fef6a03ee9894b5" });
-    } else if (newRole === "Secreatary") {
-      setDataValue({ ...dataValue, roleID: "668015f93fef6a03ee9894b6" });
-    } else if (newRole === "Politician") {
-      setDataValue({ ...dataValue, roleID: "N/A" });
+    {
+      newRoles.map((role) => {
+        if (newRole === role.role_type) {
+          setDataValue({ ...dataValue, roleID: role._id });
+        }
+      });
     }
-  };
-
-  const confirmDeleteRole = () => {
-    setNewRoles(newRoles.filter((role) => role !== deleteRoleIndex));
-    setDeleteDecision(false);
   };
 
   const selectedChoices = (choice: string) => {
@@ -236,37 +183,10 @@ const addUserModal = ({ addNew, addNewClick }) => {
     if (!serviceChoices.includes(choice)) {
       setServiceChoices([...serviceChoices, choice]);
       if (!visibleChoices) {
-        handleChoice();
+        setVisibleChoices(!visibleChoices);
         setVisibleChoices(true);
       }
     }
-  };
-
-  //New services that will be added
-  const handleServiceInput = (id: number, value: string) => {
-    setNewServices((prevService) =>
-      prevService.map((service) =>
-        service.id === id ? { ...service, value: value } : service
-      )
-    );
-  };
-
-  const handleServiceInputFixed = (id: number) => {
-    //Will set the data as uneditable
-    setNewServices((prevService) =>
-      prevService.map((service) =>
-        service.id === id ? { ...service, status: true } : service
-      )
-    );
-    setAddServiceButtonOpen(true);
-  };
-
-  const handleSubmitServiceInput = () => {
-    setNewServices((prevService) => [
-      ...prevService,
-      { id: prevService.length + 1, value: "", status: false },
-    ]);
-    setAddServiceButtonOpen(false);
   };
 
   const handleNewServiceSubmit = (newService: string) => {
@@ -275,14 +195,16 @@ const addUserModal = ({ addNew, addNewClick }) => {
     setTypePolitician(true);
   };
 
-  const handleNewServiceDelete = (newService: any) => {
-    setNewServices(newServices.filter((service) => service !== newService));
-  };
-
   const submitNewUser = (event) => {
     event.preventDefault();
     const userName = `${dataValue.firstname}${dataValue.lastname}@gmail.com`;
-    const updatedData = { ...dataValue, username: userName };
+    const EVR = "N/A";
+    const updatedData = {
+      ...dataValue,
+      account_typeID: accountId,
+      username: userName,
+      EVR_No: EVR,
+    };
     console.log({ updatedData });
     axios.instance
       .post("/users/addUser", updatedData, axios.authorization)
@@ -295,6 +217,15 @@ const addUserModal = ({ addNew, addNewClick }) => {
       clearInput();
       closeButton();
     }, 500);
+  };
+
+  const handleEmailSentClick = () => {
+    //Email sent modal when you click add
+    setEmailSentOpen(true);
+    setTimeout(() => {
+      setEmailSentOpen(false);
+      addNewClick();
+    }, 1000);
   };
 
   const clearInput = () => {
@@ -312,9 +243,83 @@ const addUserModal = ({ addNew, addNewClick }) => {
       },
       roleID: "",
       status: "active",
-      EVR_No: "N/A",
+      EVR_No: "",
       account_typeID: "",
     });
+  };
+
+  //New Role
+  useEffect(() => {
+    axios.instance
+      .get("roles", axios.authorization)
+      .then((response) => {
+        console.log(response.data);
+        setNewRoles(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, [newSubmittedRole]);
+
+  const handleSubmitNewRole = (event) => {
+    event.preventDefault();
+    setInputNewRoleOpen(false);
+    axios.instance
+      .post("/roles", newSubmittedRole, axios.authorization)
+      .then((response) => console.log(response.data))
+      .catch((err) => console.log(err));
+  };
+
+  const [roleDeletedId, setRoleDeletedId] = useState("");
+  const handleNewRoleDelete = (event) => {
+    event.preventDefault();
+    setDeleteDecision(false);
+    axios.instance
+      .delete("/roles", {
+        data: {
+          _id: roleDeletedId,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((res) => {
+        console.log(`Deleted user with id ${roleDeletedId}`);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //New Service
+  useEffect(() => {
+    axios.instance
+      .get("/services", axios.authorization)
+      .then((response) => {
+        console.log(response.data);
+        setNewServices(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, [newSubmittedService]);
+
+  const handleSubmitNewService = (event) => {
+    event.preventDefault();
+    setInputNewServiceOpen(false);
+    axios.instance
+      .post("/services", newSubmittedRole, axios.authorization)
+      .then((response) => console.log(response.data))
+      .catch((err) => console.log(err));
+  };
+
+  const handleServiceDelete = (politicianID) => {
+    setDeleteDecision(false);
+    axios.instance
+      .delete("/services", {
+        data: {
+          _id: politicianID,
+        },
+        headers: axios.authorization.headers,
+      })
+      .then((res) => {
+        console.log(`Deleted user with id ${politicianID}`);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -356,8 +361,9 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     <div className="w-[150px] h-[90px] flex flex-col py-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white font-normal text-[15px] absolute shadow-[0_4px_4px_0_rgba(0,0,0,0.03)]">
                       <button
                         onClick={() => {
-                          clickChoices("Employee");
-                          handleClick();
+                          setAccountId("66862cfe311b616ac697a2bb");
+                          dataForm("Employee");
+                          clickEmployee();
                         }}
                         className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
                       >
@@ -365,7 +371,8 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       </button>
                       <button
                         onClick={() => {
-                          clickChoices("Politician");
+                          setAccountId("66862e2e311b616ac697a2bc");
+                          dataForm("Politician");
                           clickPolitician();
                         }}
                         className="h-[40px] w-full text-left pl-[10px] hover:bg-[#303079] hover:text-white"
@@ -430,9 +437,10 @@ const addUserModal = ({ addNew, addNewClick }) => {
                   </p>
                   <input
                     value={dataValue.email}
-                    onChange={(e) =>
-                      setDataValue({ ...dataValue, email: e.target.value })
-                    }
+                    onChange={(e) => {
+                      setDataValue({ ...dataValue, email: e.target.value });
+                      setEmail(e.target.value);
+                    }}
                     className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
                     type="text"
                     placeholder="example@gmail.com"
@@ -483,6 +491,10 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       EVR No.
                     </p>
                     <input
+                      value={dataValue.EVR_No}
+                      onChange={(e) =>
+                        setDataValue({ ...dataValue, EVR_No: e.target.value })
+                      }
                       className="w-[240px] h-[35px] rounded-[10px] border-[#0000001a] border-[1px] mt-[5px] font-normal text-[14px] px-[17px] placeholder-[#0000001a]"
                       type="text"
                       placeholder="0000-000-000"
@@ -547,24 +559,18 @@ const addUserModal = ({ addNew, addNewClick }) => {
                           />
                           {selectRole && (
                             <div className="w-[100%] absolute flex flex-col font-normal text-sm rounded-br-[10px] rounded-bl-[10px] bg-white shadow-[0_1px_2.9px_0_rgba(0,0,0,0.25)] transition duration-300 ease-in-out">
-                              <button
-                                onClick={() => submitNewRole("Superadmin")}
-                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
-                              >
-                                Superadmin
-                              </button>
-                              <button
-                                onClick={() => submitNewRole("Admin")}
-                                className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
-                              >
-                                Admin
-                              </button>
-                              <button
-                                onClick={() => submitNewRole("Secretary")}
-                                className="text-left pl-[10px] rounded-br-[10px] rounded-bl-[10px] w-full py-2 hover:bg-[#D9D9D9]"
-                              >
-                                Secretary
-                              </button>
+                              {newRoles.map((role, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => {
+                                    submitNewRole(role.role_type);
+                                    setNewAddedRole(role.role_type);
+                                  }}
+                                  className="text-left pl-[10px] py-2 w-full hover:bg-[#D9D9D9]"
+                                >
+                                  {role.role_type}
+                                </button>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -588,54 +594,55 @@ const addUserModal = ({ addNew, addNewClick }) => {
                         responsibilities and duties
                       </p>
                       <div className="w-full flex flex-wrap items-center mt-1">
-                        {newRoles.map((role) => (
+                        {newRoles.map((role, index) => (
                           <div
-                            key={role.id}
+                            key={index}
                             className="flex items-center align-middle mt-1"
                           >
-                            {role.status ? (
-                              <div className="ml-1 relative">
-                                <button
-                                  onClick={() => {
-                                    handleNewRoleSubmit(role.value);
-                                  }}
-                                  className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
-                                >
-                                  {role.value}
-                                </button>
-                                <img
-                                  onClick={() => handleNewRoleDelete(role)}
-                                  className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
-                                  src="/icon/close.svg"
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex items-center ml-1">
-                                <input
-                                  value={role.value}
-                                  onChange={(e) =>
-                                    handleRoleInput(role.id, e.target.value)
-                                  }
-                                  className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
-                                  type="text"
-                                />
-                                <button
-                                  onClick={() => {
-                                    role.value
-                                      ? handleInputFixed(role.id)
-                                      : null;
-                                  }}
-                                  className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
-                                >
-                                  <img src="/icon/checkblue.svg" />
-                                </button>
-                              </div>
-                            )}
+                            <div className="ml-1 relative">
+                              <button
+                                onClick={() => {
+                                  handleNewRoleSubmit(role.role_type);
+                                }}
+                                className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                              >
+                                {role.role_type}
+                              </button>
+                              <img
+                                onClick={() => {
+                                  setRoleDeletedId(role._id);
+                                  setDeleteDecision(true);
+                                  setNewRoleOpen(false);
+                                }}
+                                className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                                src="/icon/close.svg"
+                              />
+                            </div>
                           </div>
                         ))}
-                        {addButtonOpen && (
+                        {inputNewRoleOpen ? (
+                          <div className="flex items-center ml-1 mt-1">
+                            <input
+                              value={newSubmittedRole.role_type}
+                              onChange={(e) =>
+                                setNewSubmittedRole({
+                                  ...newSubmittedRole,
+                                  role_type: e.target.value,
+                                })
+                              }
+                              className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                              type="text"
+                            />
+                            <button
+                              onClick={handleSubmitNewRole}
+                              className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                            >
+                              <img src="/icon/checkblue.svg" />
+                            </button>
+                          </div>
+                        ) : (
                           <button
-                            onClick={handleSubmitInput}
+                            onClick={() => setInputNewRoleOpen(true)}
                             className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
                           >
                             <img
@@ -663,30 +670,20 @@ const addUserModal = ({ addNew, addNewClick }) => {
                     Suggestion
                   </p>
                   <div className="flex flex-row justify-between mt-2">
-                    <button
-                      onClick={() => selectedChoices("Medical Assistance")}
-                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
-                    >
-                      Medical Assistance
-                    </button>
-                    <button
-                      onClick={() => selectedChoices("Scholarship")}
-                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
-                    >
-                      Scholarship
-                    </button>
-                    <button
-                      onClick={() => selectedChoices("Financial assistance")}
-                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
-                    >
-                      Financial Assistance
-                    </button>
-                    <button
-                      onClick={() => selectedChoices("Legal Advice")}
-                      className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
-                    >
-                      Legal Advise
-                    </button>
+                    {newServices.map(
+                      (service, index) =>
+                        index < 4 && (
+                          <button
+                            key={index}
+                            onClick={() =>
+                              selectedChoices(service.service_name)
+                            }
+                            className="px-[5px] text-[#303079] py-[3px] border-[#303079] border-[1px] rounded-full font-normal text-[12px] hover:bg-[#303079] hover:text-white"
+                          >
+                            {service.service_name}
+                          </button>
+                        )
+                    )}
                     <button
                       onClick={() => {
                         setAddNewServices(true);
@@ -734,52 +731,51 @@ const addUserModal = ({ addNew, addNewClick }) => {
                   <div className="w-full flex flex-wrap items-center mt-1">
                     {newServices.map((service) => (
                       <div
-                        key={service.id}
+                        key={service._id}
                         className="flex items-center align-middle mt-1"
                       >
-                        {service.status ? (
-                          <div className="ml-1 relative">
-                            <button
-                              onClick={() =>
-                                handleNewServiceSubmit(service.value)
-                              }
-                              className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
-                            >
-                              {service.value}
-                            </button>
-                            <img
-                              onClick={() => {
-                                handleNewServiceDelete(service);
-                              }}
-                              className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
-                              src="/icon/close.svg"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex items-center ml-1">
-                            <input
-                              value={service.value}
-                              onChange={(e) =>
-                                handleServiceInput(service.id, e.target.value)
-                              }
-                              className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
-                              type="text"
-                            />
-                            <button
-                              onClick={() => {
-                                handleServiceInputFixed(service.id);
-                              }}
-                              className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
-                            >
-                              <img src="/icon/checkblue.svg" />
-                            </button>
-                          </div>
-                        )}
+                        <div className="ml-1 relative">
+                          <button
+                            onClick={() =>
+                              handleNewServiceSubmit(service.service_name)
+                            }
+                            className="px-3 pr-6 py-1 h-[30px] rounded-full bg-[#303079] font-medium text-[14px] text-white"
+                          >
+                            {service.service_name}
+                          </button>
+                          <img
+                            onClick={() => {
+                              handleServiceDelete(service._id);
+                            }}
+                            className="w-5 h-5 rounded-full absolute top-[5px] right-1 cursor-pointer"
+                            src="/icon/close.svg"
+                          />
+                        </div>
                       </div>
                     ))}
-                    {addServiceButtonOpen && (
+                    {inputNewServiceOpen ? (
+                      <div className="flex items-center ml-1">
+                        <input
+                          value={newSubmittedService.service_name}
+                          onChange={(e) =>
+                            setNewSubmittedService({
+                              ...newSubmittedService,
+                              service_name: e.target.value,
+                            })
+                          }
+                          className="border w-[130px] border-[#303079] focus:border-[#303079] py-1 h-[30px] rounded-full font-medium text-sm px-2"
+                          type="text"
+                        />
+                        <button
+                          onClick={handleSubmitNewService}
+                          className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex items-center justify-center p-[5px]"
+                        >
+                          <img src="/icon/checkblue.svg" />
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={handleSubmitServiceInput}
+                        onClick={() => setInputNewServiceOpen(true)}
                         className="h-[30px] w-[30px] ml-1 rounded-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] mt-1 flex items-center justify-center"
                       >
                         <img
@@ -834,7 +830,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                       No
                     </button>
                     <button
-                      onClick={() => confirmDeleteRole()}
+                      onClick={handleNewRoleDelete}
                       className="w-[90px] h-[45px] ml-4 rounded-[10px] bg-[#303179] font-medium text-sm text-white"
                     >
                       Yes
@@ -851,7 +847,7 @@ const addUserModal = ({ addNew, addNewClick }) => {
                 <div className="h-[52px] w-[450px] rounded-[10px] flex flex-row items-center justify-center bg-[#12174F] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
                   <img src="/icon/checkall.svg" alt="" />
                   <p className="fonr-medium text-[15px] text-white ml-2">
-                    Email sent to juandelacruz@gmail.com
+                    {`Email sent to ${email}`}
                   </p>
                 </div>
               </div>
