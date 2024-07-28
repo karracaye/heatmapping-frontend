@@ -103,7 +103,7 @@ const Dashboard = () => {
               {/* why keep changing my code!!!!!!!!!!!!!!!! -- Karra */}
           <div className='flex flex-col gap-2 row-span-2'>
             <div>
-              <p className='text-xs text-gray-400'>Top Locationss</p>
+              <p className='text-xs text-gray-400'>Top Location</p>
               <p className='text-lg font-medium'>San Guillermo</p>
             </div>
             <div>
