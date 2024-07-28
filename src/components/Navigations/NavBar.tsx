@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import EditProfile from "./EditProfile";
-import { useState } from "react";
+import EditProfile from "../EditProfile";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const logNotification = [
@@ -29,6 +29,33 @@ const Navbar = () => {
     setShowNotifications(!showNotifications);
     setEditProfileOpen(false);
   };
+
+  const [ accountRole, setAccountRole ] = useState<string>();
+  useEffect(() => {
+    const request = indexedDB.open('heatmap_db', 1);
+
+    request.onsuccess = () => {
+      const database = request.result;
+      const transaction = database.transaction(['user'], 'readonly');
+      const objectStore = transaction.objectStore('user');  
+      const getUser = objectStore.getAll(); 
+
+      getUser.onsuccess = () => {
+        getUser.result.map((item) => {
+          if (item._id == getUser.result.length) setAccountRole(item.role);
+        })
+      }
+
+      // getUser.onerror = (event) => {
+      //   console.error(event.target.error);
+      // }
+    }
+
+    // request.onerror = (event) => {
+    //   console.error(event.target.error);
+    // }
+  }, [])
+  
   return (
     <nav>
       <div className="w-full px-[3%]">
@@ -52,7 +79,7 @@ const Navbar = () => {
         </div>
 
         <p className="font-medium text-[25px] mt-[-15px]">
-          Good Morning Superadmin!
+          Good Morning { accountRole }!
         </p>
         <p className="font-normal text-[15px] text-black opacity-50">
           Things are looking good.

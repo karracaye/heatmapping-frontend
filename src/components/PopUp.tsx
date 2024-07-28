@@ -2,11 +2,11 @@
 import { useState } from "react";
 
 const Popup = ({ name, children }) => {
-  const [ modal, setModal ] = useState(false);
+  const [ modal, setModal ] = useState<boolean>(false);
 
   return (
-    <div className="w-fit relative">
-      <button onClick={ !modal ? () => setModal(true) : () => setModal(!modal) }
+    <div className="w-fit relative z-10">
+      <button onClick={ () => setModal(!modal) }
         className="h-10 px-3 bg-guardsman-red rounded-[10px] font-medium text-white text-sm"
       >
         <p>{ name }</p>
