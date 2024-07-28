@@ -117,7 +117,7 @@ const Dashboard = () => {
       <div className='row-span-4 col-span-2 bg-white rounded-[10px] shadow-[0_0_2px_2px_rgba(0,0,0,0.03)]'>
         <div className='h-[20%] flex items-center justify-between px-6'>
           <div>
-            <p className='text-base font-normal'>Lipa Barangays</p>
+            <p className='text-base font-normal'>Lipa Barangayssssss</p>
             <p className='h-4 text-xs text-gray-400 font-normal'>
               {
                 filter ? (
