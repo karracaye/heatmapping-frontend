@@ -100,7 +100,7 @@ const Dashboard = () => {
               onMouseLeave={() => setHover(!hover)}
             />
           </div>
-              {/* why keep changing my code!!!!!!!!!!!!!!!! -- Karra */}
+             
           <div className='flex flex-col gap-2 row-span-2'>
             <div>
               <p className='text-xs text-gray-400'>Top Location</p>
